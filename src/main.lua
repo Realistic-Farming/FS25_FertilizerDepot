@@ -13,6 +13,8 @@ source(modDir .. "src/DepotLogger.lua")
 
 -- Phase 2: Core systems
 source(modDir .. "src/integrations/SoilFertilizerBridge.lua")
+source(modDir .. "src/integrations/DepotSettingsHubBridge.lua")
+source(modDir .. "src/integrations/DepotMasterHUDBridge.lua")
 source(modDir .. "src/DepotPricing.lua")
 source(modDir .. "src/DepotSystem.lua")
 source(modDir .. "src/delivery/DeliverySystem.lua")
@@ -71,6 +73,12 @@ local function onMissionLoadFinished(mission, ...)
     DepotLogger.info("Post-load: SF installed: %s",
         tostring(g_DepotManager.sfBridge:isInstalled()))
 
+    -- Bedrock bridges (delegate-when-present; each no-ops if its bedrock mod is
+    -- absent). Handles (g_currentMission.settingsHub / .masterHUD) are published
+    -- by the bedrock mods at Mission00.load, so they are ready by now.
+    DepotSettingsHubBridge.register(g_DepotManager)
+    DepotMasterHUDBridge.register(g_DepotManager)
+
     -- Register Shift+D settings hotkey in PLAYER context.
     -- Pattern mirrors FS25_SoilFertilizer:SoilFertilityManager.lua exactly.
     if PlayerInputComponent and PlayerInputComponent.registerActionEvents then
@@ -112,6 +120,10 @@ local function onMissionUpdate(mission, dt)
 end
 
 local function onMissionDraw(mission)
+    -- When MasterHUD is present it owns the single draw loop (our draw was
+    -- registered as a self-draw via the bridge); stand down so the depot HUD
+    -- never draws twice. Absent MasterHUD, this hook runs the draw as before.
+    if DepotMasterHUDBridge ~= nil and DepotMasterHUDBridge.active then return end
     if g_DepotManager then
         g_DepotManager:drawHUD()
     end
