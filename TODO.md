@@ -17,7 +17,7 @@
 
 ## Cross-mod integration
 - [x] StateLedger: N/A by design - per-depot state is placeable-attached (base-game placeable save), settings go to SettingsHub. No central SL module (matches Arissani's readiness assessment). Own FSCareerMissionInfo settings save kept as the standalone fallback.
-- [ ] NetworkSync: **DEFERRED** - this is a REAL transactional bridge (purchases / sells / silo fills / deliveries, 7 event classes), not a mechanical swap. Point-2's `channels={}` API is stale vs live NS v2 (registerAction / requestAction). Needs the NS build-brief + two-machine MP test before build.
+- [!] NetworkSync: **DEFERRED, bundled with the NPCFavor money-authority session.** This is a hardened request/response protocol across 11 event classes where purchases / sells / silo fills / deliveries PAY MONEY server-side - the SAME money-authority-refactor class as NPCFavor (route money-carrying actions through NS Path 3 with validation), not a mechanical swap. Point-2's `channels={}` API is stale vs live NS v2 (registerAction / requestAction). Needs the NS build-brief + two-machine MP test.
 - [x] MasterHUD: `FertilizerDepot_HUD` bridged (commit 69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook (MasterHUD owns draw ordering, not input).
 - [x] SettingsHub: `FertilizerDepot` module bridged (bare name, selfPersisted, 5 settings as enum over the preset tables; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] SoilFertilizer read via `g_currentMission.soilFertilityManager` (detection) + `g_fillTypeManager` (stock); TaxMod consumes spend history.
