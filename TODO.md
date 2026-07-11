@@ -16,10 +16,10 @@
 - [ ] Companion read API: 7 read functions on `depotManager` (isActive-guarded, read-only).
 
 ## Cross-mod integration
-- [ ] StateLedger: persist depot settings; drop the FSCareerMissionInfo save hook.
-- [ ] NetworkSync: `DepotSync` + `DeliverySync` (consolidate the 11 event classes); remove the sendInitialClientState join handshake (getFullState replaces it).
-- [ ] MasterHUD: register depot HUD draw + mouse.
-- [ ] SettingsHub: register settings; keep Shift+D DepotSettingsDialog.
+- [x] StateLedger: N/A by design - per-depot state is placeable-attached (base-game placeable save), settings go to SettingsHub. No central SL module (matches Arissani's readiness assessment). Own FSCareerMissionInfo settings save kept as the standalone fallback.
+- [ ] NetworkSync: **DEFERRED** - this is a REAL transactional bridge (purchases / sells / silo fills / deliveries, 7 event classes), not a mechanical swap. Point-2's `channels={}` API is stale vs live NS v2 (registerAction / requestAction). Needs the NS build-brief + two-machine MP test before build.
+- [x] MasterHUD: `FertilizerDepot_HUD` bridged (commit 69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook (MasterHUD owns draw ordering, not input).
+- [x] SettingsHub: `FertilizerDepot` module bridged (bare name, selfPersisted, 5 settings as enum over the preset tables; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] SoilFertilizer read via `g_currentMission.soilFertilityManager` (detection) + `g_fillTypeManager` (stock); TaxMod consumes spend history.
 
 ## Docs / localization
@@ -27,4 +27,4 @@
 - [ ] Keep all 26 languages in step for any new setting.
 
 ## Blocked / waiting on
-- [!] Bedrock migrations (waits on: adopting the four engines; SoilFertilizer is the reference pattern).
+- [~] Bedrock migrations: SettingsHub + MasterHUD DONE (commit 69fce53); StateLedger N/A by design. Only the NetworkSync transactional bridge remains (deferred - needs the NS build-brief, see Cross-mod integration).
