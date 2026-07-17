@@ -16,12 +16,12 @@
 
 ## Near-term (next release cycle)
 - [ ] Add the `g_currentMission.depotManager` mission handle (Point 1); keep the `Mission00.load` PREPEND hook (required for placeable registration).
-- [ ] NetworkSync: consolidate the 11 custom event classes to two channels, `DepotSync` + `DeliverySync`, to keep delta payloads manageable.
-- [ ] MasterHUD: remove the FSBaseMission.draw AND mouseEvent hooks; register the depot HUD draw + mouse through MasterHUD.
+- [!] NetworkSync: consolidate the 11 custom event classes. DEFERRED, bundled with the NPCFavor money-authority session (a hardened request/response protocol that pays money server-side, not a mechanical swap). Needs the NS build-brief.
+- [~] MasterHUD: HUD draw bridged (69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook by design (MasterHUD owns draw ordering, not input).
 
 ## Mid-term (this season)
-- [ ] StateLedger: persist depot settings; remove the FSCareerMissionInfo save hook.
-- [ ] SettingsHub: register settings; keep the Shift+D DepotSettingsDialog (correct pattern).
+- [x] StateLedger: N/A by design (per-depot state is placeable-attached to the base-game placeable save); settings persist via SettingsHub, own FSCareerMissionInfo save kept as the fallback.
+- [x] SettingsHub: `FertilizerDepot` module bridged (selfPersisted, 5 settings; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] Expose the 7 companion read functions on `depotManager` (TaxMod spend history, FarmTablet).
 
 ## Long-term / aspirational
@@ -29,7 +29,7 @@
 
 ## Cross-mod / ecosystem dependencies
 - [ ] SoilFertilizer fill-type stock integration (blocks on: `g_currentMission.soilFertilityManager` + `g_fillTypeManager`; feature confirmation).
-- [ ] All four bedrock migrations (blocks on: StateLedger, NetworkSync, MasterHUD, SettingsHub).
+- [~] Bedrock: SettingsHub + MasterHUD DONE (69fce53); StateLedger N/A by design; NetworkSync deferred (money-authority class, needs the NS build-brief).
 
 ## Deferred / parked
 - Remove the `g_DepotManager` getfenv alias: parked for v2 (kept now for backward compat).
