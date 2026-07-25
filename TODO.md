@@ -23,7 +23,7 @@
 - [ ] SoilFertilizer read via `g_currentMission.soilFertilityManager` (detection) + `g_fillTypeManager` (stock); TaxMod consumes spend history.
 
 ## Docs / localization
-- [ ] Stamp a version in modDesc.xml.
+- [x] Version stamped in modDesc.xml (v1.0.3.1).
 - [ ] Keep all 26 languages in step for any new setting.
 
 ## Blocked / waiting on
