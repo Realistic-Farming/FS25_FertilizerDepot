@@ -5,6 +5,7 @@
 -- subsystems, then network events, then UI.
 
 local modDir = g_currentModDirectory
+local modName = g_currentModName
 
 -- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
@@ -54,7 +55,7 @@ local function onMissionLoad(mission, ...)
     -- read directly here where the manager is guaranteed to be present.
     local missionInfo = mission and mission.missionInfo
     if missionInfo and missionInfo.savegameDirectory then
-        local path = missionInfo.savegameDirectory .. "/FS25_FertilizerDepot.xml"
+        local path = missionInfo.savegameDirectory .. "/" .. modName .. ".xml"
         local xmlFile = XMLFile.load("depotSettingsLoad", path)
         if xmlFile then
             g_DepotManager.settings:loadFromXML(xmlFile, "fertilizerDepot.settings")
@@ -154,7 +155,7 @@ local function onSaveToXML(missionInfo, xmlFile, ...)
         DepotLogger.warning("onSaveToXML: savegameDirectory not available — skipping")
         return
     end
-    local path = missionInfo.savegameDirectory .. "/FS25_FertilizerDepot.xml"
+    local path = missionInfo.savegameDirectory .. "/" .. modName .. ".xml"
     local outFile = XMLFile.create("depotSettingsSave", path, "fertilizerDepot")
     if not outFile then
         DepotLogger.warning("onSaveToXML: could not create XML file")

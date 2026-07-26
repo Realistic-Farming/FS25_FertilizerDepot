@@ -97,8 +97,7 @@ function PlaceableDepot:onPostFinalizePlacement()
         
         -- The engine passes the key to saveToXMLFile that *already includes* the specialization path.
         -- When loading, sg.key is just the placeable path, so we must manually append the specialization.
-        -- We previously used .fertilizerDepot, but the save log shows .FS25_FertilizerDepot.fertilizerDepot
-        local loadKey = sg.key .. ".FS25_FertilizerDepot.fertilizerDepot"
+        local loadKey = sg.key .. "." .. modName .. ".fertilizerDepot"
         
         DepotLogger.info("PlaceableDepot:loading from key=%s", loadKey)
         
