@@ -11,6 +11,7 @@
 
 ## Bugs
 - [x] Money-authority (F15-class, 6 addMoney sites): VERIFIED server-gated in live source. DepotSystem's four (277/350/393/485) each sit behind an early `if not g_server then return` in their function (243/290/363/452); DeliverySystem's two (confirmPickup:173, cancelDelivery:219) run only from server-gated events (DepotDeliveryPickupEvent / DepotDeliveryCancelEvent :run, `if not g_server`), and the FDCancelDelivery console command is guarded too (DepotManager:867). The 2026-07-09 money-authority sweep flagged 6 ungated sites, but it grepped `getIsServer` and missed the `g_server` guards. Not a bug.
+- [x] WV-002 hardcoded modName (issue #24): replaced with `g_currentModName` in PlaceableDepot.lua, main.lua (x2), DepotHUD.lua. Commit a0c87d2.
 
 ## Features / enhancements
 - [ ] Companion read API: 7 read functions on `depotManager` (isActive-guarded, read-only).

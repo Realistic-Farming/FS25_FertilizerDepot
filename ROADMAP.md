@@ -23,6 +23,7 @@
 - [x] StateLedger: N/A by design (per-depot state is placeable-attached to the base-game placeable save); settings persist via SettingsHub, own FSCareerMissionInfo save kept as the fallback.
 - [x] SettingsHub: `FertilizerDepot` module bridged (selfPersisted, 5 settings; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] Expose the 7 companion read functions on `depotManager` (TaxMod spend history, FarmTablet).
+- [!] DeliveryHUD right-click keybind conflict (issue #24): raw right-click for edit mode fires during vehicle tool actions. Design decision needed: dedicated InputAction (default UNBOUND) vs modifier combo. See ecosystem ledger 2026-07-26. Wizard ready to build once approved.
 
 ## Long-term / aspirational
 - [ ] Richer depot logistics (delivery scheduling, capacity tiers) without breaking the read API.
