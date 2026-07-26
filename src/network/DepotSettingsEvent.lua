@@ -44,14 +44,14 @@ function DepotSettingsEvent:run(connection)
     -- On a dedicated server (g_client == nil), block client-initiated changes until
     -- a per-connection admin API is verified via LUADOC.
     if connection and not connection:getIsServer() then
-        local listenServer = (g_client ~= nil)
-        if listenServer then
-            if not g_currentMission.isMasterUser then
-                DepotLogger.warning("Non-admin setting change blocked (listen server)")
-                return
-            end
-        else
-            DepotLogger.warning("Non-admin setting change blocked (dedicated server)")
+        local userId = g_server:getIdOfUser(connection)
+        local user = userId and g_server:getUserById(userId)
+        if not user then
+            DepotLogger.warning("Non-admin setting change blocked (unknown user)")
+            return
+        end
+        if not user:getIsMasterUser() and not user:getIsFarmManager(user.farmId) then
+            DepotLogger.warning("Non-admin setting change blocked (user %s)", tostring(userId))
             return
         end
     end

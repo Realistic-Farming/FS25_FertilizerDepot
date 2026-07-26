@@ -66,6 +66,8 @@ local function onMissionLoad(mission, ...)
     DepotLogger.info("Mission load complete")
 end
 
+local _playerInputWrapped = false
+
 local function onMissionLoadFinished(mission, ...)
     if not g_DepotManager then return end
     -- SF global is now available if installed
@@ -81,7 +83,8 @@ local function onMissionLoadFinished(mission, ...)
 
     -- Register Shift+D settings hotkey in PLAYER context.
     -- Pattern mirrors FS25_SoilFertilizer:SoilFertilityManager.lua exactly.
-    if PlayerInputComponent and PlayerInputComponent.registerActionEvents then
+    if PlayerInputComponent and PlayerInputComponent.registerActionEvents and not _playerInputWrapped then
+        _playerInputWrapped = true
         local origRegister = PlayerInputComponent.registerActionEvents
         PlayerInputComponent.registerActionEvents = function(inputComp, ...)
             origRegister(inputComp, ...)
