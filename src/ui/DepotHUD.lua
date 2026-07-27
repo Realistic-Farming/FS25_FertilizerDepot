@@ -113,7 +113,7 @@ function DepotHUD:_getLayoutPath()
     if g_currentMission and g_currentMission.missionInfo
     and g_currentMission.missionInfo.savegameDirectory then
         return g_currentMission.missionInfo.savegameDirectory
-               .. "/FS25_FertilizerDepot_hud.xml"
+               .. "/" .. _hudModName .. "_hud.xml"
     end
 end
 

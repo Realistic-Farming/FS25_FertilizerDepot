@@ -138,6 +138,13 @@ function DepotManager:delete()
         self.hud:delete()
         self.hud = nil
     end
+    if self.deliverySystem then
+        self.deliverySystem:cleanup()
+    end
+    if self._settingsEventId and g_inputBinding then
+        g_inputBinding:removeActionEvent(self._settingsEventId)
+        self._settingsEventId = nil
+    end
     if self._interactEventId and g_inputBinding then
         g_inputBinding:removeActionEvent(self._interactEventId)
         self._interactEventId = nil

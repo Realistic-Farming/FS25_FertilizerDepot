@@ -5,6 +5,7 @@
 -- subsystems, then network events, then UI.
 
 local modDir = g_currentModDirectory
+local modName = g_currentModName
 
 -- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
@@ -13,6 +14,8 @@ source(modDir .. "src/DepotLogger.lua")
 
 -- Phase 2: Core systems
 source(modDir .. "src/integrations/SoilFertilizerBridge.lua")
+source(modDir .. "src/integrations/DepotSettingsHubBridge.lua")
+source(modDir .. "src/integrations/DepotMasterHUDBridge.lua")
 source(modDir .. "src/DepotPricing.lua")
 source(modDir .. "src/DepotSystem.lua")
 source(modDir .. "src/delivery/DeliverySystem.lua")
@@ -52,7 +55,7 @@ local function onMissionLoad(mission, ...)
     -- read directly here where the manager is guaranteed to be present.
     local missionInfo = mission and mission.missionInfo
     if missionInfo and missionInfo.savegameDirectory then
-        local path = missionInfo.savegameDirectory .. "/FS25_FertilizerDepot.xml"
+        local path = missionInfo.savegameDirectory .. "/" .. modName .. ".xml"
         local xmlFile = XMLFile.load("depotSettingsLoad", path)
         if xmlFile then
             g_DepotManager.settings:loadFromXML(xmlFile, "fertilizerDepot.settings")
@@ -64,6 +67,8 @@ local function onMissionLoad(mission, ...)
     DepotLogger.info("Mission load complete")
 end
 
+local _playerInputWrapped = false
+
 local function onMissionLoadFinished(mission, ...)
     if not g_DepotManager then return end
     -- SF global is now available if installed
@@ -71,9 +76,16 @@ local function onMissionLoadFinished(mission, ...)
     DepotLogger.info("Post-load: SF installed: %s",
         tostring(g_DepotManager.sfBridge:isInstalled()))
 
+    -- Bedrock bridges (delegate-when-present; each no-ops if its bedrock mod is
+    -- absent). Handles (g_currentMission.settingsHub / .masterHUD) are published
+    -- by the bedrock mods at Mission00.load, so they are ready by now.
+    DepotSettingsHubBridge.register(g_DepotManager)
+    DepotMasterHUDBridge.register(g_DepotManager)
+
     -- Register Shift+D settings hotkey in PLAYER context.
     -- Pattern mirrors FS25_SoilFertilizer:SoilFertilityManager.lua exactly.
-    if PlayerInputComponent and PlayerInputComponent.registerActionEvents then
+    if PlayerInputComponent and PlayerInputComponent.registerActionEvents and not _playerInputWrapped then
+        _playerInputWrapped = true
         local origRegister = PlayerInputComponent.registerActionEvents
         PlayerInputComponent.registerActionEvents = function(inputComp, ...)
             origRegister(inputComp, ...)
@@ -112,6 +124,10 @@ local function onMissionUpdate(mission, dt)
 end
 
 local function onMissionDraw(mission)
+    -- When MasterHUD is present it owns the single draw loop (our draw was
+    -- registered as a self-draw via the bridge); stand down so the depot HUD
+    -- never draws twice. Absent MasterHUD, this hook runs the draw as before.
+    if DepotMasterHUDBridge ~= nil and DepotMasterHUDBridge.active then return end
     if g_DepotManager then
         g_DepotManager:drawHUD()
     end
@@ -139,7 +155,7 @@ local function onSaveToXML(missionInfo, xmlFile, ...)
         DepotLogger.warning("onSaveToXML: savegameDirectory not available — skipping")
         return
     end
-    local path = missionInfo.savegameDirectory .. "/FS25_FertilizerDepot.xml"
+    local path = missionInfo.savegameDirectory .. "/" .. modName .. ".xml"
     local outFile = XMLFile.create("depotSettingsSave", path, "fertilizerDepot")
     if not outFile then
         DepotLogger.warning("onSaveToXML: could not create XML file")

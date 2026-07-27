@@ -237,6 +237,17 @@ function DeliverySystem:getDelivery(depotId)
     return self.deliveries[depotId]
 end
 
+function DeliverySystem:cleanup()
+    for depotId, rec in pairs(self.deliveries) do
+        if rec.vehicle then
+            rec.vehicle:delete()
+            rec.vehicle = nil
+        end
+    end
+    self.deliveries = {}
+    DepotLogger.info("DeliverySystem cleaned up")
+end
+
 -- Returns true when the delivery truck (if any) is close enough to the depot
 -- unload node to allow the player to complete the delivery.
 -- Phase 1: always true when status=LOADED and no real truck is tracked.
@@ -283,6 +294,9 @@ function DeliverySystem:saveDeliveryToXML(xmlFile, key, depotId)
     xmlFile:setInt(key .. "#farmId",    rec.farmId)
     xmlFile:setFloat(key .. "#baseCost",     rec.baseCost)
     xmlFile:setFloat(key .. "#deliveryCost", rec.deliveryCost)
+    if rec.vehicle and rec.vehicle.networkInformation then
+        xmlFile:setInt(key .. "#vehicleNetworkId", rec.vehicle.networkInformation.networkId)
+    end
     for i, item in ipairs(rec.items) do
         local iKey = string.format("%s.item(%d)", key, i - 1)
         xmlFile:setString(iKey .. "#name",   item.fillTypeName)
@@ -333,5 +347,15 @@ function DeliverySystem:loadDeliveryFromXML(xmlFile, key, depotId)
         deliveryCost = deliveryCost,
         vehicle      = nil,
     }
+    local savedNetId = xmlFile:getInt(key .. "#vehicleNetworkId", 0)
+    if savedNetId ~= 0 then
+        for _, veh in pairs(g_currentMission.vehicles or {}) do
+            if veh.networkInformation and veh.networkInformation.networkId == savedNetId then
+                self.deliveries[depotId].vehicle = veh
+                DepotLogger.info("Delivery vehicle recovered: depot=%d netId=%d", depotId, savedNetId)
+                break
+            end
+        end
+    end
     DepotLogger.info("Delivery state restored: depot=%d status=%d types=%d", depotId, status, #items)
 end
