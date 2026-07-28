@@ -15,22 +15,26 @@
 - Baseline date: 2026-06-30
 
 ## Near-term (next release cycle)
+- [x] NetworkSync migration: C1 bridges shipped (FDNetworkSyncBridge, dual channel DepotSync + DeliverySync). PR #20 merged to main 2026-07-28.
+- [x] Depot pricing integrations (C4, 3320ecf): ProStaff discount (DepotProStaffBridge), MDM price modifier registration (DepotMarketDynamicsBridge), FuelCosts diesel read (DepotFuelCostsBridge). Committed to development 2026-07-28.
 - [ ] Add the `g_currentMission.depotManager` mission handle (Point 1); keep the `Mission00.load` PREPEND hook (required for placeable registration).
-- [!] NetworkSync: consolidate the 11 custom event classes. DEFERRED, bundled with the NPCFavor money-authority session (a hardened request/response protocol that pays money server-side, not a mechanical swap). Needs the NS build-brief.
-- [~] MasterHUD: HUD draw bridged (69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook by design (MasterHUD owns draw ordering, not input).
+- [x] MasterHUD: HUD draw bridged (69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook by design (MasterHUD owns draw ordering, not input).
 
 ## Mid-term (this season)
 - [x] StateLedger: N/A by design (per-depot state is placeable-attached to the base-game placeable save); settings persist via SettingsHub, own FSCareerMissionInfo save kept as the fallback.
 - [x] SettingsHub: `FertilizerDepot` module bridged (selfPersisted, 5 settings; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] Expose the 7 companion read functions on `depotManager` (TaxMod spend history, FarmTablet).
-- [!] DeliveryHUD right-click keybind conflict (issue #24): raw right-click for edit mode fires during vehicle tool actions. Design decision needed: dedicated InputAction (default UNBOUND) vs modifier combo. See ecosystem ledger 2026-07-26. Wizard ready to build once approved.
+- [x] DeliveryHUD right-click keybind conflict (issue #24): Wizard build COMPLETE (dedicated unbound FD_HUD_EDIT InputAction). Pending PR to main.
 
 ## Long-term / aspirational
 - [ ] Richer depot logistics (delivery scheduling, capacity tiers) without breaking the read API.
 
 ## Cross-mod / ecosystem dependencies
+- [x] ProStaffCoOp: fertilizer discount read via DepotProStaffBridge (C4).
+- [x] MarketDynamics: price modifier registration via DepotMarketDynamicsBridge (C4).
+- [x] FuelCosts: diesel price read via DepotFuelCostsBridge (C4).
 - [ ] SoilFertilizer fill-type stock integration (blocks on: `g_currentMission.soilFertilityManager` + `g_fillTypeManager`; feature confirmation).
-- [~] Bedrock: SettingsHub + MasterHUD DONE (69fce53); StateLedger N/A by design; NetworkSync deferred (money-authority class, needs the NS build-brief).
+- [x] Bedrock: ALL FOUR DONE — SettingsHub + MasterHUD (69fce53), NetworkSync C1 bridges shipped (PR #20 merged), StateLedger N/A by design.
 
 ## Deferred / parked
 - Remove the `g_DepotManager` getfenv alias: parked for v2 (kept now for backward compat).

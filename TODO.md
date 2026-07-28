@@ -14,11 +14,15 @@
 - [x] WV-002 hardcoded modName (issue #24): replaced with `g_currentModName` in PlaceableDepot.lua, main.lua (x2), DepotHUD.lua. Commit a0c87d2.
 
 ## Features / enhancements
+- [x] Depot pricing integrations (C4, 3320ecf): ProStaff discount (DepotProStaffBridge), MDM price modifier registration (DepotMarketDynamicsBridge), FuelCosts diesel read (DepotFuelCostsBridge). Committed to development 2026-07-28.
 - [ ] Companion read API: 7 read functions on `depotManager` (isActive-guarded, read-only).
 
 ## Cross-mod integration
+- [x] ProStaffCoOp: DepotProStaffBridge reads fertilizer discount from proStaffManager (C4, 3320ecf).
+- [x] MarketDynamics: DepotMarketDynamicsBridge registers a FerilizerDepot price modifier (C4, 3320ecf).
+- [x] FuelCosts: DepotFuelCostsBridge reads diesel price from fuelCostsManager for display (C4, 3320ecf).
 - [x] StateLedger: N/A by design - per-depot state is placeable-attached (base-game placeable save), settings go to SettingsHub. No central SL module (matches Arissani's readiness assessment). Own FSCareerMissionInfo settings save kept as the standalone fallback.
-- [!] NetworkSync: **DEFERRED, bundled with the NPCFavor money-authority session.** This is a hardened request/response protocol across 11 event classes where purchases / sells / silo fills / deliveries PAY MONEY server-side - the SAME money-authority-refactor class as NPCFavor (route money-carrying actions through NS Path 3 with validation), not a mechanical swap. Point-2's `channels={}` API is stale vs live NS v2 (registerAction / requestAction). Needs the NS build-brief + two-machine MP test.
+- [x] NetworkSync: C1 bridges shipped (FDNetworkSyncBridge, dual channel DepotSync + DeliverySync). PR #20 merged to main 2026-07-28.
 - [x] MasterHUD: `FertilizerDepot_HUD` bridged (commit 69fce53); own FSBaseMission.draw stands down when active. Mouse/interact input stays on the own hook (MasterHUD owns draw ordering, not input).
 - [x] SettingsHub: `FertilizerDepot` module bridged (bare name, selfPersisted, 5 settings as enum over the preset tables; commit 69fce53). Shift+D DepotSettingsDialog kept.
 - [ ] SoilFertilizer read via `g_currentMission.soilFertilityManager` (detection) + `g_fillTypeManager` (stock); TaxMod consumes spend history.
