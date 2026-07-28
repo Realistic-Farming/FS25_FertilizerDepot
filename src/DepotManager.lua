@@ -263,7 +263,7 @@ end
 -- ─── Network Helpers ─────────────────────────────────────
 
 function DepotManager:broadcastSync(depotId)
-    DepotSyncEvent.broadcast(depotId)
+    FDNetworkSyncBridge.markDirty()
 end
 
 -- ─── Dialog Management ───────────────────────────────────
@@ -287,6 +287,15 @@ end
 
 function DepotManager:openSettingsDialog()
     DepotSettingsDialog.show()
+end
+
+function DepotManager:toggleHUDEditMode()
+    if not self.hud then return end
+    if self.hud.editMode then
+        self.hud:exitEditMode()
+    else
+        self.hud:enterEditMode()
+    end
 end
 
 -- ─── Update ──────────────────────────────────────────────
@@ -429,9 +438,11 @@ function DepotManager:_onSiloFillConfirm(result)
     DepotLogger.info("Silo fill confirmed: depot=%d silo=%d %s %.0fL farm=%d",
         ctx.depotId, ctx.siloId, ctx.fillTypeName, ctx.maxLiters, ctx.farmId)
 
-    DepotSiloFillEvent.sendToServer(
-        ctx.depotId, ctx.siloId,
-        ctx.fillTypeName, ctx.fillTypeIndex, ctx.maxLiters, ctx.farmId)
+    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SILO_FILL, {
+        depotId = ctx.depotId, siloId = ctx.siloId,
+        fillTypeName = ctx.fillTypeName, fillTypeIndex = ctx.fillTypeIndex,
+        requestedLiters = ctx.maxLiters, farmId = ctx.farmId,
+    })
 
     self.pendingOrders[ctx.farmId] = nil
     self:_updateInteractPrompt()
@@ -721,7 +732,9 @@ function DepotManager:_onDeliveryPickupConfirm(result)
     self._pendingDeliveryPickup = nil
     if not result or not ctx then return end
     DepotLogger.info("Delivery pickup confirmed: depot=%d farm=%d", ctx.depotId, ctx.farmId)
-    DepotDeliveryPickupEvent.sendToServer(ctx.depotId, ctx.farmId)
+    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_PICKUP, {
+        depotId = ctx.depotId, farmId = ctx.farmId,
+    })
 end
 
 -- ─── Vehicle at Depot Unload Trigger ─────────────────────
@@ -807,8 +820,10 @@ function DepotManager:_onDepotSellConfirm(result)
     DepotLogger.info("Depot sell confirmed: %.0fL %s for farm %d",
         ctx.amount, ctx.fillTypeName, ctx.farmId)
 
-    DepotSellEvent.sendToServer(
-        ctx.depotId, ctx.fillTypeName, ctx.fillTypeIndex, ctx.amount, ctx.farmId)
+    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
+        depotId = ctx.depotId, fillTypeName = ctx.fillTypeName,
+        fillTypeIndex = ctx.fillTypeIndex, liters = ctx.amount, farmId = ctx.farmId,
+    })
 end
 
 -- ─── HUD ─────────────────────────────────────────────────
@@ -889,7 +904,7 @@ function DepotManager:cmdFDCancelDelivery(depotIdArg)
     local farmId = rec.farmId
     local ok, penalty = self.deliverySystem:cancelDelivery(targetId, farmId)
     if ok then
-        DepotDeliverySyncEvent.broadcast(targetId)
+        FDNetworkSyncBridge.markDirty()
         return string.format("%s FDCancelDelivery: depot #%d cancelled (penalty=$%.2f)",
             DepotConstants.LOG_PREFIX, targetId, penalty or 0)
     end

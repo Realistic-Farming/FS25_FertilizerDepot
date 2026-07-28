@@ -26,6 +26,10 @@ local function applyChange(key, value)
     if key == "debugLogging" and DepotLogger ~= nil then
         DepotLogger._debug = value
     end
+    -- Sync the changed settings to all clients via NetworkSync
+    if FDNetworkSyncBridge ~= nil and FDNetworkSyncBridge.stateActive then
+        FDNetworkSyncBridge.syncNow()
+    end
 end
 
 function DepotSettingsHubBridge.register(mgr)

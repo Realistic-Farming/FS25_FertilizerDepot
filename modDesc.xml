@@ -81,15 +81,13 @@ Features:
     <actions>
         <action name="FD_OPEN_SETTINGS" category="ONFOOT VEHICLE"/>
         <action name="FD_INTERACT"      category="ONFOOT"/>
+        <action name="FD_HUD_DRAG"      category="ONFOOT"/>
     </actions>
 
     <inputBinding>
-        <actionBinding action="FD_OPEN_SETTINGS">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_d"/>
-        </actionBinding>
-        <actionBinding action="FD_INTERACT">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_e"/>
-        </actionBinding>
+        <actionBinding action="FD_OPEN_SETTINGS"/>
+        <actionBinding action="FD_INTERACT"/>
+        <actionBinding action="FD_HUD_DRAG"/>
     </inputBinding>
 
     <extraSourceFiles>

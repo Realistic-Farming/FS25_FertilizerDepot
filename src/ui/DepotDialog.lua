@@ -489,8 +489,10 @@ function DepotDialog:onConfirmOrder()
         self.depotId, ft.fillTypeIndex, false)
 
     if vehicle and unitIndex then
-        DepotPurchaseEvent.sendToServer(
-            self.depotId, ft.name, ft.fillTypeIndex, self.orderAmount, farmId)
+        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
+            depotId = self.depotId, fillTypeName = ft.name,
+            fillTypeIndex = ft.fillTypeIndex, liters = self.orderAmount, farmId = farmId,
+        })
         self:showStatus(string.format(
             tr("fd_depot_filling", "Filling %.0fL of %s into your vehicle..."),
             self.orderAmount, ft.displayName or ft.name))
@@ -575,8 +577,10 @@ function DepotDialog:onProductConfirm()
         return
     end
 
-    DepotProductOrderEvent.sendToServer(
-        self.depotId, ft.name, ft.fillTypeIndex, self.productQuantity, farmId)
+    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
+        depotId = self.depotId, fillTypeName = ft.name,
+        fillTypeIndex = ft.fillTypeIndex, quantity = self.productQuantity, farmId = farmId,
+    })
 
     local label = ft.productLabel == "bag"
         and tr("fd_products_label_bag", "Bag(s)")
@@ -593,8 +597,10 @@ function DepotDialog:executeSell(rowSlot)
     self:showStatus(string.format(
         tr("fd_depot_filling", "Selling %.0fL %s..."),
         entry.liters, entry.ft.displayName or entry.ft.name))
-    DepotSellEvent.sendToServer(
-        self.depotId, entry.ft.name, entry.ft.fillTypeIndex, entry.liters, farmId)
+    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
+        depotId = self.depotId, fillTypeName = entry.ft.name,
+        fillTypeIndex = entry.ft.fillTypeIndex, liters = entry.liters, farmId = farmId,
+    })
 end
 
 -- ─── ORDER Tab ───────────────────────────────────────────
@@ -726,7 +732,9 @@ function DepotDialog:onOrderAction()
             itemCount, costStr)
         YesNoDialog.show(function(yes)
             if not yes then return end
-            DepotDeliveryOrderEvent.sendToServer(self.depotId, farmId)
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_ORDER, {
+                depotId = self.depotId, farmId = farmId,
+            })
             self:showStatus(tr("fd_delivery_order_placed", "Order placed — drive to the Pickup Zone."))
         end, nil, text)
 
@@ -740,7 +748,9 @@ function DepotDialog:onOrderAction()
             penaltyStr)
         YesNoDialog.show(function(yes)
             if not yes then return end
-            DepotDeliveryCancelEvent.sendToServer(self.depotId, farmId)
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_CANCEL, {
+                depotId = self.depotId, farmId = farmId,
+            })
             self:showStatus(tr("fd_delivery_cancelled", "Delivery cancelled."))
         end, nil, text)
 
@@ -750,7 +760,9 @@ function DepotDialog:onOrderAction()
             "Complete delivery and stock your depot?\n\nAll ordered fill types will be added to storage.")
         YesNoDialog.show(function(yes)
             if not yes then return end
-            DepotDeliveryCompleteEvent.sendToServer(self.depotId, farmId)
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_COMPLETE, {
+                depotId = self.depotId, farmId = farmId,
+            })
             self:showStatus(tr("fd_delivery_completing", "Delivery complete! Stock has been added."))
         end, nil, text)
     end
