@@ -21,18 +21,8 @@ source(modDir .. "src/DepotSystem.lua")
 source(modDir .. "src/delivery/DeliverySystem.lua")
 source(modDir .. "src/DepotManager.lua")
 
--- Phase 3: Network
-source(modDir .. "src/network/DepotPurchaseEvent.lua")
-source(modDir .. "src/network/DepotSellEvent.lua")
-source(modDir .. "src/network/DepotSiloFillEvent.lua")
-source(modDir .. "src/network/DepotSyncEvent.lua")
-source(modDir .. "src/network/DepotSettingsEvent.lua")
-source(modDir .. "src/network/DepotProductOrderEvent.lua")
-source(modDir .. "src/network/DepotDeliverySyncEvent.lua")
-source(modDir .. "src/network/DepotDeliveryOrderEvent.lua")
-source(modDir .. "src/network/DepotDeliveryPickupEvent.lua")
-source(modDir .. "src/network/DepotDeliveryCompleteEvent.lua")
-source(modDir .. "src/network/DepotDeliveryCancelEvent.lua")
+-- Phase 3: Network (NetworkSync bridge replaces old event classes)
+source(modDir .. "src/integrations/FDNetworkSyncBridge.lua")
 
 -- Phase 4: Placeables
 source(modDir .. "src/placeable/PlaceableDepot.lua")
@@ -81,6 +71,7 @@ local function onMissionLoadFinished(mission, ...)
     -- by the bedrock mods at Mission00.load, so they are ready by now.
     DepotSettingsHubBridge.register(g_DepotManager)
     DepotMasterHUDBridge.register(g_DepotManager)
+    FDNetworkSyncBridge.register()
 
     -- Register Shift+D settings hotkey in PLAYER context.
     -- Pattern mirrors FS25_SoilFertilizer:SoilFertilityManager.lua exactly.
@@ -179,15 +170,11 @@ local function onSaveToXML(missionInfo, xmlFile, ...)
     DepotLogger.info("Settings saved to %s", path)
 end
 
--- Send settings + delivery state to a joining client
+-- Send full state snapshot to a joining client via NetworkSync
 local function onSendInitialClientState(mission, connection, ...)
     if not g_DepotManager then return end
-    DepotSettingsSyncEvent.sendToClient(connection)
-    -- Sync active deliveries so the ORDER tab is correct for joining players
-    if g_DepotManager.deliverySystem then
-        for depotId in pairs(g_DepotManager.depots) do
-            DepotDeliverySyncEvent.sendToClient(connection, depotId)
-        end
+    if FDNetworkSyncBridge.stateActive and FDNetworkSyncBridge._ns then
+        FDNetworkSyncBridge._ns:sendFullSnapshotTo(connection)
     end
 end
 

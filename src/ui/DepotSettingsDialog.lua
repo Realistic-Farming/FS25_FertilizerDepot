@@ -199,24 +199,40 @@ end
 function DepotSettingsDialog:onApplySettings()
     if not (g_currentMission.isMasterUser or g_server ~= nil) then return end
     if self.optSeasonalPricing then
-        DepotSettingsEvent.sendToServer("seasonalPricing",
-            tostring(self.optSeasonalPricing:getState() == 2))
+        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
+            key = "seasonalPricing",
+            value = tostring(self.optSeasonalPricing:getState() == 2),
+        })
     end
     if self.optStorageCapacity then
         local v = DepotSettings.CAPACITY_OPTIONS[self.optStorageCapacity:getState()]
-        if v then DepotSettingsEvent.sendToServer("storageCapacity", tostring(v)) end
+        if v then
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
+                key = "storageCapacity", value = tostring(v),
+            })
+        end
     end
     if self.optSellRatio then
         local v = DepotSettings.SELL_RATIO_OPTIONS[self.optSellRatio:getState()]
-        if v then DepotSettingsEvent.sendToServer("sellRatio", tostring(v)) end
+        if v then
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
+                key = "sellRatio", value = tostring(v),
+            })
+        end
     end
     if self.optBuyMultiplier then
         local v = DepotSettings.BUY_MULT_OPTIONS[self.optBuyMultiplier:getState()]
-        if v then DepotSettingsEvent.sendToServer("buyMultiplier", tostring(v)) end
+        if v then
+            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
+                key = "buyMultiplier", value = tostring(v),
+            })
+        end
     end
     if self.optDebugLogging then
-        DepotSettingsEvent.sendToServer("debugLogging",
-            tostring(self.optDebugLogging:getState() == 2))
+        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
+            key = "debugLogging",
+            value = tostring(self.optDebugLogging:getState() == 2),
+        })
     end
     self:close()
 end
