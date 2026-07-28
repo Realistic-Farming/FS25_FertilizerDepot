@@ -289,6 +289,15 @@ function DepotManager:openSettingsDialog()
     DepotSettingsDialog.show()
 end
 
+function DepotManager:toggleHUDEditMode()
+    if not self.hud then return end
+    if self.hud.editMode then
+        self.hud:exitEditMode()
+    else
+        self.hud:enterEditMode()
+    end
+end
+
 -- ─── Update ──────────────────────────────────────────────
 
 function DepotManager:update(dt)

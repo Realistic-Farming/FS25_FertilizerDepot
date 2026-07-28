@@ -112,6 +112,18 @@ local function onMissionLoadFinished(mission, ...)
             else
                 DepotLogger.warning("Shift+D registration failed — registerActionEvent returned false")
             end
+
+            local dragOk, dragId = g_inputBinding:registerActionEvent(
+                InputAction.FD_HUD_DRAG, g_DepotManager,
+                g_DepotManager.toggleHUDEditMode, false, true, false, true)
+            if dragOk and dragId then
+                g_DepotManager._hudDragEventId = dragId
+                g_inputBinding:setActionEventTextPriority(dragId, GS_PRIO_NORMAL)
+                DepotLogger.info("FD_HUD_DRAG registered in PLAYER context")
+            else
+                DepotLogger.warning("FD_HUD_DRAG registration failed")
+            end
+
             g_inputBinding:endActionEventsModification()
         end
     end

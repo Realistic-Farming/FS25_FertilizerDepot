@@ -2,8 +2,8 @@
 -- FS25 Fertilizer Depot - Delivery Status HUD
 -- =========================================================
 -- Shows active delivery status as a movable/scalable panel.
--- RMB on panel → enter edit mode (drag / corner-resize).
--- RMB again → exit edit mode and save position.
+-- FD_HUD_DRAG keybind (unbound by default) toggles edit mode
+-- (drag / corner-resize). RMB exits edit mode only.
 -- Position + scale persisted per-savegame to
 --   <savegameDir>/FS25_FertilizerDepot_hud.xml
 -- =========================================================
@@ -206,10 +206,15 @@ end
 -- =========================================================
 
 function DepotHUD:onMouseEvent(posX, posY, isDown, isUp, button)
-    -- RMB: toggle edit mode
+    -- RMB: exit edit mode only. Edit mode is entered exclusively via the
+    -- FD_HUD_DRAG key binding -- never via right-click -- so RMB is never
+    -- consumed during normal play, preserving chainsaw rotate, build menu, etc.
     if isDown and button == 3 then
-        if self.editMode then self:exitEditMode() else self:enterEditMode() end
-        return
+        if self.editMode then
+            self:exitEditMode()
+            return true
+        end
+        return false
     end
 
     if not self.editMode then return end
@@ -414,7 +419,7 @@ function DepotHUD:_drawPanel(status, costStr)
     setTextAlignment(RenderText.ALIGN_CENTER)
     setTextColor(self.COLORS.HINT[1], self.COLORS.HINT[2], self.COLORS.HINT[3], 1)
     local hintText = self.editMode
-        and "LMB: drag  |  corner: resize  |  RMB: done"
+        and "LMB: drag  |  corner: resize  |  keybind: done"
         or  "Right-click to move"
     renderText(x + w * 0.5, cy - tsHint, tsHint, hintText)
 
