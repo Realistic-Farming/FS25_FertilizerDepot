@@ -85,12 +85,8 @@ Features:
     </actions>
 
     <inputBinding>
-        <actionBinding action="FD_OPEN_SETTINGS">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_d"/>
-        </actionBinding>
-        <actionBinding action="FD_INTERACT">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_e"/>
-        </actionBinding>
+        <actionBinding action="FD_OPEN_SETTINGS"/>
+        <actionBinding action="FD_INTERACT"/>
         <actionBinding action="FD_HUD_DRAG"/>
     </inputBinding>
 
