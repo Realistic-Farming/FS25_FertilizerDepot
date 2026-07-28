@@ -263,7 +263,7 @@ function DepotSystem:buyFillType(depotId, fillTypeName, fillTypeIndex, requested
     if freeCapacity <= 0 then return false, "fd_depot_tank_full", 0 end
     liters = math.min(liters, freeCapacity)
 
-    local cost = self._pricing:calculateBuyCost(fillTypeName, liters)
+    local cost = self._pricing:calculateBuyCost(fillTypeName, liters, farmId)
 
     local farm = g_farmManager and g_farmManager:getFarmById(farmId)
     if not farm then return false, "fd_error_farm", 0 end
@@ -336,7 +336,7 @@ function DepotSystem:buyFromSilo(depotId, siloNode, fillTypeName, fillTypeIndex,
     if freeCapacity <= 0 then return false, "fd_depot_tank_full", 0 end
     liters = math.min(liters, freeCapacity)
 
-    local cost = self._pricing:calculateBuyCost(fillTypeName, liters)
+    local cost = self._pricing:calculateBuyCost(fillTypeName, liters, farmId)
 
     local farm = g_farmManager and g_farmManager:getFarmById(farmId)
     if not farm then return false, "fd_error_farm", 0 end
@@ -384,7 +384,7 @@ function DepotSystem:orderProduct(depotId, fillTypeName, fillTypeIndex, quantity
     local stored = depot.storageLevel[fillTypeName] or 0
     if stored < litresNeeded then return false, "fd_products_no_stock" end
 
-    local cost = self._pricing:calculateBuyCost(fillTypeName, litresNeeded)
+    local cost = self._pricing:calculateBuyCost(fillTypeName, litresNeeded, farmId)
     local farm = g_farmManager and g_farmManager:getFarmById(farmId)
     if not farm then return false, "fd_error_farm" end
     if farm:getBalance() < cost then return false, "fd_depot_no_money" end
