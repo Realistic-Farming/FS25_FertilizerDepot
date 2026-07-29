@@ -259,7 +259,12 @@ function DepotDialog:updateSeasonLabel()
     local label = tr(key, key)
     local mult  = g_DepotManager.pricing:getSeasonMultiplier()
     local sign  = mult >= 1.0 and "+" or ""
-    self.seasonLabel:setText(string.format("%s %s%.0f%%", label, sign, (mult - 1.0) * 100))
+    local text = string.format("%s %s%.0f%%", label, sign, (mult - 1.0) * 100)
+    local fuelPrice = DepotFuelCostsBridge.getFuelPrice()
+    if fuelPrice then
+        text = text .. string.format("  |  Diesel: $%.2f/L", fuelPrice)
+    end
+    self.seasonLabel:setText(text)
 end
 
 function DepotDialog:refreshBuyTab()
@@ -273,7 +278,8 @@ function DepotDialog:refreshBuyTab()
 
         if ft and row then
             local stored   = system and system:getStorageLevel(self.depotId, ft.name) or 0
-            local buyPrice = pricing and pricing:getBuyPrice(ft.name) or 0
+            local farmId = g_localPlayer and g_localPlayer.farmId or 1
+            local buyPrice = pricing and pricing:getBuyPrice(ft.name, farmId) or 0
             local priceStr = string.format("$%.2f/kL", buyPrice * 1000)
             local stockStr
             if stored >= DepotConstants.STORAGE_CAPACITY then
@@ -412,7 +418,8 @@ function DepotDialog:_updateProductsOrderRow()
     end
     if self.prodTotalPrice then
         if ft and pricing then
-            local total = pricing:getBuyPrice(ft.name) * ft.litresPerUnit * self.productQuantity
+            local farmId = g_localPlayer and g_localPlayer.farmId or 1
+            local total = pricing:getBuyPrice(ft.name, farmId) * ft.litresPerUnit * self.productQuantity
             self.prodTotalPrice:setText(string.format("$%.2f", total))
         else
             self.prodTotalPrice:setText("")

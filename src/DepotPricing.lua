@@ -38,12 +38,16 @@ function DepotPricing:getSeasonKey()
     return "fd_season_summer"
 end
 
--- Returns buy price per liter for fillTypeName (base × season × buy multiplier).
-function DepotPricing:getBuyPrice(fillTypeName)
+-- Returns buy price per liter for fillTypeName (base × season × buy multiplier × ProStaff discount).
+-- farmId is optional; defaults to the current player's farm (display context).
+function DepotPricing:getBuyPrice(fillTypeName, farmId)
     local base = self._sfBridge:getBasePrice(fillTypeName)
     local settings = g_DepotManager and g_DepotManager.settings
     local mult = settings and settings.buyMultiplier or 1.0
-    return base * self:getSeasonMultiplier() * mult
+    local price = base * self:getSeasonMultiplier() * mult
+    local fid = farmId or (g_localPlayer and g_localPlayer.farmId) or 1
+    local discount = DepotProStaffBridge.getDiscount(fid)
+    return price * discount
 end
 
 -- Returns sell price per liter (buy price × sell ratio from settings).
@@ -54,8 +58,9 @@ function DepotPricing:getSellPrice(fillTypeName)
 end
 
 -- Returns total cost for purchasing a quantity at buy price.
-function DepotPricing:calculateBuyCost(fillTypeName, liters)
-    return self:getBuyPrice(fillTypeName) * liters
+-- farmId is optional; passed through to enable correct ProStaff discount on server.
+function DepotPricing:calculateBuyCost(fillTypeName, liters, farmId)
+    return self:getBuyPrice(fillTypeName, farmId) * liters
 end
 
 -- Returns total revenue for selling a quantity at sell price.

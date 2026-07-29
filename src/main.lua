@@ -14,6 +14,9 @@ source(modDir .. "src/DepotLogger.lua")
 
 -- Phase 2: Core systems
 source(modDir .. "src/integrations/SoilFertilizerBridge.lua")
+source(modDir .. "src/integrations/DepotProStaffBridge.lua")
+source(modDir .. "src/integrations/DepotMarketDynamicsBridge.lua")
+source(modDir .. "src/integrations/DepotFuelCostsBridge.lua")
 source(modDir .. "src/integrations/DepotSettingsHubBridge.lua")
 source(modDir .. "src/integrations/DepotMasterHUDBridge.lua")
 source(modDir .. "src/DepotPricing.lua")
@@ -72,6 +75,12 @@ local function onMissionLoadFinished(mission, ...)
     DepotSettingsHubBridge.register(g_DepotManager)
     DepotMasterHUDBridge.register(g_DepotManager)
     FDNetworkSyncBridge.register()
+
+    -- Pricing integration bridges (pcall-guarded, neutral fallback when absent)
+    if g_currentMission and g_currentMission.proStaffManager then
+        DepotLogger.info("ProStaffCoOp detected — fertilizer discount active")
+    end
+    DepotMarketDynamicsBridge.register()
 
     -- Register Shift+D settings hotkey in PLAYER context.
     -- Pattern mirrors FS25_SoilFertilizer:SoilFertilityManager.lua exactly.
@@ -143,6 +152,7 @@ local function onMissionMouseEvent(mission, posX, posY, isDown, isUp, button, ..
 end
 
 local function onMissionDelete(mission, ...)
+    DepotMarketDynamicsBridge.unregister()
     if g_DepotManager then
         g_DepotManager:delete()
         getfenv(0).g_DepotManager = nil
