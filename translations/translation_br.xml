@@ -97,7 +97,7 @@
     <text name="fd_delivery_pickup_action" text="[EN] Collect Delivery"/>
     <text name="fd_delivery_no_pending" text="[EN] No pending delivery."/>
 
-    <!-- Delivery system -- HUD overlay (shown while driving) -->
+    <!-- Delivery system, HUD overlay (shown while driving) -->
     <text name="fd_delivery_hud_header"  text="[EN] Fertilizer Delivery"/>
     <text name="fd_delivery_hud_pending" text="[EN] Drive to the pickup zone to collect your order"/>
     <text name="fd_delivery_hud_loaded"  text="[EN] Return to your depot to complete the delivery"/>
