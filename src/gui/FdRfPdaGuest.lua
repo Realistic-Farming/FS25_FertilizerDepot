@@ -1,4 +1,4 @@
-﻿-- =========================================================
+-- =========================================================
 -- FdRfPdaGuest - Esc RF PDA Fertilizer Depot framework (Table shell)
 -- Stage-8 densify 2026-08-05 (Samantha DESIGN + George ENGINE ACK).
 -- Soft-detect: mission.depotManager (preferred) then temporary g_DepotManager.
