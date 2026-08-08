@@ -26,6 +26,9 @@ DepotMasterHUDBridge.active = false   -- MasterHUD present and we registered
 -- The depot HUD draw body. Same call the standalone FSBaseMission.draw hook
 -- makes; drawHUD() self-guards on client/GUI/visibility as before.
 function DepotMasterHUDBridge.drawStack()
+    -- Suite hide: MasterHUD # key. No-op when MasterHUD absent.
+    local mh = (g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD
+    if mh ~= nil and mh.areHudsHidden ~= nil and mh:areHudsHidden() then return end
     if g_DepotManager ~= nil then
         g_DepotManager:drawHUD()
     end
@@ -51,6 +54,18 @@ function DepotMasterHUDBridge.register(mgr)
     if ok then
         DepotMasterHUDBridge.active = true
         DepotLogger.info("Registered depot HUD with MasterHUD (single draw loop + menu-suspend)")
+        if hud.registerEditListener ~= nil then
+            hud:registerEditListener(DepotMasterHUDBridge.HUD_ID, {
+                enter = function()
+                    local dh = mgr ~= nil and mgr.hud or nil
+                    if dh ~= nil and dh.enterEditMode ~= nil then dh:enterEditMode() end
+                end,
+                exit = function()
+                    local dh = mgr ~= nil and mgr.hud or nil
+                    if dh ~= nil and dh.editMode and dh.exitEditMode ~= nil then dh:exitEditMode() end
+                end,
+            })
+        end
     else
         DepotLogger.warning("MasterHUD registration failed: %s (using own draw hook)", tostring(err))
     end

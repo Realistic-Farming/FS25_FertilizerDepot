@@ -37,6 +37,13 @@ source(modDir .. "src/ui/DepotDialog.lua")
 source(modDir .. "src/ui/DepotSettingsDialog.lua")
 source(modDir .. "src/ui/DepotHUD.lua")
 
+-- Esc RF PDA guest (Wizard local; keep across development merge)
+source(g_currentModDirectory .. "src/gui/RfEscModules.lua")
+source(g_currentModDirectory .. "src/gui/RfPdaMenuPage.lua")
+source(g_currentModDirectory .. "src/gui/RfEscBootstrap.lua")
+source(g_currentModDirectory .. "src/gui/RfEscUiDebugger.lua")
+source(g_currentModDirectory .. "src/gui/FdRfPdaGuest.lua")
+
 -- ─── Mission00 Lifecycle Hooks ───────────────────────────
 
 local function onMissionLoad(mission, ...)
