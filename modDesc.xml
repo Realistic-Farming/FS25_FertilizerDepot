@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="106">
     <author>TisonK</author>
-    <version>1.0.3.1</version>
+    <version>1.0.3.13</version>
 
     <title>
         <en>Fertilizer Depot</en>
-        <de>DÃ¼ngerdepot</de>
-        <fr>DÃ©pÃ´t d'Engrais</fr>
+        <de>D++ngerdepot</de>
+        <fr>D+®p+¦t d'Engrais</fr>
         <nl>Kunstmestdepot</nl>
         <it>Deposito Fertilizzanti</it>
-        <pl>SkÅ‚ad NawozÃ³w</pl>
-        <es>DepÃ³sito de Fertilizantes</es>
-        <ea>DepÃ³sito de Fertilizantes</ea>
-        <pt>DepÃ³sito de Fertilizantes</pt>
-        <br>DepÃ³sito de Fertilizantes</br>
-        <ru>Ğ¡ĞºĞ»Ğ°Ğ´ ÑƒĞ´Ğ¾Ğ±Ñ€ĞµĞ½Ğ¸Ğ¹</ru>
-        <uk>Ğ¡ĞºĞ»Ğ°Ğ´ Ğ´Ğ¾Ğ±Ñ€Ğ¸Ğ²</uk>
+        <pl>Sk+éad Nawoz+¦w</pl>
+        <es>Dep+¦sito de Fertilizantes</es>
+        <ea>Dep+¦sito de Fertilizantes</ea>
+        <pt>Dep+¦sito de Fertilizantes</pt>
+        <br>Dep+¦sito de Fertilizantes</br>
+        <ru>ğíğ¦ğ+ğ¦ğ¦ Ğâğ¦ğ¥ğ¦ĞÇğÁğ¢ğ©ğ¦</ru>
+        <uk>ğíğ¦ğ+ğ¦ğ¦ ğ¦ğ¥ğ¦ĞÇğ©ğ¦</uk>
         <cz>Sklad hnojiv</cz>
-        <hu>MÅ±trÃ¡gya RaktÃ¡r</hu>
-        <ro>Depozit de ÃngrÄƒÈ™Äƒminte</ro>
-        <tr>GÃ¼bre Deposu</tr>
+        <hu>M+¦tr+ígya Rakt+ír</hu>
+        <ro>Depozit de +Ängr-â+Ö-âminte</ro>
+        <tr>G++bre Deposu</tr>
         <fi>Lannoitevarasto</fi>
-        <no>GjÃ¸dsellager</no>
-        <sv>GÃ¶dselfÃ¶rrÃ¥d</sv>
-        <da>GÃ¸dningsdepot</da>
-        <kr>ë¹„ë£Œ ì°½ê³ </kr>
-        <jp>è‚¥æ–™å€‰åº«</jp>
-        <ct>è‚¥æ–™å€‰åº«</ct>
-        <fc>è‚¥æ–™ä»“åº“</fc>
+        <no>Gj+©dsellager</no>
+        <sv>G+Âdself+Ârr+Ñd</sv>
+        <da>G+©dningsdepot</da>
+        <kr>Ù¦äÙúî ı¦¢Û¦á</kr>
+        <jp>ŞéÑµûÖÕÇëÕ¦½</jp>
+        <ct>ŞéÑµûÖÕÇëÕ¦½</ct>
+        <fc>ŞéÑµûÖõ+ôÕ¦ô</fc>
         <id>Depot Pupuk</id>
-        <vi>Kho PhÃ¢n BÃ³n</vi>
+        <vi>Kho Ph+ón B+¦n</vi>
     </title>
 
     <description>
         <en>A placeable Fertilizer Depot where you can buy, store, and sell all fertilizer types at
 seasonally-adjusted prices. Drive up with your trailer or tank, browse the full selection of
-fertilizers, and fill up directly from depot storage. Works seamlessly with FS25_SoilFertilizer â€”
+fertilizers, and fill up directly from depot storage. Works seamlessly with FS25_SoilFertilizer ÔÇö
 all 23+ custom fill types are automatically available. Falls back to vanilla fertilizer types if
 SoilFertilizer is not installed.
 
@@ -47,31 +47,31 @@ Features:
 - Full multiplayer support with server-authoritative transactions
 - FarmTablet integration via g_DepotManager global
         </en>
-        <de>Ein platzierbares DÃ¼ngerdepot zum Kauf, Lagerung und Verkauf aller DÃ¼ngertypen.</de>
-        <fr>Un dÃ©pÃ´t d'engrais plaÃ§able pour acheter, stocker et vendre tous les types d'engrais.</fr>
+        <de>Ein platzierbares D++ngerdepot zum Kauf, Lagerung und Verkauf aller D++ngertypen.</de>
+        <fr>Un d+®p+¦t d'engrais pla+ºable pour acheter, stocker et vendre tous les types d'engrais.</fr>
         <nl>Een plaatsbaar kunstmestdepot om alle mestsoorten te kopen, opslaan en verkopen.</nl>
         <it>Un deposito fertilizzanti posizionabile per acquistare, stoccare e vendere ogni tipo.</it>
-        <pl>SkÅ‚ad nawozÃ³w do kupowania, przechowywania i sprzedaÅ¼y wszystkich rodzajÃ³w nawozÃ³w.</pl>
-        <es>Un depÃ³sito de fertilizantes para comprar, almacenar y vender todos los tipos.</es>
-        <ea>Un depÃ³sito de fertilizantes para comprar, almacenar y vender todos los tipos.</ea>
-        <pt>Um depÃ³sito de fertilizantes para comprar, armazenar e vender todos os tipos.</pt>
-        <br>Um depÃ³sito de fertilizantes para comprar, armazenar e vender todos os tipos.</br>
-        <ru>Ğ¡ĞºĞ»Ğ°Ğ´ ÑƒĞ´Ğ¾Ğ±Ñ€ĞµĞ½Ğ¸Ğ¹ Ğ´Ğ»Ñ Ğ¿Ğ¾ĞºÑƒĞ¿ĞºĞ¸, Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ñ Ğ¸ Ğ¿Ñ€Ğ¾Ğ´Ğ°Ğ¶Ğ¸ Ğ²ÑĞµÑ… Ğ²Ğ¸Ğ´Ğ¾Ğ² ÑƒĞ´Ğ¾Ğ±Ñ€ĞµĞ½Ğ¸Ğ¹.</ru>
-        <uk>Ğ¡ĞºĞ»Ğ°Ğ´ Ğ´Ğ¾Ğ±Ñ€Ğ¸Ğ² Ğ´Ğ»Ñ ĞºÑƒĞ¿Ñ–Ğ²Ğ»Ñ–, Ğ·Ğ±ĞµÑ€Ñ–Ğ³Ğ°Ğ½Ğ½Ñ Ñ‚Ğ° Ğ¿Ñ€Ğ¾Ğ´Ğ°Ğ¶Ñƒ Ğ²ÑÑ–Ñ… Ğ²Ğ¸Ğ´Ñ–Ğ² Ğ´Ğ¾Ğ±Ñ€Ğ¸Ğ².</uk>
-        <cz>Sklad hnojiv pro nÃ¡kup, skladovÃ¡nÃ­ a prodej vÅ¡ech typÅ¯ hnojiv.</cz>
-        <hu>MÅ±trÃ¡gya raktÃ¡r minden tÃ­pusÃº trÃ¡gya vÃ¡sÃ¡rlÃ¡sÃ¡hoz, tÃ¡rolÃ¡sÃ¡hoz Ã©s eladÃ¡sÃ¡hoz.</hu>
-        <ro>Un depozit de Ã®ngrÄƒÈ™Äƒminte pentru cumpÄƒrare, stocare È™i vÃ¢nzare.</ro>
-        <tr>TÃ¼m gÃ¼bre tÃ¼rlerini satÄ±n almak, depolamak ve satmak iÃ§in gÃ¼bre deposu.</tr>
+        <pl>Sk+éad nawoz+¦w do kupowania, przechowywania i sprzeda++y wszystkich rodzaj+¦w nawoz+¦w.</pl>
+        <es>Un dep+¦sito de fertilizantes para comprar, almacenar y vender todos los tipos.</es>
+        <ea>Un dep+¦sito de fertilizantes para comprar, almacenar y vender todos los tipos.</ea>
+        <pt>Um dep+¦sito de fertilizantes para comprar, armazenar e vender todos os tipos.</pt>
+        <br>Um dep+¦sito de fertilizantes para comprar, armazenar e vender todos os tipos.</br>
+        <ru>ğíğ¦ğ+ğ¦ğ¦ Ğâğ¦ğ¥ğ¦ĞÇğÁğ¢ğ©ğ¦ ğ¦ğ+ĞÅ ğ+ğ¥ğ¦Ğâğ+ğ¦ğ©, ĞàĞÇğ¦ğ¢ğÁğ¢ğ©ĞÅ ğ© ğ+ĞÇğ¥ğ¦ğ¦ğÂğ© ğ¦ĞüğÁĞà ğ¦ğ©ğ¦ğ¥ğ¦ Ğâğ¦ğ¥ğ¦ĞÇğÁğ¢ğ©ğ¦.</ru>
+        <uk>ğíğ¦ğ+ğ¦ğ¦ ğ¦ğ¥ğ¦ĞÇğ©ğ¦ ğ¦ğ+ĞÅ ğ¦Ğâğ+Ğûğ¦ğ+Ğû, ğÀğ¦ğÁĞÇĞûğ¦ğ¦ğ¢ğ¢ĞÅ Ğéğ¦ ğ+ĞÇğ¥ğ¦ğ¦ğÂĞâ ğ¦ĞüĞûĞà ğ¦ğ©ğ¦Ğûğ¦ ğ¦ğ¥ğ¦ĞÇğ©ğ¦.</uk>
+        <cz>Sklad hnojiv pro n+íkup, skladov+ín+¡ a prodej v+íech typ+» hnojiv.</cz>
+        <hu>M+¦tr+ígya rakt+ír minden t+¡pus+¦ tr+ígya v+ís+írl+ís+íhoz, t+írol+ís+íhoz +®s elad+ís+íhoz.</hu>
+        <ro>Un depozit de +«ngr-â+Ö-âminte pentru cump-ârare, stocare +Öi v+ónzare.</ro>
+        <tr>T++m g++bre t++rlerini sat-¦n almak, depolamak ve satmak i+ºin g++bre deposu.</tr>
         <fi>Lannoitevarasto kaikkien lannoitetyyppien ostamiseen, varastointiin ja myymiseen.</fi>
-        <no>Et lager for gjÃ¸dsel for kjÃ¸p, lagring og salg av alle gjÃ¸dseltyper.</no>
-        <sv>Ett gÃ¶dselfÃ¶rrÃ¥d fÃ¶r att kÃ¶pa, lagra och sÃ¤lja alla gÃ¶dseltyper.</sv>
-        <da>Et gÃ¸dningsdepot til kÃ¸b, oplagring og salg af alle gÃ¸dningstyper.</da>
-        <kr>ëª¨ë“  ë¹„ë£Œ ìœ í˜•ì„ êµ¬ë§¤, ì €ì¥ ë° íŒë§¤í•˜ëŠ” ë¹„ë£Œ ì°½ê³ .</kr>
-        <jp>ã™ã¹ã¦ã®è‚¥æ–™ã‚¿ã‚¤ãƒ—ã‚’è³¼å…¥ã€ä¿ç®¡ã€è²©å£²ã§ãã‚‹è‚¥æ–™å€‰åº«ã€‚</jp>
-        <ct>å¯æ”¾ç½®çš„è‚¥æ–™å€‰åº«ï¼Œç”¨æ–¼è³¼è²·ã€å„²å­˜å’Œå‡ºå”®å„ç¨®è‚¥æ–™ã€‚</ct>
-        <fc>å¯æ”¾ç½®çš„è‚¥æ–™ä»“åº“ï¼Œç”¨äºè´­ä¹°ã€å‚¨å­˜å’Œå‡ºå”®å„ç§è‚¥æ–™ã€‚</fc>
+        <no>Et lager for gj+©dsel for kj+©p, lagring og salg av alle gj+©dseltyper.</no>
+        <sv>Ett g+Âdself+Ârr+Ñd f+Âr att k+Âpa, lagra och s+ñlja alla g+Âdseltyper.</sv>
+        <da>Et g+©dningsdepot til k+©b, oplagring og salg af alle g+©dningstyper.</da>
+        <kr>Ù¬¿Ùôá Ù¦äÙúî ı£áİÿòıØä ÛÁ¼Ùºñ, ıáÇı×Ñ Ù¦Å İîÉÙºñİòÿÙèö Ù¦äÙúî ı¦¢Û¦á.</kr>
+        <jp>ÒüÖÒü¦ÒüªÒü«ŞéÑµûÖÒé+ÒéñÒâùÒéÆŞ¦+ÕàÑÒÇüõ+Øş«íÒÇüŞ¦®Õú¦ÒüºÒüìÒéïŞéÑµûÖÕÇëÕ¦½ÒÇé</jp>
+        <ct>ÕÅ»µö¥ş¢«şÜäŞéÑµûÖÕÇëÕ¦½´+îşö¿µû+Ş¦+Ş¦ÀÒÇüÕä¦Õ¡ÿÕÆîÕç¦Õö«ÕÉäş¿«ŞéÑµûÖÒÇé</ct>
+        <fc>ÕÅ»µö¥ş¢«şÜäŞéÑµûÖõ+ôÕ¦ô´+îşö¿õ¦ÄŞ¦¡õ¦¦ÒÇüÕé¿Õ¡ÿÕÆîÕç¦Õö«ÕÉäşºìŞéÑµûÖÒÇé</fc>
         <id>Depot pupuk yang dapat ditempatkan untuk membeli, menyimpan, dan menjual semua jenis pupuk.</id>
-        <vi>Kho phÃ¢n bÃ³n cÃ³ thá»ƒ Ä‘áº·t Ä‘á»ƒ mua, lÆ°u trá»¯ vÃ  bÃ¡n táº¥t cáº£ cÃ¡c loáº¡i phÃ¢n bÃ³n.</vi>
+        <vi>Kho ph+ón b+¦n c+¦ thß+â -æß¦Àt -æß+â mua, lã¦u trß+» v+á b+ín tß¦Ñt cß¦ú c+íc loß¦íi ph+ón b+¦n.</vi>
     </description>
 
     <iconFilename>icon.dds</iconFilename>
