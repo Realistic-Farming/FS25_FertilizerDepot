@@ -279,7 +279,29 @@ local function seasonHint(pricing)
     return parts[1] or ""
 end
 
+local _rfFwTitleBaselineWarned = false
+
+--- rfFwTableTitle is shared by every Table-mode module (Income, Dairy, Depot, NPCFavor).
+--- Income deliberately drops it to the bottom band (-360) for its own glance, and no host
+--- calls onHide, so whoever shows next must reassert its own baseline or it inherits
+--- Income's position. Cheap, idempotent, and keeps each guest owning its own layout.
+local function resetFwTableTitlePos(container)
+    local el = findDescendant(container, "rfFwTableTitle")
+    if el == nil or type(el.setPosition) ~= "function" then return end
+    if GuiUtils == nil or type(GuiUtils.getNormalizedXValue) ~= "function"
+        or type(GuiUtils.getNormalizedYValue) ~= "function" then
+        if not _rfFwTitleBaselineWarned then
+            _rfFwTitleBaselineWarned = true
+            print("[FertilizerDepot] FdRfPdaGuest: GuiUtils normalizer absent - cannot reassert rfFwTableTitle baseline")
+        end
+        return
+    end
+    el:setPosition(GuiUtils.getNormalizedXValue("0px", 0), GuiUtils.getNormalizedYValue("0px", 0))
+    if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
+end
+
 function FdRfPdaGuest.onShow(container, lightOnly)
+    resetFwTableTitlePos(container)
     clearHostDupes(container)
     showTableMode(container)
     paintSide(container, "rf_pda_side_info_fertilizer_depot",
