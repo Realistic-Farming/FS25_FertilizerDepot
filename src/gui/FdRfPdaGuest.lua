@@ -279,7 +279,29 @@ local function seasonHint(pricing)
     return parts[1] or ""
 end
 
+local _rfFwTitleBaselineWarned = false
+
+--- rfFwTableTitle is shared by every Table-mode module (Income, Dairy, Depot, NPCFavor).
+--- Income deliberately drops it to the bottom band (-360) for its own glance, and no host
+--- calls onHide, so whoever shows next must reassert its own baseline or it inherits
+--- Income's position. Cheap, idempotent, and keeps each guest owning its own layout.
+local function resetFwTableTitlePos(container)
+    local el = findDescendant(container, "rfFwTableTitle")
+    if el == nil or type(el.setPosition) ~= "function" then return end
+    if GuiUtils == nil or type(GuiUtils.getNormalizedXValue) ~= "function"
+        or type(GuiUtils.getNormalizedYValue) ~= "function" then
+        if not _rfFwTitleBaselineWarned then
+            _rfFwTitleBaselineWarned = true
+            print("[FertilizerDepot] FdRfPdaGuest: GuiUtils normalizer absent - cannot reassert rfFwTableTitle baseline")
+        end
+        return
+    end
+    el:setPosition(GuiUtils.getNormalizedXValue("0px", 0), GuiUtils.getNormalizedYValue("0px", 0))
+    if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
+end
+
 function FdRfPdaGuest.onShow(container, lightOnly)
+    resetFwTableTitlePos(container)
     clearHostDupes(container)
     showTableMode(container)
     paintSide(container, "rf_pda_side_info_fertilizer_depot",
@@ -294,12 +316,13 @@ function FdRfPdaGuest.onShow(container, lightOnly)
 
     local mgr = getMgr()
     if mgr == nil then
-        setVis(titleEl, true)
-        setText(titleEl, tr("fd_rf_pda_waiting", "Depot manager not ready"))
+        -- Title stays retired even here; the waiting notice goes where status now lives.
+        setVis(titleEl, false)
+        setText(titleEl, "")
+        setText(moreEl, tr("fd_rf_pda_waiting", "Depot manager not ready"))
         clearRows(container)
         setVis(emptyEl, false)
         setText(emptyEl, "")
-        setText(moreEl, "")
         setText(hintEl, "")
         return
     end
@@ -308,10 +331,19 @@ function FdRfPdaGuest.onShow(container, lightOnly)
     local farmDepots = buildFarmDepots(mgr, fid)
     local focusId, deliveryRec = pickFocusDepot(mgr, farmDepots, fid)
 
-    -- Title: delivery posture (HUD digit parity via getDelivery / farm-scan)
-    setVis(titleEl, true)
+    -- BUILD 21:41: delivery status reads UNDER the stock table, not in the top title.
+    -- The column headers already announce the table, so a second title line above it was
+    -- both redundant and the wrong place for a live status. rfFwTableTitle is hidden and
+    -- cleared; resetFwTableTitlePos above still runs so the shared baseline is reasserted
+    -- for the other Table-mode modules (Income, Dairy, NPCFavor) that do use it.
+    setVis(titleEl, false)
+    setText(titleEl, "")
+
+    -- Delivery posture resolved exactly as before (HUD digit parity via getDelivery /
+    -- farm-scan); only where it is painted has changed.
+    local deliveryLine
     if focusId == nil and deliveryRec == nil then
-        setText(titleEl, deliveryTitleLine(nil))
+        deliveryLine = deliveryTitleLine(nil)
     else
         -- Prefer getDelivery(focus) when focus known and rec not already from scan
         local ds = mgr.deliverySystem
@@ -328,11 +360,15 @@ function FdRfPdaGuest.onShow(container, lightOnly)
             end
         end
         -- If farm-scan found active delivery but focus getDelivery idle, keep HUD digits (rec from scan)
-        setText(titleEl, deliveryTitleLine(rec))
+        deliveryLine = deliveryTitleLine(rec)
     end
 
-    -- More: focus honesty + pending + 8-of-N
+    -- More: delivery FIRST, then focus honesty + pending + 8-of-N
     local moreParts = {}
+    local pendingPartIndex = nil
+    if deliveryLine ~= nil and deliveryLine ~= "" then
+        moreParts[#moreParts + 1] = deliveryLine
+    end
     local depotCount = #farmDepots
     if focusId ~= nil then
         moreParts[#moreParts + 1] = string.format(
@@ -346,6 +382,7 @@ function FdRfPdaGuest.onShow(container, lightOnly)
         local ok, order = pcall(function() return mgr:getPendingOrder(fid) end)
         if ok and order ~= nil then
             moreParts[#moreParts + 1] = tr("fd_rf_pda_pending_order", "Pending order: not yet placed")
+            pendingPartIndex = #moreParts
         end
     end
 
@@ -360,7 +397,17 @@ function FdRfPdaGuest.onShow(container, lightOnly)
         moreParts[#moreParts + 1] = string.format(
             tr("fd_rf_pda_showing_of", "Showing %d of %d"), MAX_ROWS, nFill)
     end
-    setText(moreEl, table.concat(moreParts, "  ·  "))
+    -- rfFwMore is ONE line: RF_TreatTargetLine at 19px across 1140px, so roughly 120
+    -- glyphs before it clips. Delivery is the live status and outranks a static pending
+    -- notice, so when both are present and the line will not fit, pending is what drops.
+    local MORE_LINE_BUDGET = 120
+    local moreText = table.concat(moreParts, "  ·  ")
+    if #moreText > MORE_LINE_BUDGET and pendingPartIndex ~= nil
+            and deliveryLine ~= nil and deliveryLine ~= "" then
+        table.remove(moreParts, pendingPartIndex)
+        moreText = table.concat(moreParts, "  ·  ")
+    end
+    setText(moreEl, moreText)
 
     -- Hint: season (optional distance dropped under clutter)
     local hint = seasonHint(mgr.pricing)
