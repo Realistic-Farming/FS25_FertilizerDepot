@@ -37,11 +37,25 @@ source(modDir .. "src/ui/DepotDialog.lua")
 source(modDir .. "src/ui/DepotSettingsDialog.lua")
 source(modDir .. "src/ui/DepotHUD.lua")
 
+-- Esc RF PDA guest (Wizard local; keep across development merge)
+source(g_currentModDirectory .. "src/gui/RfEscModules.lua")
+source(g_currentModDirectory .. "src/gui/RfPdaMenuPage.lua")
+source(g_currentModDirectory .. "src/gui/RfEscBootstrap.lua")
+source(g_currentModDirectory .. "src/gui/RfEscUiDebugger.lua")
+source(g_currentModDirectory .. "src/gui/FdRfPdaGuest.lua")
+
 -- ─── Mission00 Lifecycle Hooks ───────────────────────────
 
 local function onMissionLoad(mission, ...)
     getfenv(0).g_DepotManager = DepotManager.new()
     g_DepotManager:initialize()
+
+    -- Esc soft-detect prefer: also publish the mission handle (same object).
+    -- FdRfPdaGuest.getMgr reads g_currentMission.depotManager first, then falls back
+    -- to the global. Lost when the Phase 3 network refactor rewrote this file.
+    if g_currentMission ~= nil then
+        g_currentMission.depotManager = g_DepotManager
+    end
 
     -- Load settings from our own XML file (same pattern as FuelCosts, SoilFertilizer).
     -- FSCareerMissionInfo.loadFromXMLFile fires before g_DepotManager exists, so we
@@ -156,6 +170,7 @@ local function onMissionDelete(mission, ...)
     if g_DepotManager then
         g_DepotManager:delete()
         getfenv(0).g_DepotManager = nil
+        if g_currentMission ~= nil then g_currentMission.depotManager = nil end
     end
 end
 
@@ -198,6 +213,36 @@ FSBaseMission.mouseEvent              = Utils.prependedFunction(FSBaseMission.mo
 FSBaseMission.delete                  = Utils.appendedFunction(FSBaseMission.delete,                  onMissionDelete)
 FSBaseMission.sendInitialClientState  = Utils.appendedFunction(FSBaseMission.sendInitialClientState,  onSendInitialClientState)
 FSCareerMissionInfo.saveToXMLFile     = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,     onSaveToXML)
+
+
+local function _rfEscTryRegister()
+    if FdRfPdaGuest ~= nil and type(FdRfPdaGuest.tryRegister) == "function" then
+        pcall(FdRfPdaGuest.tryRegister)
+    end
+end
+
+-- Esc RF PDA: register module after mission/door ready (retry-safe).
+-- Restored 2026-08-08: the Phase 3 network refactor rewrote main.lua and dropped these
+-- hooks while keeping the source() line, so FdRfPdaGuest.tryRegister was never called
+-- and Depot had no Esc module at all. Same shape as Income / Dairy / NPCFavor.
+if Mission00 ~= nil then
+    Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00Finished, function()
+        _rfEscTryRegister()
+    end)
+end
+if FSBaseMission ~= nil then
+    FSBaseMission.onStartMission = Utils.appendedFunction(FSBaseMission.onStartMission, function()
+        _rfEscTryRegister()
+    end)
+end
+
+if FSBaseMission ~= nil then
+    FSBaseMission.delete = Utils.appendedFunction(FSBaseMission.delete, function()
+        if FdRfPdaGuest ~= nil and type(FdRfPdaGuest.reset) == "function" then
+            FdRfPdaGuest.reset()
+        end
+    end)
+end
 
 -- Console commands are registered as methods on DepotManager in DepotManager.lua
 -- using `self` as the target, following the FS25 addConsoleCommand pattern.
