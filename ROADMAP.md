@@ -15,6 +15,8 @@
 - Baseline date: 2026-06-30
 
 ## Near-term (next release cycle)
+
+- [x] Esc framework table freeze (Depot guest, #49, 2026-08-15): the shared 4-bay column grid is restated on every show, including the even-4-bay variant. Merged; 1.0.3.59.
 - [x] NetworkSync migration: C1 bridges shipped (FDNetworkSyncBridge, dual channel DepotSync + DeliverySync). PR #20 merged to main 2026-07-28.
 - [x] Depot pricing integrations (C4, 3320ecf): ProStaff discount (DepotProStaffBridge), MDM price modifier registration (DepotMarketDynamicsBridge), FuelCosts diesel read (DepotFuelCostsBridge). Committed to development 2026-07-28.
 - [ ] Add the `g_currentMission.depotManager` mission handle (Point 1); keep the `Mission00.load` PREPEND hook (required for placeable registration).
