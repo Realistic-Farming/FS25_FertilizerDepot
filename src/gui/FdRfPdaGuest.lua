@@ -296,11 +296,225 @@ local function resetFwTableTitlePos(container)
         end
         return
     end
-    el:setPosition(GuiUtils.getNormalizedXValue("0px", 0), GuiUtils.getNormalizedYValue("0px", 0))
+    -- BUILD 21:16: was 0px / 0px, the pre-16:32 baseline. The shared XML has placed
+    -- rfFwTableTitle at 10px / -8px since the card inset, so this reset was handing the
+    -- shared element back to a position that no longer exists in the page.
+    el:setPosition(GuiUtils.getNormalizedXValue("10px", 0), GuiUtils.getNormalizedYValue("-8px", 0))
     if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
 end
 
-function FdRfPdaGuest.onShow(container, lightOnly)
+-- ============================================================
+-- BUILD 21:41: the column grid, applied every show.
+-- ============================================================
+-- All four Table guests (Income, Depot, Dairy, NPC Favor) paint into the SAME shared
+-- elements, so whichever ran last leaves its geometry behind for the next one. Every guest
+-- therefore has to state its own grid on entry rather than assume the XML baseline, or it
+-- inherits the previous module's columns. This block is the even 4-bay.
+--
+-- Y IS HELD. Each move reads the element's own current Y and writes it straight back, and
+-- setSize keeps the element's own height, so this can only ever change X and width.
+--
+-- Positions and sizes are NORMALISED in FS25, so everything goes through GuiUtils. A raw
+-- pixel integer here would throw the row off the screen.
+local FW_GRID_COLS = {
+    { "A", "10px", "280px" },
+    { "B", "310px", "280px" },
+    { "C", "610px", "220px" },
+    { "D", "850px", "280px" },
+}
+local FW_GRID_RULES = { "300px", "600px", "840px" }
+local _fwGridWarned = false
+
+local function applyFwGrid(container)
+    if GuiUtils == nil or type(GuiUtils.getNormalizedXValue) ~= "function"
+        or type(GuiUtils.getNormalizedScreenValues) ~= "function" then
+        if not _fwGridWarned then
+            _fwGridWarned = true
+            print("[RF] applyFwGrid: GuiUtils normalizer absent - leaving the XML grid")
+        end
+        return
+    end
+
+    local function place(el, xPx, wPx)
+        if el == nil then return end
+        if type(el.setPosition) == "function" and el.position ~= nil then
+            el:setPosition(GuiUtils.getNormalizedXValue(xPx, 0), el.position[2])
+        end
+        if wPx ~= nil and type(el.setSize) == "function" and el.size ~= nil then
+            local norms = GuiUtils.getNormalizedScreenValues(wPx .. " 1px")
+            if type(norms) == "table" and norms[1] ~= nil then
+                el:setSize(norms[1], el.size[2])
+            end
+        end
+        if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
+    end
+
+    -- BUILD 21:54: this was ipairs over a table my generator had written with ",," between
+    -- entries, which puts a nil at the skipped index. ipairs stops at the first nil, so only
+    -- column A was ever placed and B, C and D stayed on the freeze XML while the rules moved
+    -- anyway. A literal 1..4 walk cannot be truncated by a hole, and skipping a nil entry
+    -- costs one column rather than throwing inside onShow.
+    for i = 1, 4 do
+        local c = FW_GRID_COLS[i]
+        if c ~= nil then
+            local letter, xPx, wPx = c[1], c[2], c[3]
+            place(findDescendant(container, "rfFwCol" .. letter), xPx, wPx)
+            for row = 1, 8 do
+                place(findDescendant(container, "rfFwRow" .. row .. letter), xPx, wPx)
+            end
+        end
+    end
+    -- Vertical rules keep their own Y and their 1px width; only the column boundary moves.
+    for i, xPx in ipairs(FW_GRID_RULES) do
+        place(findDescendant(container, "rfFwRuleCol" .. i), xPx, nil)
+    end
+end
+
+-- ============================================================
+-- BUILD 22:15: optical centring, after the text exists.
+-- ============================================================
+-- Even-grid was dead on arrival as product: sliding a cell 15 to 45 px does not move where a
+-- short left-glued word sits, so two builds of cell geometry changed nothing on screen. What
+-- moves is the WORD, to the middle of its own bay, and the width of a word is only knowable
+-- once setText has run.
+--
+-- The bay never changes. Only the element's X moves inside it, so a string that fills or
+-- overflows its bay is left exactly where the freeze put it, and setSize is never called.
+-- textAlignment and profiles are untouched by design.
+local FW_OPTICAL_BOXES = {
+    { "A", "10px", "280px" },
+    { "B", "310px", "280px" },
+    { "C", "610px", "220px" },
+    { "D", "850px", "280px" }
+}
+local _opticalWarned = false
+
+local function opticalCentreFwCells(container)
+    if GuiUtils == nil or type(GuiUtils.getNormalizedXValue) ~= "function"
+        or type(GuiUtils.getNormalizedScreenValues) ~= "function" then
+        return
+    end
+
+    --- Centre one cell's text inside its bay, or leave the freeze X alone. Every refusal
+    --- below is deliberate: a hidden or empty cell has nothing to centre, and a string that
+    --- is as wide as its bay is already using all of it.
+    local function centre(el, leftPx, widthPx)
+        if el == nil then
+            return
+        end
+        if type(el.getTextWidth) ~= "function" then
+            if not _opticalWarned then
+                _opticalWarned = true
+                print("[RF] optical centre: getTextWidth absent - leaving the freeze X")
+            end
+            return
+        end
+        if el.visible == false then
+            return
+        end
+        if type(el.text) ~= "string" or el.text == "" then
+            return
+        end
+        local norms = GuiUtils.getNormalizedScreenValues(widthPx .. " 1px")
+        if type(norms) ~= "table" or norms[1] == nil then
+            return
+        end
+        local cellW = norms[1]
+        local okW, textW = pcall(function() return el:getTextWidth() end)
+        if not okW or type(textW) ~= "number" or textW <= 0 or textW >= cellW then
+            return
+        end
+        if type(el.setPosition) == "function" and el.position ~= nil then
+            local left = GuiUtils.getNormalizedXValue(leftPx, 0)
+            el:setPosition(left + (cellW - textW) * 0.5, el.position[2])
+            if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
+        end
+    end
+
+    for i = 1, 4 do
+        local b = FW_OPTICAL_BOXES[i]
+        if b ~= nil then
+            centre(findDescendant(container, "rfFwCol" .. b[1]), b[2], b[3])
+            for row = 1, 8 do
+                centre(findDescendant(container, "rfFwRow" .. row .. b[1]), b[2], b[3])
+            end
+        end
+    end
+end
+
+-- ============================================================
+-- BUILD 07:06: the empty notice lives in the FIRST CELL, not across the sheet.
+-- ============================================================
+-- 22:32 fixed the vertical half of this and left the horizontal half wrong. The notice kept
+-- the XML's 1120 box and was then optically centred inside it, so a left-aligned RF_HintText
+-- painted its glyph run in the middle of the sheet and walked straight over rfFwRuleCol1 at
+-- 300. Wizard's read is the plain one: the copy belongs in the first box, under DAY on Income
+-- and under FILL on Depot.
+--
+-- So the box becomes bay A itself: the same 10 / 280 window rfFwColA and rfFwRow1A already
+-- use, on the row-1 axis, one pitch high. Inner right edge is 290 against a rule at 300, which
+-- is 10px of air, and that is exactly why this box is never nudged. A 280 box moved right is
+-- a box that crosses the line Wizard is complaining about, so the X here is the freeze X and
+-- nothing measures it. A string wider than the bay TRUNCATEs with an ellipsis; that is the
+-- overflow valve, not a defect.
+--
+-- rfFwEmptyHint is ONE element behind all nine doors. Shrinking it is only safe because every
+-- other page restores it, which is why Dairy and NPC Favor ship alongside this change.
+--
+-- ONE function owns X, Y, W, H and textMaxNumLines for both states. 22:32 split them and came
+-- out correctly placed on one axis and wrong on the other.
+local FW_HINT_X     = "10px"      -- sheet left and bay A left are the same edge
+local FW_HINT_Y     = "-68px"     -- the row-1 glyph axis, same as rfFwRow1A
+local FW_HINT_BAY_W = "280px"     -- bay A. 10 + 280 = 290, clear of rfFwRuleCol1 at 300
+local FW_HINT_BAY_H = "22px"      -- 28 pitch less clearance: ends at -90, above the -92 rule
+local FW_HINT_XML_W = "1120px"    -- the shared XML box, restored for every other page
+local FW_HINT_XML_H = "44px"
+
+--- Put rfFwEmptyHint in one of its two states and nothing in between.
+--- "bay" is this page with an empty table: first cell, one line, truncating.
+--- "xml" is every other case: the box exactly as RfPdaMenuPage.xml declares it.
+local function setFwEmptyHintBox(container, mode)
+    local el = findDescendant(container, "rfFwEmptyHint")
+    if el == nil then
+        return
+    end
+    if GuiUtils == nil or type(GuiUtils.getNormalizedXValue) ~= "function"
+        or type(GuiUtils.getNormalizedYValue) ~= "function"
+        or type(GuiUtils.getNormalizedScreenValues) ~= "function" then
+        return
+    end
+    local bay = mode == "bay"
+    -- Line count first. setSize re-runs the text layout, so the number of lines has to be
+    -- true before the width it is measured against changes under it.
+    el.textMaxNumLines = bay and 1 or 2
+    local norms = GuiUtils.getNormalizedScreenValues(
+        (bay and FW_HINT_BAY_W or FW_HINT_XML_W) .. " "
+        .. (bay and FW_HINT_BAY_H or FW_HINT_XML_H))
+    if type(norms) ~= "table" or norms[1] == nil or norms[2] == nil then
+        return
+    end
+    if type(el.setSize) == "function" then
+        el:setSize(norms[1], norms[2])
+    end
+    if type(el.setPosition) == "function" then
+        el:setPosition(GuiUtils.getNormalizedXValue(FW_HINT_X, 0),
+                       GuiUtils.getNormalizedYValue(FW_HINT_Y, 0))
+        if type(el.updateAbsolutePosition) == "function" then el:updateAbsolutePosition() end
+    end
+end
+
+--- Empty gets bay A, anything else gets the shared box back. This reads the element rather
+--- than re-deriving the row count, so it stays in step with whichever refusal path inside
+--- _paintShow actually ran.
+local function placeFwEmptyHint(container)
+    local el = findDescendant(container, "rfFwEmptyHint")
+    local showing = el ~= nil and el.visible ~= false
+        and type(el.text) == "string" and el.text ~= ""
+    setFwEmptyHintBox(container, showing and "bay" or "xml")
+end
+
+function FdRfPdaGuest._paintShow(container, lightOnly)
+    applyFwGrid(container)
     resetFwTableTitlePos(container)
     clearHostDupes(container)
     showTableMode(container)
@@ -534,3 +748,13 @@ end
 
 function FdRfPdaGuest.isRegistered() return _registered end
 function FdRfPdaGuest.reset() _registered = false end
+
+
+--- BUILD 22:15: onShow is now a wrapper. The paint runs first and may return early on any
+--- of its refusal paths; the optical pass then runs regardless, which is what puts the
+--- centred copy on an EMPTY table as well as a full one.
+function FdRfPdaGuest.onShow(container, lightOnly)
+    FdRfPdaGuest._paintShow(container, lightOnly)
+    opticalCentreFwCells(container)
+    placeFwEmptyHint(container)
+end
