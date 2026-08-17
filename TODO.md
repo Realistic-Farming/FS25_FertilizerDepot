@@ -14,6 +14,9 @@
 - [x] WV-002 hardcoded modName (issue #24): replaced with `g_currentModName` in PlaceableDepot.lua, main.lua (x2), DepotHUD.lua. Commit a0c87d2.
 
 ## Features / enhancements
+
+- [x] Esc framework table freeze (Depot guest, #49): shared grid restated per show; 1.0.3.59.
+- [~] In-game: Depot table keeps its columns after visiting another Esc guest in the same session.
 - [x] Depot pricing integrations (C4, 3320ecf): ProStaff discount (DepotProStaffBridge), MDM price modifier registration (DepotMarketDynamicsBridge), FuelCosts diesel read (DepotFuelCostsBridge). Committed to development 2026-07-28.
 - [ ] Companion read API: 7 read functions on `depotManager` (isActive-guarded, read-only).
 
