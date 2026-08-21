@@ -23,7 +23,10 @@ local function tr(key, fallback)
 end
 
 ---@class DepotHUD
-DepotHUD = {}
+-- BUILD 17:57 + ATTN 18:02 (Wizard hot-reload law, FS25-HotReload-Guide.md Part 1):
+-- reuse the existing class table on Ctrl+R reload so updated methods land on the
+-- table live metatables already reference, instead of orphaning it.
+DepotHUD = DepotHUD or {}
 local DepotHUD_mt = Class(DepotHUD)
 
 DepotHUD.MIN_SCALE     = 0.60
@@ -441,4 +444,16 @@ end
 function DepotHUD:_rectA(rx, ry, rw, rh, c, alpha)
     setOverlayColor(self.bgOverlay, c[1], c[2], c[3], alpha)
     renderOverlay(self.bgOverlay, rx, ry, rw, rh)
+end
+
+-- =========================================================
+-- BUILD 17:57 + ATTN 18:02 (hot-reload guide Part 2): force-patch the live
+-- instance after a Ctrl+R reload - mission.depotManager published in src/main.lua; holds .hud.
+if g_currentMission ~= nil and g_currentMission.depotManager ~= nil and g_currentMission.depotManager.hud ~= nil then
+    local inst = g_currentMission.depotManager.hud
+    for k, v in pairs(DepotHUD) do
+        if type(v) == "function" then
+            inst[k] = v
+        end
+    end
 end
