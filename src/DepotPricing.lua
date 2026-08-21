@@ -43,7 +43,7 @@ end
 function DepotPricing:getBuyPrice(fillTypeName, farmId)
     local base = self._sfBridge:getBasePrice(fillTypeName)
     local settings = g_DepotManager and g_DepotManager.settings
-    local mult = settings and settings.buyMultiplier or 1.0
+    local mult = (settings and settings.getEffectiveBuyMultiplier) and settings:getEffectiveBuyMultiplier() or 1.0
     local price = base * self:getSeasonMultiplier() * mult
     local fid = farmId or (g_localPlayer and g_localPlayer.farmId) or 1
     local discount = DepotProStaffBridge.getDiscount(fid)

@@ -9,6 +9,7 @@ local modName = g_currentModName
 
 -- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
+source(modDir .. "src/integrations/OptionScalingResolver.lua")
 source(modDir .. "src/config/DepotSettings.lua")
 source(modDir .. "src/DepotLogger.lua")
 
