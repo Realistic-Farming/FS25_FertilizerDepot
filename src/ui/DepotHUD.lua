@@ -33,6 +33,11 @@ DepotHUD.MIN_SCALE     = 0.60
 DepotHUD.MAX_SCALE     = 2.00
 DepotHUD.RESIZE_HANDLE = 0.008
 
+local function getBaseGameRenderer()
+    local hud = (g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD
+    return hud ~= nil and hud.renderer or nil
+end
+
 -- =========================================================
 -- Constructor
 -- =========================================================
@@ -41,9 +46,11 @@ function DepotHUD.new()
     local self = setmetatable({}, DepotHUD_mt)
 
     -- Default anchor: top-left area
-    self.posX       = 0.01
-    self.posY       = 0.92
-    self.scale      = 1.0
+    -- Wizard 2026-08-21: factory home is the suite layout Wizard arranged
+    -- in-game (top-center lane). A saved hudLayout XML still wins on load.
+    self.posX       = 0.563125
+    self.posY       = 0.112593
+    self.scale      = 1.168492
     self.panelWidth = 0.20   -- normalized width at scale 1.0
 
     -- Layout constants at scale 1.0
@@ -361,16 +368,18 @@ function DepotHUD:_drawPanel(status, costStr)
     self.lastBgW = bgW
     self.lastBgH = bgH
 
-    -- Drop shadow
-    self:_rect(bgX + 0.002, bgY - 0.002, bgW, bgH, self.COLORS.SHADOW)
-    -- Background
-    self:_rect(bgX, bgY, bgW, bgH, self.COLORS.BG)
-    -- Border
-    local bw = 0.0012
-    self:_rect(bgX,            bgY + bgH - bw, bgW, bw, self.COLORS.BORDER)
-    self:_rect(bgX,            bgY,            bgW, bw, self.COLORS.BORDER)
-    self:_rect(bgX,            bgY,            bw, bgH, self.COLORS.BORDER)
-    self:_rect(bgX + bgW - bw, bgY,            bw, bgH, self.COLORS.BORDER)
+    local renderer = getBaseGameRenderer()
+    local usedNativePanel = renderer ~= nil and renderer.renderPanel ~= nil
+        and renderer:renderPanel(bgX, bgY, bgW, bgH, self.COLORS.BG[4])
+    if not usedNativePanel then
+        self:_rect(bgX + 0.002, bgY - 0.002, bgW, bgH, self.COLORS.SHADOW)
+        self:_rect(bgX, bgY, bgW, bgH, self.COLORS.BG)
+        local bw = 0.0012
+        self:_rect(bgX,            bgY + bgH - bw, bgW, bw, self.COLORS.BORDER)
+        self:_rect(bgX,            bgY,            bgW, bw, self.COLORS.BORDER)
+        self:_rect(bgX,            bgY,            bw, bgH, self.COLORS.BORDER)
+        self:_rect(bgX + bgW - bw, bgY,            bw, bgH, self.COLORS.BORDER)
+    end
 
     -- Edit mode chrome
     if self.editMode then
@@ -402,7 +411,10 @@ function DepotHUD:_drawPanel(status, costStr)
     cy = cy - lh
 
     -- Divider
-    self:_rect(bgX, cy + lh * 0.35, bgW, 0.001 * sc, self.COLORS.DIVIDER)
+    -- Centre a physical one-pixel line in the 4 px separator band reserved by bgH.
+    local dividerH = g_pixelSizeY or (1 / 1080)
+    self:_rect(bgX, cy - (0.004 * sc + dividerH) * 0.5,
+        bgW, dividerH, self.COLORS.DIVIDER)
     cy = cy - 0.004 * sc
 
     -- Status line
