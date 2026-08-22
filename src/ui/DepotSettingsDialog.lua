@@ -4,8 +4,8 @@
 -- Opened via Shift+D hotkey. Admin-only in multiplayer.
 -- Uses MultiTextOptionElement for each setting (cycle presets).
 
-local _depotSettingsModDir  = g_currentModDirectory  -- captured at source() time
-local _depotSettingsModName = g_currentModName
+local _depotSettingsModDir  = (FertilizerDepotModDirectory or g_currentModDirectory)  -- captured at source() time
+local _depotSettingsModName = (FertilizerDepotModName or g_currentModName)
 local _depotSettingsInstance = nil                  -- local so __index chain can't shadow it
 
 local function tr(key, fallback)
@@ -21,7 +21,7 @@ local function tr(key, fallback)
 end
 
 ---@class DepotSettingsDialog
-DepotSettingsDialog = {}
+DepotSettingsDialog = DepotSettingsDialog or {}
 
 local DepotSettingsDialog_mt = Class(DepotSettingsDialog, MessageDialog)
 

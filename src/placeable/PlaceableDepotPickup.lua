@@ -6,10 +6,10 @@
 -- Registers with DepotManager so the proximity system can
 -- detect the player and show the E-key collect prompt.
 
-local modName = g_currentModName
+local modName = (FertilizerDepotModName or g_currentModName)
 
 ---@class PlaceableDepotPickup
-PlaceableDepotPickup = {}
+PlaceableDepotPickup = PlaceableDepotPickup or {}
 PlaceableDepotPickup.SPEC_TABLE_NAME = "spec_" .. modName .. ".fertilizerDepotPickup"
 
 function PlaceableDepotPickup.prerequisitesPresent(...)

@@ -2,7 +2,7 @@
 -- FS25 Fertilizer Depot - Manager Singleton
 -- =========================================================
 
-local _depotMgrModName = g_currentModName
+local _depotMgrModName = (FertilizerDepotModName or g_currentModName)
 
 local function tr(key, fallback)
     local modEnv = g_modEnvironments and g_modEnvironments[_depotMgrModName]
@@ -58,7 +58,7 @@ local function findFertilizerInVehicle(vehicle, sfBridge)
 end
 
 ---@class DepotManager
-DepotManager = {}
+DepotManager = DepotManager or {}
 local DepotManager_mt = Class(DepotManager)
 
 local PROXIMITY_THRESHOLD     = 5.0    -- metres, depot & silo on-foot radius (keep < gate distance)

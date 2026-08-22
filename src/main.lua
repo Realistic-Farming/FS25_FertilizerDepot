@@ -4,8 +4,15 @@
 -- Load order matters: constants first, then logger, then all
 -- subsystems, then network events, then UI.
 
-local modDir = g_currentModDirectory
-local modName = g_currentModName
+-- Hot-reload latch (FuelCosts reference): g_currentModDirectory and
+-- g_currentModName are nil on a live re-source, so they are latched into
+-- module globals on first load, with a g_modsDirectory loose-folder fallback.
+FertilizerDepotModDirectory = FertilizerDepotModDirectory
+    or g_currentModDirectory
+    or (g_modsDirectory ~= nil and (g_modsDirectory .. "FS25_FertilizerDepot/") or nil)
+FertilizerDepotModName = FertilizerDepotModName or g_currentModName or "FS25_FertilizerDepot"
+local modDir = FertilizerDepotModDirectory
+local modName = FertilizerDepotModName
 
 -- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
@@ -39,11 +46,11 @@ source(modDir .. "src/ui/DepotSettingsDialog.lua")
 source(modDir .. "src/ui/DepotHUD.lua")
 
 -- Esc RF PDA guest (Wizard local; keep across development merge)
-source(g_currentModDirectory .. "src/gui/RfEscModules.lua")
-source(g_currentModDirectory .. "src/gui/RfPdaMenuPage.lua")
-source(g_currentModDirectory .. "src/gui/RfEscBootstrap.lua")
-source(g_currentModDirectory .. "src/gui/RfEscUiDebugger.lua")
-source(g_currentModDirectory .. "src/gui/FdRfPdaGuest.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscModules.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfPdaMenuPage.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscBootstrap.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscUiDebugger.lua")
+source(FertilizerDepotModDirectory .. "src/gui/FdRfPdaGuest.lua")
 
 -- ─── Mission00 Lifecycle Hooks ───────────────────────────
 

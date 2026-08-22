@@ -6,7 +6,7 @@
 -- =========================================================
 
 ---@class SoilFertilizerBridge
-SoilFertilizerBridge = {}
+SoilFertilizerBridge = SoilFertilizerBridge or {}
 local SoilFertilizerBridge_mt = Class(SoilFertilizerBridge)
 
 function SoilFertilizerBridge.new()

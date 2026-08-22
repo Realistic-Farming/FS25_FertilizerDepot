@@ -3,7 +3,7 @@
 -- =========================================================
 
 ---@class DepotDeliveryCompleteEvent
-DepotDeliveryCompleteEvent = {}
+DepotDeliveryCompleteEvent = DepotDeliveryCompleteEvent or {}
 DepotDeliveryCompleteEvent_mt = Class(DepotDeliveryCompleteEvent, Event)
 
 InitEventClass(DepotDeliveryCompleteEvent, "DepotDeliveryCompleteEvent")

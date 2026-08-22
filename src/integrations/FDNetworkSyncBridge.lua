@@ -14,7 +14,7 @@
 --                            the old event classes are removed)
 -- =========================================================
 
-FDNetworkSyncBridge = {}
+FDNetworkSyncBridge = FDNetworkSyncBridge or {}
 
 -- ─── Action IDs ──────────────────────────────────────────
 

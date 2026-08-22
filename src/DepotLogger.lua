@@ -2,7 +2,7 @@
 -- FS25 Fertilizer Depot - Logger
 -- =========================================================
 
-DepotLogger = {}
+DepotLogger = DepotLogger or {}
 DepotLogger._debug = false
 
 function DepotLogger.setDebug(enabled)

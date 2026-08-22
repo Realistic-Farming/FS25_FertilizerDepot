@@ -9,7 +9,7 @@
 --   isInstalled()   → boolean
 -- =========================================================
 
-DepotFuelCostsBridge = {}
+DepotFuelCostsBridge = DepotFuelCostsBridge or {}
 
 function DepotFuelCostsBridge.getFuelPrice()
     local fcm = g_currentMission and g_currentMission.fuelCostsManager

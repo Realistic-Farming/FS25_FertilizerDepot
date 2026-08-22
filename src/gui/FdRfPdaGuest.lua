@@ -5,10 +5,10 @@
 -- Read-only stock/price table + delivery title; no commerce writes.
 -- =========================================================
 
-FdRfPdaGuest = {}
+FdRfPdaGuest = FdRfPdaGuest or {}
 
-local MOD_DIR = g_currentModDirectory
-local MOD_NAME = g_currentModName
+local MOD_DIR = (FertilizerDepotModDirectory or g_currentModDirectory)
+local MOD_NAME = (FertilizerDepotModName or g_currentModName)
 local PANEL_ID = "fertilizerDepot"
 local PANEL_ORDER = 90
 local MAX_ROWS = 8

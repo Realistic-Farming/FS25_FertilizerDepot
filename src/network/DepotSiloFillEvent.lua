@@ -4,7 +4,7 @@
 -- Client fires when player activates the silo fill prompt.
 -- Server executes buyFromSilo (vehicle search at silo position).
 
-DepotSiloFillEvent = {}
+DepotSiloFillEvent = DepotSiloFillEvent or {}
 DepotSiloFillEvent_mt = Class(DepotSiloFillEvent, Event)
 
 InitEventClass(DepotSiloFillEvent, "DepotSiloFillEvent")

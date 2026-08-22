@@ -2,7 +2,7 @@
 -- FS25 Fertilizer Depot - Constants
 -- =========================================================
 
-DepotConstants = {}
+DepotConstants = DepotConstants or {}
 
 -- Per-fill-type silo capacity in liters
 DepotConstants.STORAGE_CAPACITY = 50000

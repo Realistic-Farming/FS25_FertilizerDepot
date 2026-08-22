@@ -3,7 +3,7 @@
 -- =========================================================
 
 ---@class DepotSystem
-DepotSystem = {}
+DepotSystem = DepotSystem or {}
 local DepotSystem_mt = Class(DepotSystem)
 
 function DepotSystem.new(pricing)
