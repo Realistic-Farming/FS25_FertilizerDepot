@@ -9,7 +9,7 @@
 --   isInstalled()        → boolean
 -- =========================================================
 
-DepotProStaffBridge = {}
+DepotProStaffBridge = DepotProStaffBridge or {}
 
 function DepotProStaffBridge.getDiscount(farmId)
     local psm = g_currentMission and g_currentMission.proStaffManager

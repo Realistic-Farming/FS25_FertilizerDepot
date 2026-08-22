@@ -8,7 +8,7 @@
 --   <savegameDir>/FS25_FertilizerDepot_hud.xml
 -- =========================================================
 
-local _hudModName = g_currentModName
+local _hudModName = (FertilizerDepotModName or g_currentModName)
 
 local function tr(key, fallback)
     local modEnv = g_modEnvironments and g_modEnvironments[_hudModName]

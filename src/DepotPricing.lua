@@ -3,7 +3,7 @@
 -- =========================================================
 
 ---@class DepotPricing
-DepotPricing = {}
+DepotPricing = DepotPricing or {}
 local DepotPricing_mt = Class(DepotPricing)
 
 function DepotPricing.new(sfBridge)

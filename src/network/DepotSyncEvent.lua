@@ -4,7 +4,7 @@
 -- Sends full storage state for one depot to all clients (or one joining client).
 
 ---@class DepotSyncEvent
-DepotSyncEvent = {}
+DepotSyncEvent = DepotSyncEvent or {}
 DepotSyncEvent_mt = Class(DepotSyncEvent, Event)
 
 InitEventClass(DepotSyncEvent, "DepotSyncEvent")

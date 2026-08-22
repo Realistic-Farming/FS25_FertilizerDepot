@@ -3,7 +3,7 @@
 -- =========================================================
 
 ---@class DepotDeliveryPickupEvent
-DepotDeliveryPickupEvent = {}
+DepotDeliveryPickupEvent = DepotDeliveryPickupEvent or {}
 DepotDeliveryPickupEvent_mt = Class(DepotDeliveryPickupEvent, Event)
 
 InitEventClass(DepotDeliveryPickupEvent, "DepotDeliveryPickupEvent")

@@ -9,7 +9,7 @@
 -- Server-authoritative. Clients receive state via DepotDeliverySyncEvent.
 
 ---@class DeliverySystem
-DeliverySystem = {}
+DeliverySystem = DeliverySystem or {}
 local DeliverySystem_mt = Class(DeliverySystem)
 
 -- Delivery status codes (serialised as UInt8 in sync events)

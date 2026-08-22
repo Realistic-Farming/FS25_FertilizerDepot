@@ -18,7 +18,7 @@
 -- shared with the fallback hook so the two paths can never diverge.
 -- =========================================================
 
-DepotMasterHUDBridge = {}
+DepotMasterHUDBridge = DepotMasterHUDBridge or {}
 
 DepotMasterHUDBridge.HUD_ID = "FertilizerDepot_HUD"
 DepotMasterHUDBridge.active = false   -- MasterHUD present and we registered

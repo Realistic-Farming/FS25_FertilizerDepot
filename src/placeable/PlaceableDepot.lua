@@ -2,10 +2,10 @@
 -- FS25 Fertilizer Depot - Placeable Specialization
 -- =========================================================
 
-local modName = g_currentModName
+local modName = (FertilizerDepotModName or g_currentModName)
 
 ---@class PlaceableDepot
-PlaceableDepot = {}
+PlaceableDepot = PlaceableDepot or {}
 PlaceableDepot.SPEC_TABLE_NAME = "spec_" .. modName .. ".fertilizerDepot"
 
 function PlaceableDepot.prerequisitesPresent(...)

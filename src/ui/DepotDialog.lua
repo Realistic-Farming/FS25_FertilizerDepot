@@ -2,8 +2,8 @@
 -- FS25 Fertilizer Depot - Buy/Sell Dialog
 -- =========================================================
 
-local _depotDialogModDir  = g_currentModDirectory
-local _depotDialogModName = g_currentModName
+local _depotDialogModDir  = (FertilizerDepotModDirectory or g_currentModDirectory)
+local _depotDialogModName = (FertilizerDepotModName or g_currentModName)
 local _depotDialogInstance = nil
 
 local function tr(key, fallback)
@@ -21,7 +21,7 @@ local function tr(key, fallback)
 end
 
 ---@class DepotDialog
-DepotDialog = {}
+DepotDialog = DepotDialog or {}
 DepotDialog.ROWS        = 8
 DepotDialog.TAB_BUY      = "buy"
 DepotDialog.TAB_SELL     = "sell"

@@ -11,7 +11,7 @@
 --   isInstalled()           → boolean
 -- =========================================================
 
-DepotMarketDynamicsBridge = {}
+DepotMarketDynamicsBridge = DepotMarketDynamicsBridge or {}
 
 local MODIFIER_NAME = "FertilizerDepot"
 
