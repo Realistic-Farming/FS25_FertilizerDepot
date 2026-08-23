@@ -1,3 +1,11 @@
+-- 2026-08-22 (Wizard): with MasterHUD installed this mod's own HUD hide/move keys must not
+-- merely be inert, they must not REGISTER at all - that is what removes their rows from the
+-- F1 legend and the Controls list. Only the HUD drag action is gated here; FD_OPEN_SETTINGS
+-- and FD_INTERACT are untouched.
+local function __rfMhOwnsHudKeys()
+    return ((g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD) ~= nil
+end
+
 -- =========================================================
 -- FS25 Fertilizer Depot - Entry Point
 -- =========================================================
@@ -135,9 +143,12 @@ local function onMissionLoadFinished(mission, ...)
                 DepotLogger.warning("Shift+D registration failed — registerActionEvent returned false")
             end
 
-            local dragOk, dragId = g_inputBinding:registerActionEvent(
-                InputAction.FD_HUD_DRAG, g_DepotManager,
-                g_DepotManager.toggleHUDEditMode, false, true, false, true)
+            local dragOk, dragId = false, nil
+            if not __rfMhOwnsHudKeys() then
+                dragOk, dragId = g_inputBinding:registerActionEvent(
+                    InputAction.FD_HUD_DRAG, g_DepotManager,
+                    g_DepotManager.toggleHUDEditMode, false, true, false, true)
+            end
             if dragOk and dragId then
                 g_DepotManager._hudDragEventId = dragId
                 g_inputBinding:setActionEventTextPriority(dragId, GS_PRIO_NORMAL)
@@ -215,6 +226,35 @@ end
 -- appendedFunction would create it AFTER onPostFinalizePlacement fires → depotId never set.
 Mission00.load                        = Utils.prependedFunction(Mission00.load,                        onMissionLoad)
 Mission00.loadMission00Finished       = Utils.appendedFunction(Mission00.loadMission00Finished,       onMissionLoadFinished)
+
+-- ---------------------------------------------------------
+-- Realistic Farming Control Center: publish a runnable delegate.
+--
+-- FD_INTERACT is deliberately absent: it acts on the depot trigger the player is
+-- standing in and means nothing from a menu. FD_HUD_DRAG is absent because
+-- MasterHUD owns the suite HUD keys (see DepotManager:toggleHUDEditMode). Both
+-- keep their directory row and live key readout.
+-- ---------------------------------------------------------
+local function registerControlCenterActions()
+    local registry = g_currentMission ~= nil and g_currentMission.rfActionRegistry or nil
+    if registry == nil then return end
+
+    registry.registerAction({
+        action     = "FD_OPEN_SETTINGS",
+        button     = "Open",
+        -- Opens a dialog of its own, which cannot sit behind this one.
+        closeFirst = true,
+        run = function()
+            local mgr = g_DepotManager
+            if mgr ~= nil and mgr.openSettingsDialog ~= nil then
+                mgr:openSettingsDialog()
+            end
+        end,
+    })
+end
+
+Mission00.loadMission00Finished = Utils.appendedFunction(
+    Mission00.loadMission00Finished, registerControlCenterActions)
 FSBaseMission.update                  = Utils.appendedFunction(FSBaseMission.update,                  onMissionUpdate)
 FSBaseMission.draw                    = Utils.appendedFunction(FSBaseMission.draw,                    onMissionDraw)
 FSBaseMission.mouseEvent              = Utils.prependedFunction(FSBaseMission.mouseEvent,             onMissionMouseEvent)
