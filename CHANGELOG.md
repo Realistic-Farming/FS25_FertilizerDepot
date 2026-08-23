@@ -15,6 +15,7 @@ the repo's git history and README.
 
 ### Added
 - Changelog file established (suite ruling 2026-08-22).
+- Playtest fixes: DepotManager/Pricing/Settings/HUD, FD_HUD_DRAG (RShift+1), 26-language translation sync.
 - Control Center action: FD_OPEN_SETTINGS opens depot settings from the suite Control Center (requires SettingsHub).
 
 ## [1.0.3.59] - 2026-08-22
