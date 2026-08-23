@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <l10n>
     <texts>
     <!-- Store -->
@@ -80,6 +80,7 @@
     <text name="input_FD_OPEN_SETTINGS" text="Open Depot Settings"/>
     <text name="input_FD_INTERACT"      text="Interact with Fertilizer Depot"/>
     <text name="input_FD_HUD_DRAG"      text="Toggle Delivery HUD Edit Mode"/>
+    <text name="input_FD_TOGGLE_HUD"      text="Toggle Delivery HUD"/>
     <!-- Products tab -->
     <text name="fd_products_tab"         text="Products"/>
     <text name="fd_products_order_bag"   text="Order Bag"/>
