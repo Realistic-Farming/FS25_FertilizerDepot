@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <l10n>
     <texts>
     <!-- Store -->
@@ -79,7 +79,7 @@
     <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
     <text name="fd_depot_filling" text="[EN] Filling %.0fL of %s into your vehicle..."/>
     <text name="input_FD_INTERACT" text="[EN] Interact with Fertilizer Depot"/>
-    <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/>    <text name="fd_products_tab" text="[EN] Products"/>
+    <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab" text="[EN] Products"/>
     <text name="fd_products_order_bag" text="[EN] Order Bag"/>
     <text name="fd_products_order_tank" text="[EN] Order Tank"/>
     <text name="fd_products_label_bag" text="[EN] Bag(s)"/>

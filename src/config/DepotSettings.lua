@@ -48,23 +48,6 @@ function DepotSettings.indexInOptions(tbl, value)
     return findIndex(tbl, value)
 end
 
-DepotSettings.SPINE_BUY_MULT = {
-    id   = "fd_buyMultiplier",
-    dial = "economy",
-    base = 1.0,
-}
-
-function DepotSettings:getEffectiveBuyMultiplier()
-    if OptionScalingResolver ~= nil then
-        local hub = (g_currentMission ~= nil and g_currentMission.settingsHub) or g_settingsHub
-        local profile = OptionScalingResolver.readProfile(hub)
-        if profile ~= nil then
-            return OptionScalingResolver.resolve(DepotSettings.SPINE_BUY_MULT, profile)
-        end
-    end
-    return self.buyMultiplier or 1.0
-end
-
 function DepotSettings:getCapacityIndex()
     return findIndex(DepotSettings.CAPACITY_OPTIONS, self.storageCapacity)
 end
