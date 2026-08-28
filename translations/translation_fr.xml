@@ -79,7 +79,7 @@
     <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
     <text name="fd_depot_filling" text="Remplissage de %.0fL de %s dans votre véhicule..."/>
     <text name="input_FD_INTERACT" text="Interagir avec le dépôt d’engrais"/>
-    <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab" text="Produits"/>
+    <text name="input_FD_HUD_DRAG" text="Basculer le mode d’édition du HUD de livraison"/><text name="input_FD_TOGGLE_HUD" text="Afficher/Masquer le HUD de livraison"/>    <text name="fd_products_tab" text="Produits"/>
     <text name="fd_products_order_bag" text="Commander un sac"/>
     <text name="fd_products_order_tank" text="Commander une citerne"/>
     <text name="fd_products_label_bag" text="Sac(s)"/>
