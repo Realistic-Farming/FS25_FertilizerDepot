@@ -79,7 +79,7 @@
     <text name="fd_depot_sell_confirm" text="%.0fL von %s für %s an das Depot verkaufen?"/>
     <text name="fd_depot_filling" text="%.0fL von %s werden in dein Fahrzeug gefüllt..."/>
     <text name="input_FD_INTERACT" text="Mit Düngerdepot interagieren"/>
-    <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab" text="Produkte"/>
+    <text name="input_FD_HUD_DRAG" text="Liefer-HUD-Bearbeitungsmodus umschalten"/><text name="input_FD_TOGGLE_HUD" text="Liefer-HUD umschalten"/>    <text name="fd_products_tab" text="Produkte"/>
     <text name="fd_products_order_bag" text="Sack bestellen"/>
     <text name="fd_products_order_tank" text="Tank bestellen"/>
     <text name="fd_products_label_bag" text="Sack/Säcke"/>
