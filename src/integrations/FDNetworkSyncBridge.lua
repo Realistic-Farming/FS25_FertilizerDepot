@@ -20,12 +20,7 @@ FDNetworkSyncBridge = FDNetworkSyncBridge or {}
 
 FDNetworkSyncBridge.ACTION_PURCHASE          = "FertilizerDepot_Purchase"
 FDNetworkSyncBridge.ACTION_SELL              = "FertilizerDepot_Sell"
-FDNetworkSyncBridge.ACTION_SILO_FILL         = "FertilizerDepot_SiloFill"
 FDNetworkSyncBridge.ACTION_PRODUCT_ORDER     = "FertilizerDepot_ProductOrder"
-FDNetworkSyncBridge.ACTION_DELIVERY_ORDER    = "FertilizerDepot_DeliveryOrder"
-FDNetworkSyncBridge.ACTION_DELIVERY_PICKUP   = "FertilizerDepot_DeliveryPickup"
-FDNetworkSyncBridge.ACTION_DELIVERY_COMPLETE = "FertilizerDepot_DeliveryComplete"
-FDNetworkSyncBridge.ACTION_DELIVERY_CANCEL   = "FertilizerDepot_DeliveryCancel"
 FDNetworkSyncBridge.ACTION_SETTINGS          = "FertilizerDepot_Settings"
 
 -- ─── State sync module ───────────────────────────────────
@@ -63,20 +58,6 @@ local function handleSell(_userId, args)
     FDNetworkSyncBridge.markDirty()
 end
 
-local function handleSiloFill(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, siloId, fillTypeName, fillTypeIndex, requestedLiters, farmId =
-        args[1], args[2], args[3], args[4], args[5], args[6]
-    if not g_DepotManager then return end
-    local siloNode = g_DepotManager.siloNodes[siloId]
-    local ok = g_DepotManager.depotSystem:buyFromSilo(
-        depotId, siloNode, fillTypeName, fillTypeIndex, requestedLiters, farmId)
-    if ok then
-        g_DepotManager:clearPendingOrder(farmId)
-    end
-    FDNetworkSyncBridge.markDirty()
-end
-
 local function handleProductOrder(_userId, args)
     if type(args) ~= "table" then return end
     local depotId, fillTypeName, fillTypeIndex, quantity, farmId =
@@ -95,38 +76,6 @@ local function handleProductOrder(_userId, args)
     end
     g_DepotManager.depotSystem:orderProduct(
         depotId, fillTypeName, fillTypeIndex, quantity, spawnX, spawnZ, farmId)
-    FDNetworkSyncBridge.markDirty()
-end
-
-local function handleDeliveryOrder(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, farmId = args[1], args[2]
-    if not g_DepotManager or not g_DepotManager.deliverySystem then return end
-    g_DepotManager.deliverySystem:placeOrder(depotId, farmId)
-    FDNetworkSyncBridge.markDirty()
-end
-
-local function handleDeliveryPickup(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, farmId = args[1], args[2]
-    if not g_DepotManager or not g_DepotManager.deliverySystem then return end
-    g_DepotManager.deliverySystem:confirmPickup(depotId, farmId)
-    FDNetworkSyncBridge.markDirty()
-end
-
-local function handleDeliveryComplete(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, farmId = args[1], args[2]
-    if not g_DepotManager or not g_DepotManager.deliverySystem then return end
-    g_DepotManager.deliverySystem:completeDelivery(depotId, farmId)
-    FDNetworkSyncBridge.markDirty()
-end
-
-local function handleDeliveryCancel(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, farmId = args[1], args[2]
-    if not g_DepotManager or not g_DepotManager.deliverySystem then return end
-    g_DepotManager.deliverySystem:cancelDelivery(depotId, farmId)
     FDNetworkSyncBridge.markDirty()
 end
 
@@ -197,31 +146,6 @@ local function buildStateArray()
         end
     end
 
-    -- Deliveries
-    local ds = dm.deliverySystem
-    local delCount = 0
-    if ds then
-        for _ in pairs(ds.deliveries) do delCount = delCount + 1 end
-    end
-    arr[#arr + 1] = delCount
-    if ds then
-        for depotId, rec in pairs(ds.deliveries) do
-            arr[#arr + 1] = depotId
-            arr[#arr + 1] = rec.status or 0
-            arr[#arr + 1] = rec.farmId or 1
-            arr[#arr + 1] = rec.baseCost or 0
-            arr[#arr + 1] = rec.deliveryCost or 0
-            local itemCount = rec.items and #rec.items or 0
-            arr[#arr + 1] = itemCount
-            for j = 1, itemCount do
-                local item = rec.items[j]
-                arr[#arr + 1] = tostring(item.fillTypeName or "")
-                arr[#arr + 1] = item.needed or 0
-                arr[#arr + 1] = item.baseCost or 0
-            end
-        end
-    end
-
     -- Settings
     local s = dm.settings
     arr[#arr + 1] = s.seasonalPricing == true
@@ -258,53 +182,6 @@ local function applyStateArray(arr)
             end
         else
             for _ = 1, ftCount do idx = idx + 2 end
-        end
-    end
-
-    -- Deliveries
-    local ds = dm.deliverySystem
-    local delCount = tonumber(arr[idx]) or 0; idx = idx + 1
-    if ds then
-        ds.deliveries = {}
-        for _ = 1, delCount do
-            local depId   = arr[idx]; idx = idx + 1
-            local status  = arr[idx]; idx = idx + 1
-            local farmId  = arr[idx]; idx = idx + 1
-            local baseCost= arr[idx]; idx = idx + 1
-            local delCost = arr[idx]; idx = idx + 1
-            local itemCnt = arr[idx]; idx = idx + 1
-            local items = {}
-            for _ = 1, itemCnt do
-                local name   = arr[idx]; idx = idx + 1
-                local needed = arr[idx]; idx = idx + 1
-                local cost   = arr[idx]; idx = idx + 1
-                local ftIdx  = 0
-                if g_fillTypeManager then
-                    ftIdx = g_fillTypeManager:getFillTypeIndexByName(name) or 0
-                end
-                table.insert(items, {
-                    fillTypeName  = name,
-                    fillTypeIndex = ftIdx,
-                    displayName   = name,
-                    needed        = needed,
-                    baseCost      = cost,
-                })
-            end
-            ds.deliveries[depId] = {
-                status       = status,
-                depotId      = depId,
-                farmId       = farmId,
-                baseCost     = baseCost,
-                deliveryCost = delCost,
-                items        = items,
-                vehicle      = nil,
-            }
-        end
-    else
-        for _ = 1, delCount do
-            idx = idx + 6
-            local itemCnt = arr[idx - 1] or 0
-            for _ = 1, itemCnt do idx = idx + 3 end
         end
     end
 
@@ -377,18 +254,8 @@ function FDNetworkSyncBridge.register()
             adminOnly = false, onAction = handlePurchase })
         ns:registerAction(FDNetworkSyncBridge.ACTION_SELL, {
             adminOnly = false, onAction = handleSell })
-        ns:registerAction(FDNetworkSyncBridge.ACTION_SILO_FILL, {
-            adminOnly = false, onAction = handleSiloFill })
         ns:registerAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
             adminOnly = false, onAction = handleProductOrder })
-        ns:registerAction(FDNetworkSyncBridge.ACTION_DELIVERY_ORDER, {
-            adminOnly = false, onAction = handleDeliveryOrder })
-        ns:registerAction(FDNetworkSyncBridge.ACTION_DELIVERY_PICKUP, {
-            adminOnly = false, onAction = handleDeliveryPickup })
-        ns:registerAction(FDNetworkSyncBridge.ACTION_DELIVERY_COMPLETE, {
-            adminOnly = false, onAction = handleDeliveryComplete })
-        ns:registerAction(FDNetworkSyncBridge.ACTION_DELIVERY_CANCEL, {
-            adminOnly = false, onAction = handleDeliveryCancel })
         ns:registerAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
             adminOnly = false, onAction = handleSettings })
 
@@ -403,7 +270,7 @@ function FDNetworkSyncBridge.register()
         FDNetworkSyncBridge.active      = true
         FDNetworkSyncBridge.stateActive = true
         FDNetworkSyncBridge._ns         = ns
-        DepotLogger.info("FertilizerDepot: NetworkSync bridge registered (9 actions + state module)")
+        DepotLogger.info("FertilizerDepot: NetworkSync bridge registered (4 actions + state module)")
     else
         DepotLogger.error("FertilizerDepot: NetworkSync registration failed: %s", tostring(err))
     end

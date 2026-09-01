@@ -27,13 +27,6 @@
     <text name="action_turnOnBillboard"    text="Show production info boards"/>
     <text name="action_turnOffBillboard"   text="Hide production info boards"/>
 
-    <!-- Production hall: solar panel and billboard extras -->
-    <text name="configuration_name" text="Solar panel and advertising board"/>
-    <text name="extras_nothing"     text="No extras"/>
-    <text name="extras_solar"       text="Solar panel"/>
-    <text name="extras_billboard"   text="Advertising board"/>
-    <text name="extras_both"        text="Solar panel and advertising board"/>
-
     <!-- Dialog -->
     <text name="fd_depot_title"       text="Fertilizer Depot"/>
     <text name="fd_depot_buy"         text="Buy"/>
@@ -54,10 +47,7 @@
     <!-- Pre-order flow -->
     <text name="fd_depot_select_first"   text="Select a fill type first."/>
     <text name="fd_depot_order_set"      text="Order set: %s %.0fL â€” walk to silo to collect."/>
-    <text name="fd_silo_collect_action"  text="Collect %s (%.0fL)"/>
-    <text name="fd_silo_no_order"        text="No pending order. Confirm a type at the Depot first."/>
-    <text name="fd_silo_fill_confirm"   text="Collect %.0fL of %s?&#10;&#10;Your vehicle will be filled."/>
-    <text name="fd_depot_sell_confirm"  text="Sell %.0fL of %s to depot for %s?"/>
+                <text name="fd_depot_sell_confirm"  text="Sell %.0fL of %s to depot for %s?"/>
 
     <!-- Stock labels -->
     <text name="fd_depot_stock_full"     text="Full"/>
@@ -85,10 +75,7 @@
     <text name="fd_error_farm"   text="Farm not found."/>
 
     <!-- Filling Silo (second building â€” vehicle drive-up) -->
-    <text name="fd_silo_name"     text="Fertilizer Filling Silo"/>
-    <text name="fd_silo_function" text="Drive up with trailer to fill any fertilizer. Requires Fertilizer Depot."/>
-    <text name="fd_silo_desc"     text="The Fertilizer Filling Silo is the second half of the Fertilizer Depot system. Place it near your fields â€” drive up with any trailer or tank and fill directly. Works with all FS25_SoilFertilizer custom types. Requires the Fertilizer Depot building to manage pricing and settings."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Fertilizer Depot Settings"/>
     <text name="fd_settings_seasonal"   text="Seasonal Pricing"/>
@@ -119,54 +106,23 @@
     <text name="fd_depot_selected"       text="Selected"/>
 
     <!-- Delivery system â€” Pickup zone placeable -->
-    <text name="fd_pickup_name"     text="Fertilizer Supplier"/>
-    <text name="fd_pickup_function" text="Supplier pickup zone for delivery orders. Place near the in-game shop."/>
-
+        
     <!-- Delivery system â€” Column headers (ORDER tab) -->
-    <text name="fd_col_needed"  text="Needed"/>
-    <text name="fd_col_amount"  text="Amount"/>
-    <text name="fd_col_revenue" text="Revenue"/>
-
+        <text name="fd_col_amount"  text="Amount"/>
+        <text name="fd_col_revenue" text="Revenue"/>
+    
     <!-- Delivery system â€” Interaction prompts -->
-    <text name="fd_delivery_pickup_action" text="Collect Delivery"/>
-    <text name="fd_delivery_no_pending"    text="No pending delivery."/>
-
+        
     <!-- Delivery system â€” HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="Fertilizer Delivery"/>
-    <text name="fd_delivery_hud_pending" text="Drive to the pickup zone to collect your order"/>
-    <text name="fd_delivery_hud_loaded"  text="Return to your depot to complete the delivery"/>
-
+            
     <!-- Delivery system â€” YesNo dialogs -->
-    <text name="fd_delivery_pickup_confirm"  text="Collect delivery for %s?&#10;&#10;Goods will be stocked when you return to your depot."/>
-    <text name="fd_delivery_order_confirm"   text="Place delivery order for %d fill type(s)?&#10;&#10;Total cost on pickup: %s&#10;(10%% delivery fee included)"/>
-    <text name="fd_delivery_cancel_confirm"  text="Cancel delivery order?&#10;&#10;A penalty of %s (20%% of delivery cost) will be deducted."/>
-    <text name="fd_delivery_complete_confirm" text="Complete delivery and stock your depot?&#10;&#10;All ordered fill types will be added to storage."/>
-
+                
     <!-- Delivery system â€” ORDER tab status messages -->
-    <text name="fd_delivery_no_pickup_placed" text="Place a Fertilizer Supplier pickup zone near the in-game shop first."/>
-    <text name="fd_delivery_all_full"         text="All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_cost_summary"     text="Base: $%.2f  +  Fee: $%.2f  =  Total: $%.2f"/>
-    <text name="fd_delivery_status_pending"   text="Delivery pending â€” drive to Pickup Zone to collect  |  Cancel penalty: %s"/>
-    <text name="fd_delivery_status_ready"     text="Delivery ready â€” click to stock your depot."/>
-    <text name="fd_delivery_status_park"      text="Park delivery vehicle within 25m of unload zone  (%.0fm away)"/>
-    <text name="fd_delivery_status_return"    text="Return to depot and park near the unload zone."/>
-
+                            
     <!-- Delivery system â€” ORDER tab buttons -->
-    <text name="fd_delivery_place_btn"    text="Place Delivery Order"/>
-    <text name="fd_delivery_cancel_btn"   text="Cancel Order"/>
-    <text name="fd_delivery_complete_btn" text="Complete Delivery"/>
-
+            
     <!-- Delivery system â€” Status feedback -->
-    <text name="fd_delivery_order_placed" text="Order placed â€” drive to the Pickup Zone."/>
-    <text name="fd_delivery_cancelled"    text="Delivery cancelled."/>
-    <text name="fd_delivery_completing"   text="Delivery complete! Stock has been added."/>
-
+            
     <!-- Delivery system â€” Error keys -->
-    <text name="fd_delivery_already_active" text="A delivery is already in progress."/>
-    <text name="fd_delivery_no_pickup"      text="No supplier pickup zone placed on this map."/>
-    <text name="fd_delivery_stock_full"     text="All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_none"           text="No active delivery."/>
-    <text name="fd_delivery_wrong_status"   text="Delivery is not in the correct state for this action."/>
-    <text name="fd_delivery_wrong_farm"     text="This delivery belongs to a different farm."/>
-    </texts>
+                            </texts>
 </l10n>

@@ -3,7 +3,7 @@
     depotPlaceable.xml
     Fertilizer Depot store building: the vendored industrial fertilizer
     production hall with its FULL machinery (production chains, selling,
-    loading, buying, pallet buying, solar panels, billboards, levers, colors),
+    loading, buying, pallet buying, billboards, levers, colors),
     plus the mod's own fertilizerDepot buy/store/sell system layered on top.
     The mod's functional nodes map onto the hall's real nodes:
       playerTrigger      -> playerTriggerMarker (0>16|0|0)
@@ -111,12 +111,6 @@
 
     <dynamicallyLoadedParts>
         <dynamicallyLoadedPart filename="i3d/metalHall_props.i3d" node="0" linkNode="props"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar1"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar2"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar3"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar4"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar5"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar6"/>
         <dynamicallyLoadedPart filename="$data/placeables/shared/sellingStationGeneric/sellingStationGenericNoCoverWideGrid.i3d" node="0" linkNode="grainGate"/>
         <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo01"/>
         <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo02"/>
@@ -168,6 +162,8 @@
 
     <productionPoint>
         <productions sharedThroughputCapacity="false">
+            <!-- Base fallback production (works without SoilFertilizer):
+                 chemical inputs -> vanilla fertilizer -->
             <production id="fertilizer_ammonia" name="%s (%s + %s + %s)" params="$l10n_fillType_fertilizer|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid|$l10n_fillType_potassiumChloride" cyclesPerHour="5" costsPerActiveHour="12">
                 <inputs>
                     <input fillType="AMMONIA" amount="333"/>
@@ -188,6 +184,236 @@
                     <output fillType="FERTILIZER" amount="1000"/>
                 </outputs>
             </production>
+
+            <!-- ── Liquid nitrogen ─────────────────────────────── -->
+            <production id="uan32" name="%s (%s + %s)" params="$l10n_sf_uan32_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UAN32" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="uan28" name="%s (%s + %s)" params="$l10n_sf_uan28_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UAN28" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="anhydrous" name="%s (%s + %s)" params="$l10n_sf_anhydrous_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="900"/>
+                    <input fillType="WATER" amount="100"/>
+                </inputs>
+                <outputs>
+                    <output fillType="ANHYDROUS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="starter" name="%s (%s + %s + %s)" params="$l10n_sf_starter_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="400"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="300"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="STARTER" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- ── Solid granular ──────────────────────────────── -->
+            <production id="urea" name="%s (%s + %s)" params="$l10n_sf_urea_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="700"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UREA" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="an" name="%s (%s + %s)" params="$l10n_sf_an_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="AN" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="ams" name="%s (%s + %s + %s)" params="$l10n_sf_ams_title|$l10n_fillType_ammonia|$l10n_fillType_water|$l10n_fillType_sulfur" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="600"/>
+                    <input fillType="WATER" amount="300"/>
+                    <input fillType="SULFUR" amount="100"/>
+                </inputs>
+                <outputs>
+                    <output fillType="AMS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="map" name="%s (%s + %s)" params="$l10n_sf_map_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="MAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="dap" name="%s (%s + %s)" params="$l10n_sf_dap_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="700"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="DAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="potash" name="%s (%s + %s)" params="$l10n_sf_potash_title|$l10n_fillType_potassiumChloride|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="POTASH" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="polifoska" name="%s (%s + %s)" params="$l10n_sf_polifoska_title|$l10n_fillType_potassiumChloride|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="500"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="POLIFOSKA" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- ── Liquid equivalents (dissolved granular) ─────── -->
+            <production id="liquid_urea" name="%s (%s + %s)" params="$l10n_sf_liquid_urea_title|$l10n_sf_urea_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="UREA" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_UREA" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_ams" name="%s (%s + %s)" params="$l10n_sf_liquid_ams_title|$l10n_sf_ams_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMS" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_AMS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_map" name="%s (%s + %s)" params="$l10n_sf_liquid_map_title|$l10n_sf_map_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="MAP" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_MAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_dap" name="%s (%s + %s)" params="$l10n_sf_liquid_dap_title|$l10n_sf_dap_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="DAP" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_DAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_potash" name="%s (%s + %s)" params="$l10n_sf_liquid_potash_title|$l10n_sf_potash_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASH" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_POTASH" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- ── Crop protection ─────────────────────────────── -->
+            <production id="insecticide" name="%s (%s + %s)" params="$l10n_sf_insecticide_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="3" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="INSECTICIDE" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="fungicide" name="%s (%s + %s)" params="$l10n_sf_fungicide_title|$l10n_fillType_phosphoricAcid|$l10n_fillType_water" cyclesPerHour="3" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FUNGICIDE" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- ── Organics / amendments ───────────────────────── -->
+            <production id="gypsum" name="%s (%s + %s)" params="$l10n_sf_gypsum_title|$l10n_fillType_lime|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="LIME" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="GYPSUM" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="compost" name="%s (%s + %s)" params="$l10n_sf_compost_title|$l10n_fillType_manure|$l10n_fillType_slurry" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="SLURRY" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="COMPOST" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="biosolids" name="%s (%s + %s)" params="$l10n_sf_biosolids_title|$l10n_fillType_manure|$l10n_fillType_slurry" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="700"/>
+                    <input fillType="SLURRY" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="BIOSOLIDS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="chicken_manure" name="%s (%s + %s)" params="$l10n_sf_chicken_manure_title|$l10n_fillType_manure|$l10n_fillType_compost" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="COMPOST" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="CHICKEN_MANURE" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="pelletized_manure" name="%s (%s + %s)" params="$l10n_sf_pelletized_manure_title|$l10n_fillType_manure|$l10n_fillType_compost" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="COMPOST" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="PELLETIZED_MANURE" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- ── Liquid lime ─────────────────────────────────── -->
+            <production id="liquidlime" name="%s (%s + %s)" params="$l10n_sf_liquidlime_title|$l10n_fillType_lime|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="LIME" amount="700"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUIDLIME" amount="1000"/>
+                </outputs>
+            </production>
         </productions>
 
         <storage isExtension="false" fillLevelSyncThreshold="50">
@@ -195,20 +421,49 @@
             <capacity fillType="PHOSPHORIC_ACID" capacity="100000"/>
             <capacity fillType="POTASSIUM_CHLORIDE" capacity="100000"/>
             <capacity fillType="UREA" capacity="100000"/>
+            <capacity fillType="WATER" capacity="100000"/>
+            <capacity fillType="LIME" capacity="100000"/>
+            <capacity fillType="MANURE" capacity="100000"/>
+            <capacity fillType="SLURRY" capacity="100000"/>
+            <capacity fillType="COMPOST" capacity="100000"/>
+            <capacity fillType="SULFUR" capacity="100000"/>
             <capacity fillType="FERTILIZER" capacity="1000000"/>
+            <capacity fillType="UAN32" capacity="1000000"/>
+            <capacity fillType="UAN28" capacity="1000000"/>
+            <capacity fillType="ANHYDROUS" capacity="1000000"/>
+            <capacity fillType="STARTER" capacity="1000000"/>
+            <capacity fillType="AN" capacity="1000000"/>
+            <capacity fillType="AMS" capacity="1000000"/>
+            <capacity fillType="MAP" capacity="1000000"/>
+            <capacity fillType="DAP" capacity="1000000"/>
+            <capacity fillType="POTASH" capacity="1000000"/>
+            <capacity fillType="POLIFOSKA" capacity="1000000"/>
+            <capacity fillType="LIQUID_UREA" capacity="1000000"/>
+            <capacity fillType="LIQUID_AMS" capacity="1000000"/>
+            <capacity fillType="LIQUID_MAP" capacity="1000000"/>
+            <capacity fillType="LIQUID_DAP" capacity="1000000"/>
+            <capacity fillType="LIQUID_POTASH" capacity="1000000"/>
+            <capacity fillType="INSECTICIDE" capacity="1000000"/>
+            <capacity fillType="FUNGICIDE" capacity="1000000"/>
+            <capacity fillType="GYPSUM" capacity="1000000"/>
+            <capacity fillType="COMPOST" capacity="1000000"/>
+            <capacity fillType="BIOSOLIDS" capacity="1000000"/>
+            <capacity fillType="CHICKEN_MANURE" capacity="1000000"/>
+            <capacity fillType="PELLETIZED_MANURE" capacity="1000000"/>
+            <capacity fillType="LIQUIDLIME" capacity="1000000"/>
         </storage>
 
         <sellingStation node="sellingStation" supportsExtension="false" allowMissions="true">
-            <unloadTrigger exactFillRootNode="exactFillNodeManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA" allowMissions="true" stationName="$l10n_stationName_fertilizerChemIn"/>
-            <palletTrigger triggerNode="palletTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA"/>
-            <baleTrigger triggerNode="baleTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA"/>
-            <unloadTrigger exactFillRootNode="exactFillNodeFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE" allowMissions="false" stationName="$l10n_stationName_fertilizerManureChemIn"/>
-            <palletTrigger triggerNode="palletTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE"/>
-            <baleTrigger triggerNode="baleTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE"/>
+            <unloadTrigger exactFillRootNode="exactFillNodeManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR" allowMissions="true" stationName="$l10n_stationName_fertilizerChemIn"/>
+            <palletTrigger triggerNode="palletTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR"/>
+            <baleTrigger triggerNode="baleTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR"/>
+            <unloadTrigger exactFillRootNode="exactFillNodeFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE SLURRY COMPOST" allowMissions="false" stationName="$l10n_stationName_fertilizerManureChemIn"/>
+            <palletTrigger triggerNode="palletTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE SLURRY COMPOST"/>
+            <baleTrigger triggerNode="baleTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE SLURRY COMPOST"/>
         </sellingStation>
 
         <loadingStation node="loadingStation" supportsExtension="false">
-            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="true">
+            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER UAN32 UAN28 ANHYDROUS STARTER UREA AN AMS MAP DAP POTASH POLIFOSKA LIQUID_UREA LIQUID_AMS LIQUID_MAP LIQUID_DAP LIQUID_POTASH INSECTICIDE FUNGICIDE GYPSUM COMPOST BIOSOLIDS CHICKEN_MANURE PELLETIZED_MANURE LIQUIDLIME" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="true">
                 <effectNode effectClass="PipeEffect" effectNode="pipeEffectFertilizer" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
                 <effectNode effectNode="pipeEffectSmokeFertilizer" materialType="unloadingSmoke" fadeTime="0.5"/>
             </loadTrigger>
@@ -222,16 +477,22 @@
     </productionPoint>
 
     <buyingStation node="buyingStation" supportsExtension="false">
-        <loadTrigger triggerNode="loadingTriggerBuying" fillTypes="FERTILIZER POTASSIUM_CHLORIDE" fillLitersPerSecond="1000" infiniteCapacity="true" stationName="$l10n_stationName_fertilizerChemBuying" aiNode="loadTriggerAINodeBuying" autoStart="false">
+        <loadTrigger triggerNode="loadingTriggerBuying" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE SLURRY COMPOST WATER" fillLitersPerSecond="1000" infiniteCapacity="true" stationName="$l10n_stationName_fertilizerChemBuying" aiNode="loadTriggerAINodeBuying" autoStart="false">
             <effectNode effectClass="PipeEffect" effectNode="pipeEffectBuying" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="0.8 0.8 1 0" controlPoint="3 0 0 0"/>
             <effectNode effectNode="pipeEffectSmokeBuying" materialType="unloadingSmoke" fadeTime="0.5"/>
         </loadTrigger>
-        <loadTrigger triggerNode="loadingTriggerBuyingChem" fillTypes="AMMONIA PHOSPHORIC_ACID UREA" fillLitersPerSecond="1000" infiniteCapacity="true" aiNode="loadTriggerAINodeBuying" autoStart="false"/>
+        <loadTrigger triggerNode="loadingTriggerBuyingChem" fillTypes="AMMONIA PHOSPHORIC_ACID UREA SULFUR" fillLitersPerSecond="1000" infiniteCapacity="true" aiNode="loadTriggerAINodeBuying" autoStart="false"/>
         <fillType name="FERTILIZER" priceScale="1"/>
         <fillType name="AMMONIA" priceScale="1"/>
         <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
         <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
         <fillType name="UREA" priceScale="1"/>
+        <fillType name="WATER" priceScale="1"/>
+        <fillType name="LIME" priceScale="1"/>
+        <fillType name="MANURE" priceScale="1"/>
+        <fillType name="SLURRY" priceScale="1"/>
+        <fillType name="COMPOST" priceScale="1"/>
+        <fillType name="SULFUR" priceScale="1"/>
     </buyingStation>
 
     <palletBuyingStation triggerNode="palletBuyingActivationTrigger">
@@ -240,6 +501,29 @@
         <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
         <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
         <fillType name="UREA" priceScale="1"/>
+        <fillType name="UAN32" priceScale="1"/>
+        <fillType name="UAN28" priceScale="1"/>
+        <fillType name="ANHYDROUS" priceScale="1"/>
+        <fillType name="STARTER" priceScale="1"/>
+        <fillType name="AN" priceScale="1"/>
+        <fillType name="AMS" priceScale="1"/>
+        <fillType name="MAP" priceScale="1"/>
+        <fillType name="DAP" priceScale="1"/>
+        <fillType name="POTASH" priceScale="1"/>
+        <fillType name="POLIFOSKA" priceScale="1"/>
+        <fillType name="LIQUID_UREA" priceScale="1"/>
+        <fillType name="LIQUID_AMS" priceScale="1"/>
+        <fillType name="LIQUID_MAP" priceScale="1"/>
+        <fillType name="LIQUID_DAP" priceScale="1"/>
+        <fillType name="LIQUID_POTASH" priceScale="1"/>
+        <fillType name="INSECTICIDE" priceScale="1"/>
+        <fillType name="FUNGICIDE" priceScale="1"/>
+        <fillType name="GYPSUM" priceScale="1"/>
+        <fillType name="COMPOST" priceScale="1"/>
+        <fillType name="BIOSOLIDS" priceScale="1"/>
+        <fillType name="CHICKEN_MANURE" priceScale="1"/>
+        <fillType name="PELLETIZED_MANURE" priceScale="1"/>
+        <fillType name="LIQUIDLIME" priceScale="1"/>
         <palletSpawner>
             <spawnPlaces>
                 <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" palletRotationOffset="0" maxLength="10"/>
@@ -264,27 +548,6 @@
         <colorConfiguration color="RUDOLFHOERMANN_LIGHTGREEN"/>
         <colorConfiguration color="RUDOLFHOERMANN_DARKBEIGE"/>
     </colorConfigurations>
-
-    <solarPanels>
-        <solarPanelsConfigurations title="$l10n_configuration_name">
-            <solarPanelsConfiguration name="$l10n_extras_nothing" isActive="false">
-                <objectChange node="solarPanels" visibilityActive="false"/>
-                <objectChange node="billboard" visibilityActive="false"/>
-            </solarPanelsConfiguration>
-            <solarPanelsConfiguration name="$l10n_extras_solar" isActive="true" price="55000" incomePerHour="75">
-                <objectChange node="solarPanels" visibilityActive="true"/>
-                <objectChange node="billboard" visibilityActive="false"/>
-            </solarPanelsConfiguration>
-            <solarPanelsConfiguration name="$l10n_extras_billboard" isActive="true" price="5000" incomePerHour="25">
-                <objectChange node="solarPanels" visibilityActive="false"/>
-                <objectChange node="billboard" visibilityActive="true"/>
-            </solarPanelsConfiguration>
-            <solarPanelsConfiguration name="$l10n_extras_both" isActive="true" price="60000" incomePerHour="100">
-                <objectChange node="solarPanels" visibilityActive="true"/>
-                <objectChange node="billboard" visibilityActive="true"/>
-            </solarPanelsConfiguration>
-        </solarPanelsConfigurations>
-    </solarPanels>
 
     <!-- The mod's own fertilizerDepot system layered on the production hall -->
     <fertilizerDepot playerTrigger="playerTriggerMarker" unloadTrigger="unloadTriggerMarkerFertilizer" productSpawnMarker="palletSpawner"/>
@@ -398,13 +661,6 @@
         <i3dMapping id="warningStripes04" node="0>15|3"/>
 
         <i3dMapping id="billboard" node="0>5|2"/>
-        <i3dMapping id="solarPanels" node="0>4|1"/>
-        <i3dMapping id="solar1" node="0>4|1|0"/>
-        <i3dMapping id="solar2" node="0>4|1|1"/>
-        <i3dMapping id="solar3" node="0>4|1|2"/>
-        <i3dMapping id="solar4" node="0>4|1|3"/>
-        <i3dMapping id="solar5" node="0>4|1|4"/>
-        <i3dMapping id="solar6" node="0>4|1|5"/>
 
         <i3dMapping id="grainGate" node="0>4|5|0"/>
         <i3dMapping id="bagSilo01" node="0>4|2|0"/>

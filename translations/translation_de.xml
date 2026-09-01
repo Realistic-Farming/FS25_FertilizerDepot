@@ -50,10 +50,7 @@
     <text name="fd_error_farm"   text="Hof nicht gefunden."/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Dünger-Befüllsilo"/>
-    <text name="fd_silo_function" text="Mit dem Anhänger vorfahren, um beliebigen Dünger zu befüllen. Benötigt ein Düngerdepot."/>
-    <text name="fd_silo_desc"     text="Das Dünger-Befüllsilo ist der zweite Teil des Düngerdepot-Systems. Stelle es in Feldnähe auf und fahre zum Befüllen vor."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Düngerdepot-Einstellungen"/>
     <text name="fd_settings_seasonal"   text="Saisonale Preise"/>
@@ -73,10 +70,7 @@
     <text name="fd_depot_select_btn" text="Auswählen"/>
     <text name="fd_depot_select_first" text="Wähle zuerst einen Fülltyp aus."/>
     <text name="fd_depot_order_set" text="Bestellung gesetzt: %s %.0fL - Geh zum Silo, um abzuholen."/>
-    <text name="fd_silo_collect_action" text="%s abholen (%.0fL)"/>
-    <text name="fd_silo_no_order" text="Keine ausstehende Bestellung. Bestätige zuerst einen Typ im Depot."/>
-    <text name="fd_silo_fill_confirm" text="%.0fL von %s abholen?&#10;&#10;Dein Fahrzeug wird befüllt."/>
-    <text name="fd_depot_sell_confirm" text="%.0fL von %s für %s an das Depot verkaufen?"/>
+                <text name="fd_depot_sell_confirm" text="%.0fL von %s für %s an das Depot verkaufen?"/>
     <text name="fd_depot_filling" text="%.0fL von %s werden in dein Fahrzeug gefüllt..."/>
     <text name="input_FD_INTERACT" text="Mit Düngerdepot interagieren"/>
     <text name="input_FD_HUD_DRAG" text="Liefer-HUD-Bearbeitungsmodus umschalten"/><text name="input_FD_TOGGLE_HUD" text="Liefer-HUD umschalten"/>    <text name="fd_products_tab" text="Produkte"/>
@@ -89,40 +83,9 @@
     <text name="fd_products_no_object" text="Kein physisches Objekt für diesen Typ registriert."/>
     <text name="fd_products_ordered" text="%d× %s %s bestellt - Lieferung zum Depot."/>
     <text name="fd_depot_selected" text="Ausgewählt"/>
-    <text name="fd_pickup_name" text="Düngerlieferant"/>
-    <text name="fd_pickup_function" text="Abholzone für Lieferbestellungen. In der Nähe des Ingame-Shops platzieren."/>
-    <text name="fd_col_needed" text="Benötigt"/>
-    <text name="fd_col_amount" text="Menge"/>
-    <text name="fd_col_revenue" text="Erlös"/>
-    <text name="fd_delivery_pickup_action" text="Lieferung abholen"/>
-    <text name="fd_delivery_no_pending" text="Keine ausstehende Lieferung."/>
-
+                <text name="fd_col_amount" text="Menge"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+            
     <!-- Delivery system, HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="Düngerlieferung"/>
-    <text name="fd_delivery_hud_pending" text="Fahre zur Abholzone, um deine Bestellung abzuholen"/>
-    <text name="fd_delivery_hud_loaded"  text="Kehre zu deinem Depot zurück, um die Lieferung abzuschließen"/>
-    <text name="fd_delivery_pickup_confirm" text="Lieferung für %s abholen?&#10;&#10;Die Ware wird eingelagert, wenn du zu deinem Depot zurückkehrst."/>
-    <text name="fd_delivery_order_confirm" text="Lieferbestellung für %d Fülltyp(en) aufgeben?&#10;&#10;Gesamtkosten bei Abholung: %s&#10;(10%% Liefergebühr enthalten)"/>
-    <text name="fd_delivery_cancel_confirm" text="Lieferbestellung stornieren?&#10;&#10;Eine Strafe von %s (20%% der Lieferkosten) wird abgezogen."/>
-    <text name="fd_delivery_complete_confirm" text="Lieferung abschließen und Depot auffüllen?&#10;&#10;Alle bestellten Fülltypen werden dem Lager hinzugefügt."/>
-    <text name="fd_delivery_no_pickup_placed" text="Platziere zuerst eine Düngerlieferant-Abholzone in der Nähe des Ingame-Shops."/>
-    <text name="fd_delivery_all_full" text="Alle Fülltypen sind auf Kapazität - keine Lieferung nötig."/>
-    <text name="fd_delivery_cost_summary" text="Basis: $%.2f  +  Gebühr: $%.2f  =  Gesamt: $%.2f"/>
-    <text name="fd_delivery_status_pending" text="Lieferung ausstehend - fahre zur Abholzone, um abzuholen  |  Stornostrafe: %s"/>
-    <text name="fd_delivery_status_ready" text="Lieferung bereit - klicken, um dein Depot aufzufüllen."/>
-    <text name="fd_delivery_status_park" text="Parke das Lieferfahrzeug innerhalb von 25 m der Entladezone  (%.0fm entfernt)"/>
-    <text name="fd_delivery_status_return" text="Kehre zum Depot zurück und parke nahe der Entladezone."/>
-    <text name="fd_delivery_place_btn" text="Lieferbestellung aufgeben"/>
-    <text name="fd_delivery_cancel_btn" text="Bestellung stornieren"/>
-    <text name="fd_delivery_complete_btn" text="Lieferung abschließen"/>
-    <text name="fd_delivery_order_placed" text="Bestellung aufgegeben - fahre zur Abholzone."/>
-    <text name="fd_delivery_cancelled" text="Lieferung storniert."/>
-    <text name="fd_delivery_completing" text="Lieferung abgeschlossen! Bestand wurde hinzugefügt."/>
-    <text name="fd_delivery_already_active" text="Eine Lieferung ist bereits aktiv."/>
-    <text name="fd_delivery_no_pickup" text="Auf dieser Karte ist keine Lieferant-Abholzone platziert."/>
-    <text name="fd_delivery_stock_full" text="Alle Fülltypen sind auf Kapazität - keine Lieferung nötig."/>
-    <text name="fd_delivery_none" text="Keine aktive Lieferung."/>
-    <text name="fd_delivery_wrong_status" text="Die Lieferung hat für diese Aktion nicht den richtigen Status."/>
-    <text name="fd_delivery_wrong_farm" text="Diese Lieferung gehört zu einem anderen Hof."/>
-    </texts>
+                                                                                                            </texts>
 </l10n>
