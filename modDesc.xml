@@ -109,9 +109,23 @@ Features:
     </placeableSpecializations>
 
     <placeableTypes>
-        <!-- Depot: walk-in building with settings dialog and storage management -->
+        <!-- fertilizerDepotProductionPoint: same machinery as the vendored hall's
+             productionPointPlus type. productionPoint already carries the
+             productionPoint + sellingStation + loadingStation specializations;
+             buyingStation + palletBuyingStation are added on top. Named with the
+             depot prefix so it cannot collide with the source pack's type if
+             both mods are ever installed together. -->
+        <type name="fertilizerDepotProductionPoint" parent="productionPoint" className="Placeable" filename="$dataS/scripts/placeables/Placeable.lua">
+            <specialization name="buyingStation"/>
+            <specialization name="palletBuyingStation"/>
+        </type>
+        <!-- Depot: the vendored fertilizer production hall with the FULL asset
+             machinery (production, selling, loading, buying, pallet buying,
+             solar panels, billboards, levers, colors) plus the mod's own
+             fertilizerDepot buy/store/sell system layered on top. -->
         <type name="fertilizerDepotType"
-              parent="simplePlaceable"
+              parent="fertilizerDepotProductionPoint"
+              className="Placeable"
               filename="$dataS/scripts/placeables/Placeable.lua">
             <specialization name="fertilizerDepot"/>
         </type>

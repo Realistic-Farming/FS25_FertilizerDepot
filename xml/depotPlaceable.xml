@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
     depotPlaceable.xml
-    Fertilizer Depot store building. Uses the vendored industrial fertilizer
-    production hall (i3d/fertilizerProduction_chem.i3d) as the storefront.
-    The hall carries the real functional nodes the mod needs:
-      playerTrigger      -> playerTriggerMarker (0>16|0|0, the shop entrance)
-      unloadTrigger      -> unloadTriggerMarkerFertilizer (0>13|1|3, vehicle unload zone)
-      productSpawnMarker -> palletSpawner (0>18, product output zone)
-    The hall's dynamic parts (metal hall props, solar panels, bag silos, silo
-    bridge) are included; the pack's production chains, fill types, selling
-    stations and trailers are not part of the depot.
+    Fertilizer Depot store building: the vendored industrial fertilizer
+    production hall with its FULL machinery (production chains, selling,
+    loading, buying, pallet buying, solar panels, billboards, levers, colors),
+    plus the mod's own fertilizerDepot buy/store/sell system layered on top.
+    The mod's functional nodes map onto the hall's real nodes:
+      playerTrigger      -> playerTriggerMarker (0>16|0|0)
+      unloadTrigger      -> unloadTriggerMarkerFertilizer (0>13|1|3)
+      productSpawnMarker -> palletSpawner (0>18)
 -->
 <placeable type="fertilizerDepotType">
 
@@ -61,13 +60,37 @@
         </levelAreas>
         <paintAreas>
             <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01"
-                       heightNode="paintAreaHeight01" groundType="asphalt"/>
+                       heightNode="paintAreaHeight01" groundType="grass"/>
+            <paintArea startNode="paintAreaStart02" widthNode="paintAreaWidth02"
+                       heightNode="paintAreaHeight02" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart03" widthNode="paintAreaWidth03"
+                       heightNode="paintAreaHeight03" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart04" widthNode="paintAreaWidth04"
+                       heightNode="paintAreaHeight04" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart05" widthNode="paintAreaWidth05"
+                       heightNode="paintAreaHeight05" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart06" widthNode="paintAreaWidth06"
+                       heightNode="paintAreaHeight06" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart07" widthNode="paintAreaWidth07"
+                       heightNode="paintAreaHeight07" groundType="asphalt"/>
         </paintAreas>
     </leveling>
+
+    <foliageAreas>
+        <foliageArea startNode="foliageAreaStart01" widthNode="foliageAreaWidth01" heightNode="foliageAreaHeight01" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart02" widthNode="foliageAreaWidth02" heightNode="foliageAreaHeight02" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart03" widthNode="foliageAreaWidth03" heightNode="foliageAreaHeight03" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart04" widthNode="foliageAreaWidth04" heightNode="foliageAreaHeight04" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart05" widthNode="foliageAreaWidth05" heightNode="foliageAreaHeight05" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+    </foliageAreas>
 
     <indoorAreas>
         <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01"/>
     </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01"/>
+    </tipOcclusionUpdateAreas>
 
     <ai>
         <updateAreas>
@@ -75,97 +98,326 @@
         </updateAreas>
     </ai>
 
-    <tipOcclusionUpdateAreas>
-        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01"
-                                endNode="tipOcclusionUpdateAreaEnd01"/>
-    </tipOcclusionUpdateAreas>
+    <infoTrigger triggerNode="infoTrigger"/>
 
-    <!-- The hall's own dynamic parts: metal hall props, solar panels, bag silos, silo bridge -->
-    <dynamicallyLoadedParts>
-        <dynamicallyLoadedPart filename="i3d/metalHall_props.i3d"  node="0" linkNode="props"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar1"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar2"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar3"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar4"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar5"/>
-        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar6"/>
-        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d"         node="0" linkNode="bagSilo01"/>
-        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d"         node="0" linkNode="bagSilo02"/>
-        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d"      node="0" linkNode="siloBridge01"/>
-        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d"      node="0" linkNode="siloBridge02"/>
-    </dynamicallyLoadedParts>
-
-    <!-- Player dialog trigger at the shop entrance; vehicle unload + product
-         spawn use the hall's own real nodes. -->
-    <fertilizerDepot playerTrigger="playerTriggerMarker" unloadTrigger="unloadTriggerMarkerFertilizer" productSpawnMarker="palletSpawner"/>
-
-    <!-- Map hotspot anchored at the vehicle unload zone -->
     <hotspots>
-        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarkerFertilizer"/>
+        <hotspot type="PRODUCTION_POINT" linkNode="worldPosition" teleportNode="playerTriggerMarker"/>
+        <hotspot type="UNLOADING" linkNode="exactFillNodeManure" teleportNode="exactFillNodeManure"/>
+        <hotspot type="UNLOADING" linkNode="exactFillNodeFertilizer" teleportNode="exactFillNodeFertilizer"/>
+        <hotspot type="LOADING" linkNode="loadingTriggerFertilizer" teleportNode="loadingTriggerFertilizer"/>
+        <hotspot type="LOADING" linkNode="loadingTriggerBuying" teleportNode="loadingTriggerBuying"/>
+        <hotspot type="SHOP" linkNode="palletBuyingActivationTriggerMarker" teleportNode="palletBuyingActivationTriggerMarker"/>
     </hotspots>
 
-    <!-- In-world markers -->
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="i3d/metalHall_props.i3d" node="0" linkNode="props"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar1"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar2"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar3"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar4"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar5"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d" node="0" linkNode="solar6"/>
+        <dynamicallyLoadedPart filename="$data/placeables/shared/sellingStationGeneric/sellingStationGenericNoCoverWideGrid.i3d" node="0" linkNode="grainGate"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo01"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo02"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d" node="0" linkNode="siloBridge01"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d" node="0" linkNode="siloBridge02"/>
+    </dynamicallyLoadedParts>
+
     <triggerMarkers>
-        <!-- Vehicle/trailer zone: park here to buy or sell -->
-        <triggerMarker node="unloadTriggerMarkerFertilizer"
-                       filename="$data/shared/assets/marker/markerIconLoad.i3d"
-                       adjustToGround="true"/>
-        <!-- Product output zone: bags/tanks spawn here -->
-        <triggerMarker node="palletSpawner"
-                       filename="$data/shared/assets/marker/markerIconPallet.i3d"
-                       adjustToGround="true"/>
-        <triggerMarker node="playerTriggerMarker"
-                       filename="$data/shared/assets/marker/markerIconWrench.i3d"
-                       adjustToGround="true"/>
+        <triggerMarker node="unloadTriggerMarkerManure" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="unloadTriggerMarkerFertilizer" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="loadTriggerMarkerFertilizer" adjustToGround="true" filename="$data/shared/assets/marker/markerIconLoad.i3d"/>
+        <triggerMarker node="loadTriggerMarkerBuying" adjustToGround="true" filename="$data/shared/assets/marker/markerIconLoad.i3d"/>
+        <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="palletBuyingActivationTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconShopping.i3d"/>
         <triggerMarker node="warningStripes01"/>
+        <triggerMarker node="warningStripes02"/>
+        <triggerMarker node="warningStripes03"/>
+        <triggerMarker node="warningStripes04"/>
     </triggerMarkers>
 
+    <animatedObjects>
+        <animatedObject saveId="leverSpawner1">
+            <animation duration="1.0">
+                <part node="lever01">
+                    <keyFrame time="0.0" rotation="0 0 40"/>
+                    <keyFrame time="1.0" rotation="0 0 -40"/>
+                </part>
+                <part node="informationBillboard01">
+                    <keyFrame time="0.0" visibility="true"/>
+                    <keyFrame time="1.0" visibility="false"/>
+                </part>
+            </animation>
+            <controls triggerNode="leverTrigger01" posAction="ACTIVATE_HANDTOOL" posText="action_turnOnInformation" negText="action_turnOffInformation"/>
+        </animatedObject>
+        <animatedObject saveId="leverSpawner2">
+            <animation duration="1.0">
+                <part node="lever02">
+                    <keyFrame time="0.0" rotation="0 0 40"/>
+                    <keyFrame time="1.0" rotation="0 0 -40"/>
+                </part>
+                <part node="informationBillboard02">
+                    <keyFrame time="0.0" visibility="true"/>
+                    <keyFrame time="1.0" visibility="false"/>
+                </part>
+            </animation>
+            <controls triggerNode="leverTrigger02" posAction="ACTIVATE_HANDTOOL" posText="action_turnOnBillboard" negText="action_turnOffBillboard"/>
+        </animatedObject>
+    </animatedObjects>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <production id="fertilizer_ammonia" name="%s (%s + %s + %s)" params="$l10n_fillType_fertilizer|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid|$l10n_fillType_potassiumChloride" cyclesPerHour="5" costsPerActiveHour="12">
+                <inputs>
+                    <input fillType="AMMONIA" amount="333"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="333"/>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="333"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FERTILIZER" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="fertilizer_urea" name="%s (%s + %s + %s)" params="$l10n_fillType_fertilizer|$l10n_fillType_urea|$l10n_fillType_phosphoricAcid|$l10n_fillType_potassiumChloride" cyclesPerHour="5" costsPerActiveHour="12">
+                <inputs>
+                    <input fillType="UREA" amount="333"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="333"/>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="333"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FERTILIZER" amount="1000"/>
+                </outputs>
+            </production>
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="AMMONIA" capacity="100000"/>
+            <capacity fillType="PHOSPHORIC_ACID" capacity="100000"/>
+            <capacity fillType="POTASSIUM_CHLORIDE" capacity="100000"/>
+            <capacity fillType="UREA" capacity="100000"/>
+            <capacity fillType="FERTILIZER" capacity="1000000"/>
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false" allowMissions="true">
+            <unloadTrigger exactFillRootNode="exactFillNodeManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA" allowMissions="true" stationName="$l10n_stationName_fertilizerChemIn"/>
+            <palletTrigger triggerNode="palletTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA"/>
+            <baleTrigger triggerNode="baleTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA"/>
+            <unloadTrigger exactFillRootNode="exactFillNodeFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE" allowMissions="false" stationName="$l10n_stationName_fertilizerManureChemIn"/>
+            <palletTrigger triggerNode="palletTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE"/>
+            <baleTrigger triggerNode="baleTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE"/>
+        </sellingStation>
+
+        <loadingStation node="loadingStation" supportsExtension="false">
+            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="true">
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffectFertilizer" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
+                <effectNode effectNode="pipeEffectSmokeFertilizer" materialType="unloadingSmoke" fadeTime="0.5"/>
+            </loadTrigger>
+        </loadingStation>
+
+        <playerTrigger node="playerTrigger"/>
+        <sounds>
+            <idle template="placeableSmallIdleGeneric" linkNode="0>"/>
+            <active template="feedingRobotLoop" linkNode="0>"/>
+        </sounds>
+    </productionPoint>
+
+    <buyingStation node="buyingStation" supportsExtension="false">
+        <loadTrigger triggerNode="loadingTriggerBuying" fillTypes="FERTILIZER POTASSIUM_CHLORIDE" fillLitersPerSecond="1000" infiniteCapacity="true" stationName="$l10n_stationName_fertilizerChemBuying" aiNode="loadTriggerAINodeBuying" autoStart="false">
+            <effectNode effectClass="PipeEffect" effectNode="pipeEffectBuying" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="0.8 0.8 1 0" controlPoint="3 0 0 0"/>
+            <effectNode effectNode="pipeEffectSmokeBuying" materialType="unloadingSmoke" fadeTime="0.5"/>
+        </loadTrigger>
+        <loadTrigger triggerNode="loadingTriggerBuyingChem" fillTypes="AMMONIA PHOSPHORIC_ACID UREA" fillLitersPerSecond="1000" infiniteCapacity="true" aiNode="loadTriggerAINodeBuying" autoStart="false"/>
+        <fillType name="FERTILIZER" priceScale="1"/>
+        <fillType name="AMMONIA" priceScale="1"/>
+        <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
+        <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
+        <fillType name="UREA" priceScale="1"/>
+    </buyingStation>
+
+    <palletBuyingStation triggerNode="palletBuyingActivationTrigger">
+        <fillType name="FERTILIZER" priceScale="1"/>
+        <fillType name="AMMONIA" priceScale="1"/>
+        <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
+        <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
+        <fillType name="UREA" priceScale="1"/>
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" palletRotationOffset="0" maxLength="10"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" palletRotationOffset="0" maxLength="10"/>
+            </spawnPlaces>
+        </palletSpawner>
+    </palletBuyingStation>
+
+    <colorConfigurations defaultColorIndex="14" useDefaultColors="false">
+        <material slotName="metalWall"/>
+        <colorConfiguration color="RUDOLFHOERMANN_GREEN"/>
+        <colorConfiguration color="RUDOLFHOERMANN_BEIGE"/>
+        <colorConfiguration color="RUDOLFHOERMANN_RED"/>
+        <colorConfiguration color="RUDOLFHOERMANN_BLUE"/>
+        <colorConfiguration color="RUDOLFHOERMANN_DARKGREY"/>
+        <colorConfiguration color="RUDOLFHOERMANN_LIGHTGREY"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WHITEALU"/>
+        <colorConfiguration color="RUDOLFHOERMANN_GREYALU"/>
+        <colorConfiguration color="RUDOLFHOERMANN_OXIDRED"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WOODDARK"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WOODBRIGHT"/>
+        <colorConfiguration color="RUDOLFHOERMANN_LIGHTGREEN"/>
+        <colorConfiguration color="RUDOLFHOERMANN_DARKBEIGE"/>
+    </colorConfigurations>
+
+    <solarPanels>
+        <solarPanelsConfigurations title="$l10n_configuration_name">
+            <solarPanelsConfiguration name="$l10n_extras_nothing" isActive="false">
+                <objectChange node="solarPanels" visibilityActive="false"/>
+                <objectChange node="billboard" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_extras_solar" isActive="true" price="55000" incomePerHour="75">
+                <objectChange node="solarPanels" visibilityActive="true"/>
+                <objectChange node="billboard" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_extras_billboard" isActive="true" price="5000" incomePerHour="25">
+                <objectChange node="solarPanels" visibilityActive="false"/>
+                <objectChange node="billboard" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_extras_both" isActive="true" price="60000" incomePerHour="100">
+                <objectChange node="solarPanels" visibilityActive="true"/>
+                <objectChange node="billboard" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+        </solarPanelsConfigurations>
+    </solarPanels>
+
+    <!-- The mod's own fertilizerDepot system layered on the production hall -->
+    <fertilizerDepot playerTrigger="playerTriggerMarker" unloadTrigger="unloadTriggerMarkerFertilizer" productSpawnMarker="palletSpawner"/>
+
     <i3dMappings>
-        <!-- Clear / level / paint areas -->
-        <i3dMapping id="clearAreaStart01"  node="0>6|0"/>
-        <i3dMapping id="clearAreaWidth01"  node="0>6|0|0"/>
+        <i3dMapping id="worldPosition" node="0>"/>
+
+        <i3dMapping id="props" node="0>4|0"/>
+
+        <i3dMapping id="clearAreaStart01" node="0>6|0"/>
+        <i3dMapping id="clearAreaWidth01" node="0>6|0|0"/>
         <i3dMapping id="clearAreaHeight01" node="0>6|0|1"/>
 
-        <i3dMapping id="levelAreaStart01"  node="0>7|0"/>
-        <i3dMapping id="levelAreaWidth01"  node="0>7|0|0"/>
+        <i3dMapping id="levelAreaStart01" node="0>7|0"/>
+        <i3dMapping id="levelAreaWidth01" node="0>7|0|0"/>
         <i3dMapping id="levelAreaHeight01" node="0>7|0|1"/>
 
-        <i3dMapping id="paintAreaStart01"  node="0>8|0"/>
-        <i3dMapping id="paintAreaWidth01"  node="0>8|0|0"/>
+        <i3dMapping id="paintAreaStart01" node="0>8|0"/>
+        <i3dMapping id="paintAreaWidth01" node="0>8|0|0"/>
         <i3dMapping id="paintAreaHeight01" node="0>8|0|1"/>
+        <i3dMapping id="paintAreaStart02" node="0>8|1"/>
+        <i3dMapping id="paintAreaWidth02" node="0>8|1|0"/>
+        <i3dMapping id="paintAreaHeight02" node="0>8|1|1"/>
+        <i3dMapping id="paintAreaStart03" node="0>8|2"/>
+        <i3dMapping id="paintAreaWidth03" node="0>8|2|0"/>
+        <i3dMapping id="paintAreaHeight03" node="0>8|2|1"/>
+        <i3dMapping id="paintAreaStart04" node="0>8|3"/>
+        <i3dMapping id="paintAreaWidth04" node="0>8|3|0"/>
+        <i3dMapping id="paintAreaHeight04" node="0>8|3|1"/>
+        <i3dMapping id="paintAreaStart05" node="0>8|4"/>
+        <i3dMapping id="paintAreaWidth05" node="0>8|4|0"/>
+        <i3dMapping id="paintAreaHeight05" node="0>8|4|1"/>
+        <i3dMapping id="paintAreaStart06" node="0>8|5"/>
+        <i3dMapping id="paintAreaWidth06" node="0>8|5|0"/>
+        <i3dMapping id="paintAreaHeight06" node="0>8|5|1"/>
+        <i3dMapping id="paintAreaStart07" node="0>8|6"/>
+        <i3dMapping id="paintAreaWidth07" node="0>8|6|0"/>
+        <i3dMapping id="paintAreaHeight07" node="0>8|6|1"/>
 
-        <!-- Indoor area -->
-        <i3dMapping id="indoorAreaStart01"  node="0>9|0"/>
-        <i3dMapping id="indoorAreaWidth01"  node="0>9|0|0"/>
+        <i3dMapping id="foliageAreaStart01" node="0>19|0"/>
+        <i3dMapping id="foliageAreaWidth01" node="0>19|0|0"/>
+        <i3dMapping id="foliageAreaHeight01" node="0>19|0|1"/>
+        <i3dMapping id="foliageAreaStart02" node="0>19|1"/>
+        <i3dMapping id="foliageAreaWidth02" node="0>19|1|0"/>
+        <i3dMapping id="foliageAreaHeight02" node="0>19|1|1"/>
+        <i3dMapping id="foliageAreaStart03" node="0>19|2"/>
+        <i3dMapping id="foliageAreaWidth03" node="0>19|2|0"/>
+        <i3dMapping id="foliageAreaHeight03" node="0>19|2|1"/>
+        <i3dMapping id="foliageAreaStart04" node="0>19|3"/>
+        <i3dMapping id="foliageAreaWidth04" node="0>19|3|0"/>
+        <i3dMapping id="foliageAreaHeight04" node="0>19|3|1"/>
+        <i3dMapping id="foliageAreaStart05" node="0>19|4"/>
+        <i3dMapping id="foliageAreaWidth05" node="0>19|4|0"/>
+        <i3dMapping id="foliageAreaHeight05" node="0>19|4|1"/>
+
+        <i3dMapping id="indoorAreaStart01" node="0>9|0"/>
+        <i3dMapping id="indoorAreaWidth01" node="0>9|0|0"/>
         <i3dMapping id="indoorAreaHeight01" node="0>9|0|1"/>
 
-        <!-- Test areas -->
         <i3dMapping id="testAreaStart01" node="0>10|0"/>
-        <i3dMapping id="testAreaEnd01"   node="0>10|0|0"/>
+        <i3dMapping id="testAreaEnd01" node="0>10|0|0"/>
 
-        <!-- Tip occlusion -->
         <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>11|0"/>
-        <i3dMapping id="tipOcclusionUpdateAreaEnd01"   node="0>11|0|0"/>
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>11|0|0"/>
 
-        <!-- Dynamic parts -->
-        <i3dMapping id="props"          node="0>4|0"/>
-        <i3dMapping id="solarPanels"    node="0>4|1"/>
-        <i3dMapping id="solar1"         node="0>4|1|0"/>
-        <i3dMapping id="solar2"         node="0>4|1|1"/>
-        <i3dMapping id="solar3"         node="0>4|1|2"/>
-        <i3dMapping id="solar4"         node="0>4|1|3"/>
-        <i3dMapping id="solar5"         node="0>4|1|4"/>
-        <i3dMapping id="solar6"         node="0>4|1|5"/>
-        <i3dMapping id="bagSilo01"      node="0>4|2|0"/>
-        <i3dMapping id="bagSilo02"      node="0>4|2|1"/>
-        <i3dMapping id="siloBridge01"   node="0>4|3|0"/>
-        <i3dMapping id="siloBridge02"   node="0>4|3|1"/>
+        <i3dMapping id="infoTrigger" node="0>17"/>
 
-        <!-- Functional nodes (mod's own) -->
-        <i3dMapping id="playerTriggerMarker"       node="0>16|0|0"/>
+        <i3dMapping id="sellingStation" node="0>13"/>
+        <i3dMapping id="exactFillNodeManure" node="0>13|0|0"/>
+        <i3dMapping id="palletTriggerManure" node="0>13|0|1"/>
+        <i3dMapping id="baleTriggerManure" node="0>13|0|2"/>
+        <i3dMapping id="unloadTriggerAINodeManure" node="0>13|0|4"/>
+        <i3dMapping id="unloadTriggerMarkerManure" node="0>13|0|3"/>
+        <i3dMapping id="exactFillNodeFertilizer" node="0>13|1|0"/>
+        <i3dMapping id="palletTriggerFertilizer" node="0>13|1|1"/>
+        <i3dMapping id="baleTriggerFertilizer" node="0>13|1|2"/>
+        <i3dMapping id="unloadTriggerAINodeFertilizer" node="0>13|1|4"/>
         <i3dMapping id="unloadTriggerMarkerFertilizer" node="0>13|1|3"/>
-        <i3dMapping id="palletSpawner"             node="0>18"/>
-        <i3dMapping id="warningStripes01"          node="0>15|0"/>
+
+        <i3dMapping id="loadingStation" node="0>14|0"/>
+        <i3dMapping id="loadingTriggerFertilizer" node="0>14|0|0"/>
+        <i3dMapping id="dischargeNodeFertilizer" node="0>14|0|1"/>
+        <i3dMapping id="pipeEffectFertilizer" node="0>14|0|2|0"/>
+        <i3dMapping id="pipeEffectSmokeFertilizer" node="0>14|0|2|1"/>
+        <i3dMapping id="loadTriggerAINodeFertilizer" node="0>14|0|3"/>
+        <i3dMapping id="loadTriggerMarkerFertilizer" node="0>14|0|4"/>
+
+        <i3dMapping id="buyingStation" node="0>14|1"/>
+        <i3dMapping id="loadingTriggerBuying" node="0>14|1|0"/>
+        <i3dMapping id="dischargeNodeBuying" node="0>14|1|1"/>
+        <i3dMapping id="pipeEffectBuying" node="0>14|1|2|0"/>
+        <i3dMapping id="pipeEffectSmokeBuying" node="0>14|1|2|1"/>
+        <i3dMapping id="loadTriggerAINodeBuying" node="0>14|1|3"/>
+        <i3dMapping id="loadTriggerMarkerBuying" node="0>14|1|4"/>
+        <i3dMapping id="loadingTriggerBuyingChem" node="0>14|2|0"/>
+
+        <i3dMapping id="playerTrigger" node="0>16|0"/>
+        <i3dMapping id="playerTriggerMarker" node="0>16|0|0"/>
+
+        <i3dMapping id="palletSpawner" node="0>18"/>
+        <i3dMapping id="palletAreaStart01" node="0>18|0"/>
+        <i3dMapping id="palletAreaEnd01" node="0>18|0|0"/>
+        <i3dMapping id="palletAreaStart02" node="0>18|1"/>
+        <i3dMapping id="palletAreaEnd02" node="0>18|1|0"/>
+        <i3dMapping id="palletBuyingActivationTriggerMarker" node="0>18|2|0"/>
+        <i3dMapping id="palletBuyingActivationTrigger" node="0>18|2"/>
+
+        <i3dMapping id="warningStripes01" node="0>15|0"/>
+        <i3dMapping id="warningStripes02" node="0>15|1"/>
+        <i3dMapping id="warningStripes03" node="0>15|2"/>
+        <i3dMapping id="warningStripes04" node="0>15|3"/>
+
+        <i3dMapping id="billboard" node="0>5|2"/>
+        <i3dMapping id="solarPanels" node="0>4|1"/>
+        <i3dMapping id="solar1" node="0>4|1|0"/>
+        <i3dMapping id="solar2" node="0>4|1|1"/>
+        <i3dMapping id="solar3" node="0>4|1|2"/>
+        <i3dMapping id="solar4" node="0>4|1|3"/>
+        <i3dMapping id="solar5" node="0>4|1|4"/>
+        <i3dMapping id="solar6" node="0>4|1|5"/>
+
+        <i3dMapping id="grainGate" node="0>4|5|0"/>
+        <i3dMapping id="bagSilo01" node="0>4|2|0"/>
+        <i3dMapping id="bagSilo02" node="0>4|2|1"/>
+        <i3dMapping id="siloBridge01" node="0>4|3|0"/>
+        <i3dMapping id="siloBridge02" node="0>4|3|1"/>
+
+        <i3dMapping id="lever01" node="0>20|0|0|0"/>
+        <i3dMapping id="lever02" node="0>20|1|0|0"/>
+        <i3dMapping id="leverTrigger01" node="0>20|0|1"/>
+        <i3dMapping id="leverTrigger02" node="0>20|1|1"/>
+        <i3dMapping id="informationBillboard01" node="0>5|3"/>
+        <i3dMapping id="informationBillboard02" node="0>5|4"/>
     </i3dMappings>
 
 </placeable>

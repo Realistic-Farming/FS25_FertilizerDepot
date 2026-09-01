@@ -9,6 +9,31 @@
     <!-- Interaction prompt (shown when player is near building) -->
     <text name="fd_depot_open_action" text="Open Fertilizer Depot"/>
 
+    <!-- Production hall: fill types -->
+    <text name="fillType_ammonia"              text="Ammonia"/>
+    <text name="fillType_phosphoricAcid"       text="Phosphoric acid"/>
+    <text name="fillType_potassiumChloride"    text="Potassium chloride"/>
+    <text name="fillType_urea"                 text="Urea"/>
+
+    <!-- Production hall: stations -->
+    <text name="stationName_fertilizerChemIn"          text="Fertilizer depot - Chemical input"/>
+    <text name="stationName_fertilizerManureChemIn"    text="Fertilizer depot - Fertilizer storage"/>
+    <text name="stationName_fertilizerCemStorageOut"   text="Fertilizer depot - Production and storage output"/>
+    <text name="stationName_fertilizerChemBuying"      text="Fertilizer depot - Fertilizer buying"/>
+
+    <!-- Production hall: levers and info boards -->
+    <text name="action_turnOnInformation"  text="Show loading point info boards"/>
+    <text name="action_turnOffInformation" text="Hide loading point info boards"/>
+    <text name="action_turnOnBillboard"    text="Show production info boards"/>
+    <text name="action_turnOffBillboard"   text="Hide production info boards"/>
+
+    <!-- Production hall: solar panel and billboard extras -->
+    <text name="configuration_name" text="Solar panel and advertising board"/>
+    <text name="extras_nothing"     text="No extras"/>
+    <text name="extras_solar"       text="Solar panel"/>
+    <text name="extras_billboard"   text="Advertising board"/>
+    <text name="extras_both"        text="Solar panel and advertising board"/>
+
     <!-- Dialog -->
     <text name="fd_depot_title"       text="Fertilizer Depot"/>
     <text name="fd_depot_buy"         text="Buy"/>
