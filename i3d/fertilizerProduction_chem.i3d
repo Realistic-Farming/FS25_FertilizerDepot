@@ -45,12 +45,22 @@
     <File fileId="43" filename="$data/shared/warningStripes_diffuse.png"/>
     <File fileId="44" filename="$data/shared/warningStripes_normal.png"/>
     <File fileId="45" filename="$data/shared/warningStripes_specular.png"/>
+    <File fileId="49" filename="../textures/billboard_credits_diffuse.dds"/>
+    <File fileId="50" filename="../textures/billboard_main_diffuse.dds"/>
   </Files>
 
 
   <Materials>
     <Material name="ad2x1_01_mat" materialId="5">
       <Texture fileId="35"/>
+      <Normalmap fileId="32"/>
+    </Material>
+    <Material name="billboard_credits_mat" materialId="26">
+      <Texture fileId="49"/>
+      <Normalmap fileId="32"/>
+    </Material>
+    <Material name="billboard_main_mat" materialId="27">
+      <Texture fileId="50"/>
       <Normalmap fileId="32"/>
     </Material>
     <Material name="ad2x1_01_mat" materialId="6">
@@ -260,12 +270,12 @@
           <Shape name="billboardWall2x1" lockedgroup="true" translation="-4.78267 3.25322 -5.87282" rotation="0 -90 0" shapeId="27" clipDistance="350" nodeId="170" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="18">
             <Shape name="billboard3x2Vis" translation="0 0.0195319 -9.15527e-07" shapeId="28" clipDistance="350" nodeId="171" castsShadows="true" receiveShadows="true" materialIds="10"/>
             <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047485" shapeId="29" clipDistance="200" nodeId="172" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="8"/>
-            <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047" shapeId="29" clipDistance="200" nodeId="173" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="5"/>
+            <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047" shapeId="29" clipDistance="200" nodeId="173" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="27"/>
           </Shape>
           <Shape name="billboardWall2x1" lockedgroup="true" translation="4.77732 3.25322 -1.47035" rotation="0 90 0" shapeId="27" clipDistance="350" nodeId="174" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="18">
             <Shape name="billboard3x2Vis" translation="0 0.0195319 -9.15527e-07" shapeId="28" clipDistance="350" nodeId="175" castsShadows="true" receiveShadows="true" materialIds="10"/>
             <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047485" shapeId="29" clipDistance="200" nodeId="176" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="8"/>
-            <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047" shapeId="29" clipDistance="200" nodeId="177" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="5"/>
+            <Shape name="_2x1PanelDecal" translation="0.0507568 -2.48476 -0.047" shapeId="29" clipDistance="200" nodeId="177" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="26"/>
           </Shape>
         </TransformGroup>
       </TransformGroup>
