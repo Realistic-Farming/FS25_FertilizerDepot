@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
     depotPlaceable.xml
-    Fertilizer Depot store building. Uses the base-game mapUS/storage warehouse
-    (a proper agri-supply store, not the farmers market). The storage asset
-    carries the single clear/level/paint/indoor/test/tipOcclusion area set the
-    placeable needs; the mod's own functional nodes map onto the warehouse:
-      playerTrigger      -> infoTrigger (0>7, the walk-in door)
-      unloadTrigger      -> testAreaEnd01 (0>4|0|0, front vehicle zone)
-      productSpawnMarker -> props (0>8|0, interior product spawn)
-    The farmers-market gate/door animations do not exist on this asset and are
-    removed.
+    Fertilizer Depot store building. Uses the base-game brandless/farmerKioskBig
+    shop (a walk-in supply kiosk, not the farmers market). The kiosk carries the
+    real functional marker nodes the mod needs built in:
+      playerTrigger      -> palletTrigger (0>8|1, the shop interior/front zone)
+      unloadTrigger      -> unloadTriggerMarker (0>8|2, the vehicle unload zone)
+      productSpawnMarker -> palletTrigger (0>8|1, product output zone)
+    The kiosk's own clear/level/paint/indoor/test/tip-occlusion areas are used.
 -->
 <placeable type="fertilizerDepotType">
 
@@ -35,7 +33,7 @@
     </storeData>
 
     <base>
-        <filename>$data/placeables/mapUS/storage/storage.i3d</filename>
+        <filename>$data/placeables/brandless/farmerKioskBig/farmerKioskBig.i3d</filename>
         <canBeDeleted>true</canBeDeleted>
         <canBeRenamed>true</canBeRenamed>
     </base>
@@ -45,7 +43,7 @@
             <testArea startNode="testAreaStart01" endNode="testAreaEnd01"/>
         </testAreas>
         <sounds>
-            <place template="medImp" pitchScale="1.6"/>
+            <place template="medImp"/>
         </sounds>
     </placement>
 
@@ -54,7 +52,7 @@
                    heightNode="clearAreaHeight01"/>
     </clearAreas>
 
-    <leveling requireLeveling="true" maxSmoothDistance="5" maxSlope="75" maxEdgeAngle="30">
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30">
         <levelAreas>
             <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01"
                        heightNode="levelAreaHeight01" groundType="asphalt"/>
@@ -67,6 +65,7 @@
 
     <indoorAreas>
         <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01"/>
+        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02"/>
     </indoorAreas>
 
     <ai>
@@ -81,23 +80,27 @@
     </tipOcclusionUpdateAreas>
 
     <lights>
-        <lightShape node="interior" groupIndex="1"/>
+        <group weatherRequiredFlags="NIGHT"/>
+        <sharedLight linkNode="linkNode01" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
+        <sharedLight linkNode="linkNode02" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
+        <sharedLight linkNode="linkNode03" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
+        <sharedLight linkNode="linkNode04" filename="$data/shared/assets/lights/lizard/buildings/industrialLight05.xml" groupIndex="1"/>
+        <sharedLight linkNode="linkNode05" filename="$data/shared/assets/lights/lizard/buildings/industrialLight05.xml" groupIndex="1"/>
         <realLights>
             <low>
                 <light node="realLightsLow" groupIndex="1"/>
             </low>
             <high>
-                <light node="realLightsLow" groupIndex="1"/>
+                <light node="realLightsHigh" groupIndex="1"/>
             </high>
         </realLights>
-        <group name="$l10n_action_placeableLightShed" activateTime="17:30" deactivateTime="8:20"/>
     </lights>
 
-    <!-- Player dialog trigger at the walk-in door; vehicle unload + product
-         spawn zones anchored on the warehouse front and interior. -->
-    <fertilizerDepot playerTrigger="infoTrigger" unloadTrigger="unloadTriggerMarker" productSpawnMarker="palletTrigger"/>
+    <!-- Player dialog trigger at the shop front; vehicle unload + product spawn
+         use the kiosk's own real nodes. -->
+    <fertilizerDepot playerTrigger="palletTrigger" unloadTrigger="unloadTriggerMarker" productSpawnMarker="palletTrigger"/>
 
-    <!-- Map hotspot anchored at the front vehicle zone -->
+    <!-- Map hotspot anchored at the vehicle unload zone -->
     <hotspots>
         <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker"/>
     </hotspots>
@@ -112,13 +115,11 @@
         <triggerMarker node="palletTrigger"
                        filename="$data/shared/assets/marker/markerIconPallet.i3d"
                        adjustToGround="true"/>
-        <triggerMarker node="infoTrigger"
-                       filename="$data/shared/assets/marker/markerIconWrench.i3d"
-                       adjustToGround="true"/>
+        <triggerMarker node="warningStripes01"/>
     </triggerMarkers>
 
     <i3dMappings>
-        <!-- Clear / level / paint areas (storage asset) -->
+        <!-- Clear / level / paint areas (kiosk asset) -->
         <i3dMapping id="clearAreaStart01"  node="0>0|0"/>
         <i3dMapping id="clearAreaWidth01"  node="0>0|0|0"/>
         <i3dMapping id="clearAreaHeight01" node="0>0|0|1"/>
@@ -131,10 +132,13 @@
         <i3dMapping id="paintAreaWidth01"  node="0>2|0|0"/>
         <i3dMapping id="paintAreaHeight01" node="0>2|0|1"/>
 
-        <!-- Indoor area -->
+        <!-- Indoor areas -->
         <i3dMapping id="indoorAreaStart01"  node="0>3|0"/>
         <i3dMapping id="indoorAreaWidth01"  node="0>3|0|0"/>
         <i3dMapping id="indoorAreaHeight01" node="0>3|0|1"/>
+        <i3dMapping id="indoorAreaStart02"  node="0>3|1"/>
+        <i3dMapping id="indoorAreaWidth02"  node="0>3|1|0"/>
+        <i3dMapping id="indoorAreaHeight02" node="0>3|1|1"/>
 
         <!-- Test areas -->
         <i3dMapping id="testAreaStart01" node="0>4|0"/>
@@ -145,13 +149,17 @@
         <i3dMapping id="tipOcclusionUpdateAreaEnd01"   node="0>5|0|0"/>
 
         <!-- Lights -->
-        <i3dMapping id="realLightsLow" node="0>6|0|0"/>
-        <i3dMapping id="interior"      node="0>6|0|1|0"/>
+        <i3dMapping id="realLightsLow"  node="0>7|0|0"/>
+        <i3dMapping id="realLightsHigh" node="0>7|0|1"/>
+        <i3dMapping id="linkNode01" node="0>7|1|0"/>
+        <i3dMapping id="linkNode02" node="0>7|1|1"/>
+        <i3dMapping id="linkNode03" node="0>7|1|2"/>
+        <i3dMapping id="linkNode04" node="0>7|1|3"/>
+        <i3dMapping id="linkNode05" node="0>7|1|4"/>
 
         <!-- Functional nodes (mod's own) -->
-        <i3dMapping id="infoTrigger"          node="0>7"/>
-        <i3dMapping id="unloadTriggerMarker"  node="0>4|0|0"/>
-        <i3dMapping id="palletTrigger"        node="0>8|0"/>
+        <i3dMapping id="palletTrigger"       node="0>8|1"/>
+        <i3dMapping id="unloadTriggerMarker" node="0>8|2"/>
     </i3dMappings>
 
 </placeable>
