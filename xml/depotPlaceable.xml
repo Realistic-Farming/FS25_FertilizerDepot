@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
     depotPlaceable.xml
-    Fertilizer Depot store building. Uses the base-game brandless/farmerKioskBig
-    shop (a walk-in supply kiosk, not the farmers market). The kiosk carries the
-    real functional marker nodes the mod needs built in:
-      playerTrigger      -> palletTrigger (0>8|1, the shop interior/front zone)
-      unloadTrigger      -> unloadTriggerMarker (0>8|2, the vehicle unload zone)
-      productSpawnMarker -> palletTrigger (0>8|1, product output zone)
-    The kiosk's own clear/level/paint/indoor/test/tip-occlusion areas are used.
+    Fertilizer Depot store building. Uses the vendored industrial fertilizer
+    production hall (i3d/fertilizerProduction_chem.i3d) as the storefront.
+    The hall carries the real functional nodes the mod needs:
+      playerTrigger      -> playerTriggerMarker (0>16|0|0, the shop entrance)
+      unloadTrigger      -> unloadTriggerMarkerFertilizer (0>13|1|3, vehicle unload zone)
+      productSpawnMarker -> palletSpawner (0>18, product output zone)
+    The hall's dynamic parts (metal hall props, solar panels, bag silos, silo
+    bridge) are included; the pack's production chains, fill types, selling
+    stations and trailers are not part of the depot.
 -->
 <placeable type="fertilizerDepotType">
 
@@ -33,7 +35,7 @@
     </storeData>
 
     <base>
-        <filename>$data/placeables/brandless/farmerKioskBig/farmerKioskBig.i3d</filename>
+        <filename>i3d/fertilizerProduction_chem.i3d</filename>
         <canBeDeleted>true</canBeDeleted>
         <canBeRenamed>true</canBeRenamed>
     </base>
@@ -43,7 +45,7 @@
             <testArea startNode="testAreaStart01" endNode="testAreaEnd01"/>
         </testAreas>
         <sounds>
-            <place template="medImp"/>
+            <place template="smallImp"/>
         </sounds>
     </placement>
 
@@ -52,10 +54,10 @@
                    heightNode="clearAreaHeight01"/>
     </clearAreas>
 
-    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30">
+    <leveling requireLeveling="true" maxSmoothDistance="0" maxSlope="100" maxEdgeAngle="100">
         <levelAreas>
             <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01"
-                       heightNode="levelAreaHeight01" groundType="asphalt"/>
+                       heightNode="levelAreaHeight01"/>
         </levelAreas>
         <paintAreas>
             <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01"
@@ -65,7 +67,6 @@
 
     <indoorAreas>
         <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01"/>
-        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02"/>
     </indoorAreas>
 
     <ai>
@@ -79,87 +80,92 @@
                                 endNode="tipOcclusionUpdateAreaEnd01"/>
     </tipOcclusionUpdateAreas>
 
-    <lights>
-        <group weatherRequiredFlags="NIGHT"/>
-        <sharedLight linkNode="linkNode01" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
-        <sharedLight linkNode="linkNode02" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
-        <sharedLight linkNode="linkNode03" filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" groupIndex="1"/>
-        <sharedLight linkNode="linkNode04" filename="$data/shared/assets/lights/lizard/buildings/industrialLight05.xml" groupIndex="1"/>
-        <sharedLight linkNode="linkNode05" filename="$data/shared/assets/lights/lizard/buildings/industrialLight05.xml" groupIndex="1"/>
-        <realLights>
-            <low>
-                <light node="realLightsLow" groupIndex="1"/>
-            </low>
-            <high>
-                <light node="realLightsHigh" groupIndex="1"/>
-            </high>
-        </realLights>
-    </lights>
+    <!-- The hall's own dynamic parts: metal hall props, solar panels, bag silos, silo bridge -->
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="i3d/metalHall_props.i3d"  node="0" linkNode="props"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar1"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar2"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar3"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar4"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar5"/>
+        <dynamicallyLoadedPart filename="i3d/solarPanel.i3d"      node="0" linkNode="solar6"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d"         node="0" linkNode="bagSilo01"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d"         node="0" linkNode="bagSilo02"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d"      node="0" linkNode="siloBridge01"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d"      node="0" linkNode="siloBridge02"/>
+    </dynamicallyLoadedParts>
 
-    <!-- Player dialog trigger at the shop front; vehicle unload + product spawn
-         use the kiosk's own real nodes. -->
-    <fertilizerDepot playerTrigger="palletTrigger" unloadTrigger="unloadTriggerMarker" productSpawnMarker="palletTrigger"/>
+    <!-- Player dialog trigger at the shop entrance; vehicle unload + product
+         spawn use the hall's own real nodes. -->
+    <fertilizerDepot playerTrigger="playerTriggerMarker" unloadTrigger="unloadTriggerMarkerFertilizer" productSpawnMarker="palletSpawner"/>
 
     <!-- Map hotspot anchored at the vehicle unload zone -->
     <hotspots>
-        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker"/>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarkerFertilizer"/>
     </hotspots>
 
     <!-- In-world markers -->
     <triggerMarkers>
         <!-- Vehicle/trailer zone: park here to buy or sell -->
-        <triggerMarker node="unloadTriggerMarker"
+        <triggerMarker node="unloadTriggerMarkerFertilizer"
                        filename="$data/shared/assets/marker/markerIconLoad.i3d"
                        adjustToGround="true"/>
         <!-- Product output zone: bags/tanks spawn here -->
-        <triggerMarker node="palletTrigger"
+        <triggerMarker node="palletSpawner"
                        filename="$data/shared/assets/marker/markerIconPallet.i3d"
+                       adjustToGround="true"/>
+        <triggerMarker node="playerTriggerMarker"
+                       filename="$data/shared/assets/marker/markerIconWrench.i3d"
                        adjustToGround="true"/>
         <triggerMarker node="warningStripes01"/>
     </triggerMarkers>
 
     <i3dMappings>
-        <!-- Clear / level / paint areas (kiosk asset) -->
-        <i3dMapping id="clearAreaStart01"  node="0>0|0"/>
-        <i3dMapping id="clearAreaWidth01"  node="0>0|0|0"/>
-        <i3dMapping id="clearAreaHeight01" node="0>0|0|1"/>
+        <!-- Clear / level / paint areas -->
+        <i3dMapping id="clearAreaStart01"  node="0>6|0"/>
+        <i3dMapping id="clearAreaWidth01"  node="0>6|0|0"/>
+        <i3dMapping id="clearAreaHeight01" node="0>6|0|1"/>
 
-        <i3dMapping id="levelAreaStart01"  node="0>1|0"/>
-        <i3dMapping id="levelAreaWidth01"  node="0>1|0|0"/>
-        <i3dMapping id="levelAreaHeight01" node="0>1|0|1"/>
+        <i3dMapping id="levelAreaStart01"  node="0>7|0"/>
+        <i3dMapping id="levelAreaWidth01"  node="0>7|0|0"/>
+        <i3dMapping id="levelAreaHeight01" node="0>7|0|1"/>
 
-        <i3dMapping id="paintAreaStart01"  node="0>2|0"/>
-        <i3dMapping id="paintAreaWidth01"  node="0>2|0|0"/>
-        <i3dMapping id="paintAreaHeight01" node="0>2|0|1"/>
+        <i3dMapping id="paintAreaStart01"  node="0>8|0"/>
+        <i3dMapping id="paintAreaWidth01"  node="0>8|0|0"/>
+        <i3dMapping id="paintAreaHeight01" node="0>8|0|1"/>
 
-        <!-- Indoor areas -->
-        <i3dMapping id="indoorAreaStart01"  node="0>3|0"/>
-        <i3dMapping id="indoorAreaWidth01"  node="0>3|0|0"/>
-        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1"/>
-        <i3dMapping id="indoorAreaStart02"  node="0>3|1"/>
-        <i3dMapping id="indoorAreaWidth02"  node="0>3|1|0"/>
-        <i3dMapping id="indoorAreaHeight02" node="0>3|1|1"/>
+        <!-- Indoor area -->
+        <i3dMapping id="indoorAreaStart01"  node="0>9|0"/>
+        <i3dMapping id="indoorAreaWidth01"  node="0>9|0|0"/>
+        <i3dMapping id="indoorAreaHeight01" node="0>9|0|1"/>
 
         <!-- Test areas -->
-        <i3dMapping id="testAreaStart01" node="0>4|0"/>
-        <i3dMapping id="testAreaEnd01"   node="0>4|0|0"/>
+        <i3dMapping id="testAreaStart01" node="0>10|0"/>
+        <i3dMapping id="testAreaEnd01"   node="0>10|0|0"/>
 
         <!-- Tip occlusion -->
-        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0"/>
-        <i3dMapping id="tipOcclusionUpdateAreaEnd01"   node="0>5|0|0"/>
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>11|0"/>
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01"   node="0>11|0|0"/>
 
-        <!-- Lights -->
-        <i3dMapping id="realLightsLow"  node="0>7|0|0"/>
-        <i3dMapping id="realLightsHigh" node="0>7|0|1"/>
-        <i3dMapping id="linkNode01" node="0>7|1|0"/>
-        <i3dMapping id="linkNode02" node="0>7|1|1"/>
-        <i3dMapping id="linkNode03" node="0>7|1|2"/>
-        <i3dMapping id="linkNode04" node="0>7|1|3"/>
-        <i3dMapping id="linkNode05" node="0>7|1|4"/>
+        <!-- Dynamic parts -->
+        <i3dMapping id="props"          node="0>4|0"/>
+        <i3dMapping id="solarPanels"    node="0>4|1"/>
+        <i3dMapping id="solar1"         node="0>4|1|0"/>
+        <i3dMapping id="solar2"         node="0>4|1|1"/>
+        <i3dMapping id="solar3"         node="0>4|1|2"/>
+        <i3dMapping id="solar4"         node="0>4|1|3"/>
+        <i3dMapping id="solar5"         node="0>4|1|4"/>
+        <i3dMapping id="solar6"         node="0>4|1|5"/>
+        <i3dMapping id="bagSilo01"      node="0>4|2|0"/>
+        <i3dMapping id="bagSilo02"      node="0>4|2|1"/>
+        <i3dMapping id="siloBridge01"   node="0>4|3|0"/>
+        <i3dMapping id="siloBridge02"   node="0>4|3|1"/>
 
         <!-- Functional nodes (mod's own) -->
-        <i3dMapping id="palletTrigger"       node="0>8|1"/>
-        <i3dMapping id="unloadTriggerMarker" node="0>8|2"/>
+        <i3dMapping id="playerTriggerMarker"       node="0>16|0|0"/>
+        <i3dMapping id="unloadTriggerMarkerFertilizer" node="0>13|1|3"/>
+        <i3dMapping id="palletSpawner"             node="0>18"/>
+        <i3dMapping id="warningStripes01"          node="0>15|0"/>
     </i3dMappings>
 
 </placeable>
