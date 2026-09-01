@@ -14,6 +14,12 @@
     <text name="fillType_phosphoricAcid"       text="Phosphoric acid"/>
     <text name="fillType_potassiumChloride"    text="Potassium chloride"/>
     <text name="fillType_urea"                 text="Urea"/>
+    <text name="fillType_liquidManure"         text="Liquid manure"/>
+    <text name="fillType_water"                text="Water"/>
+    <text name="fillType_sulfur"               text="Sulfur"/>
+    <text name="fillType_lime"                 text="Lime"/>
+    <text name="fillType_manure"               text="Manure"/>
+    <text name="fillType_compost"              text="Compost"/>
 
     <!-- Production hall: stations -->
     <text name="stationName_fertilizerChemIn"          text="Fertilizer depot - Chemical input"/>

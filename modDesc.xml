@@ -78,6 +78,8 @@ Features:
 
     <multiplayer supported="true"/>
 
+    <fillTypes filename="xml/fillTypes.xml"/>
+
     <actions>
         <action name="FD_OPEN_SETTINGS" category="ONFOOT VEHICLE"/>
         <action name="FD_INTERACT"      category="ONFOOT"/>
