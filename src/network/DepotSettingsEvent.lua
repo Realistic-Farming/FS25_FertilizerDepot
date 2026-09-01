@@ -5,7 +5,7 @@
 -- Server → All: broadcast full settings on change or join
 
 ---@class DepotSettingsEvent
-DepotSettingsEvent = {}
+DepotSettingsEvent = DepotSettingsEvent or {}
 DepotSettingsEvent_mt = Class(DepotSettingsEvent, Event)
 
 InitEventClass(DepotSettingsEvent, "DepotSettingsEvent")
@@ -88,7 +88,7 @@ end
 -- ─── Sync Event (Server → All clients) ──────────────────
 
 ---@class DepotSettingsSyncEvent
-DepotSettingsSyncEvent = {}
+DepotSettingsSyncEvent = DepotSettingsSyncEvent or {}
 DepotSettingsSyncEvent_mt = Class(DepotSettingsSyncEvent, Event)
 
 InitEventClass(DepotSettingsSyncEvent, "DepotSettingsSyncEvent")

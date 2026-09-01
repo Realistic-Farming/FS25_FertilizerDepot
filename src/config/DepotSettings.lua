@@ -5,7 +5,7 @@
 -- XML on mission start; synced to clients via DepotSettingsEvent.
 
 ---@class DepotSettings
-DepotSettings = {}
+DepotSettings = DepotSettings or {}
 local DepotSettings_mt = Class(DepotSettings)
 
 -- Preset option tables (shown in the settings dialog)

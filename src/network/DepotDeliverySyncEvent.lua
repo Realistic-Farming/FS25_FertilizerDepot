@@ -5,7 +5,7 @@
 -- Clients apply the state to their local deliverySystem so the ORDER tab stays current.
 
 ---@class DepotDeliverySyncEvent
-DepotDeliverySyncEvent = {}
+DepotDeliverySyncEvent = DepotDeliverySyncEvent or {}
 DepotDeliverySyncEvent_mt = Class(DepotDeliverySyncEvent, Event)
 
 InitEventClass(DepotDeliverySyncEvent, "DepotDeliverySyncEvent")

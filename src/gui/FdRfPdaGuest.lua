@@ -5,10 +5,10 @@
 -- Read-only stock/price table + delivery title; no commerce writes.
 -- =========================================================
 
-FdRfPdaGuest = {}
+FdRfPdaGuest = FdRfPdaGuest or {}
 
-local MOD_DIR = g_currentModDirectory
-local MOD_NAME = g_currentModName
+local MOD_DIR = (FertilizerDepotModDirectory or g_currentModDirectory)
+local MOD_NAME = (FertilizerDepotModName or g_currentModName)
 local PANEL_ID = "fertilizerDepot"
 local PANEL_ORDER = 90
 local MAX_ROWS = 8
@@ -607,21 +607,55 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
         if ok and type(list) == "table" then fillList = list end
     end
     local nFill = #fillList
-    if nFill > MAX_ROWS then
-        moreParts[#moreParts + 1] = string.format(
-            tr("fd_rf_pda_showing_of", "Showing %d of %d"), MAX_ROWS, nFill)
+
+    -- BUILD 09:19 (PB-08). "Showing 8 of 30" used to be appended right here, and the footer
+    -- was committed right here too - both BEFORE anything had asked whether the depot holds
+    -- any stock at all. The two zero-stock returns further down then left that sentence
+    -- standing under a table that says "no stock data yet". Brian read the page as claiming
+    -- eight visible rows out of thirty while looking at an empty grid.
+    --
+    -- 30 was never the row count either. It is #fillList, the bridge's catalogue of fill
+    -- types the depot COULD stock, so the range was fabricated from a list that has nothing
+    -- to do with what is on screen.
+    --
+    -- The footer is now committed through one function that takes the range as an argument,
+    -- and every exit calls it: the range is passed true only on the path that has actually
+    -- proven focusId, nFill > 0 and hasAnyEntry, which is George's guard verbatim. The
+    -- delivery status, focus honesty and pending-order parts are unaffected and still print
+    -- on the empty paths, because those are true regardless of stock.
+    local function commitMore(withRange)
+        local parts = moreParts
+        if withRange and nFill > MAX_ROWS then
+            parts = {}
+            for i = 1, #moreParts do parts[i] = moreParts[i] end
+            parts[#parts + 1] = string.format(
+                tr("fd_rf_pda_showing_of", "Showing %d of %d"), MAX_ROWS, nFill)
+        end
+        -- rfFwMore is ONE line: RF_TreatTargetLine at 19px across 1140px, so roughly 120
+        -- glyphs before it clips. Delivery is the live status and outranks a static pending
+        -- notice, so when both are present and the line will not fit, pending is what drops.
+        local MORE_LINE_BUDGET = 120
+        local moreText = table.concat(parts, "  ·  ")
+        if #moreText > MORE_LINE_BUDGET and pendingPartIndex ~= nil
+                and deliveryLine ~= nil and deliveryLine ~= "" then
+            table.remove(parts, pendingPartIndex)
+            moreText = table.concat(parts, "  ·  ")
+        end
+        setText(moreEl, moreText)
     end
-    -- rfFwMore is ONE line: RF_TreatTargetLine at 19px across 1140px, so roughly 120
-    -- glyphs before it clips. Delivery is the live status and outranks a static pending
-    -- notice, so when both are present and the line will not fit, pending is what drops.
-    local MORE_LINE_BUDGET = 120
-    local moreText = table.concat(moreParts, "  ·  ")
-    if #moreText > MORE_LINE_BUDGET and pendingPartIndex ~= nil
-            and deliveryLine ~= nil and deliveryLine ~= "" then
-        table.remove(moreParts, pendingPartIndex)
-        moreText = table.concat(moreParts, "  ·  ")
+
+    -- BUILD 09:19 (PB-08): the zero-state says what to DO about it, not just that it is
+    -- empty. Which sentence depends on why it is empty, and the page already knows: no
+    -- depot on the farm at all is a different problem from a depot standing empty, and
+    -- telling a player to order stock when they have nowhere to put it is useless advice.
+    local function paintEmptyState(hasDepot)
+        local key = hasDepot and "fd_rf_pda_no_stock_guidance" or "fd_rf_pda_no_depot_guidance"
+        local fallback = hasDepot
+            and "no stock data yet - this depot is empty, order fertilizer to fill it"
+            or "no stock data yet - place a depot on your farm to buy and store fertilizer"
+        setVis(emptyEl, true)
+        setText(emptyEl, tr(key, fallback))
     end
-    setText(moreEl, moreText)
 
     -- Hint: season (optional distance dropped under clutter)
     local hint = seasonHint(mgr.pricing)
@@ -649,8 +683,10 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
 
     if focusId == nil or mgr.depotSystem == nil or type(mgr.depotSystem.getStorageInfo) ~= "function" then
         clearRows(container)
-        setVis(emptyEl, true)
-        setText(emptyEl, tr("fd_rf_pda_no_stock", "no stock data yet"))
+        -- No focus depot means the farm has none to focus on; that is the "place a depot"
+        -- case, not the "your depot is empty" case.
+        paintEmptyState(focusId ~= nil)
+        commitMore(false)
         return
     end
 
@@ -667,13 +703,18 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
 
     if nFill == 0 or not hasAnyEntry then
         clearRows(container)
-        setVis(emptyEl, true)
-        setText(emptyEl, tr("fd_rf_pda_no_stock", "no stock data yet"))
+        -- A focus depot exists here by definition (the guard above returned otherwise), so
+        -- this is the standing-but-empty case: tell the player to order, not to build.
+        paintEmptyState(true)
+        commitMore(false)
         return
     end
 
     setVis(emptyEl, false)
     setText(emptyEl, "")
+    -- The only path that has proven focusId ~= nil, nFill > 0 and hasAnyEntry, so the only
+    -- path allowed to print a range.
+    commitMore(true)
     local show = math.min(nFill, MAX_ROWS)
     local pricing = mgr.pricing
     for i = 1, MAX_ROWS do

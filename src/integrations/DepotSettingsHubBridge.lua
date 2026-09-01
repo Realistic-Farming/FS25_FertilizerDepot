@@ -16,7 +16,7 @@
 -- the in-game settings dialog uses, so nothing new is invented here.
 -- =========================================================
 
-DepotSettingsHubBridge = {}
+DepotSettingsHubBridge = DepotSettingsHubBridge or {}
 
 local function applyChange(key, value)
     local mgr = g_DepotManager

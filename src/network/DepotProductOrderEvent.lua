@@ -4,7 +4,7 @@
 -- =========================================================
 
 ---@class DepotProductOrderEvent
-DepotProductOrderEvent = {}
+DepotProductOrderEvent = DepotProductOrderEvent or {}
 DepotProductOrderEvent_mt = Class(DepotProductOrderEvent, Event)
 
 InitEventClass(DepotProductOrderEvent, "DepotProductOrderEvent")

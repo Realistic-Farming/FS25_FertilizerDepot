@@ -1,14 +1,30 @@
+-- 2026-08-22 (Wizard): with MasterHUD installed this mod's own HUD hide/move keys must not
+-- merely be inert, they must not REGISTER at all - that is what removes their rows from the
+-- F1 legend and the Controls list. Only the HUD drag action is gated here; FD_OPEN_SETTINGS
+-- and FD_INTERACT are untouched.
+local function __rfMhOwnsHudKeys()
+    return ((g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD) ~= nil
+end
+
 -- =========================================================
 -- FS25 Fertilizer Depot - Entry Point
 -- =========================================================
 -- Load order matters: constants first, then logger, then all
 -- subsystems, then network events, then UI.
 
-local modDir = g_currentModDirectory
-local modName = g_currentModName
+-- Hot-reload latch (FuelCosts reference): g_currentModDirectory and
+-- g_currentModName are nil on a live re-source, so they are latched into
+-- module globals on first load, with a g_modsDirectory loose-folder fallback.
+FertilizerDepotModDirectory = FertilizerDepotModDirectory
+    or g_currentModDirectory
+    or (g_modsDirectory ~= nil and (g_modsDirectory .. "FS25_FertilizerDepot/") or nil)
+FertilizerDepotModName = FertilizerDepotModName or g_currentModName or "FS25_FertilizerDepot"
+local modDir = FertilizerDepotModDirectory
+local modName = FertilizerDepotModName
 
 -- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
+source(modDir .. "src/integrations/OptionScalingResolver.lua")
 source(modDir .. "src/config/DepotSettings.lua")
 source(modDir .. "src/DepotLogger.lua")
 
@@ -38,11 +54,11 @@ source(modDir .. "src/ui/DepotSettingsDialog.lua")
 source(modDir .. "src/ui/DepotHUD.lua")
 
 -- Esc RF PDA guest (Wizard local; keep across development merge)
-source(g_currentModDirectory .. "src/gui/RfEscModules.lua")
-source(g_currentModDirectory .. "src/gui/RfPdaMenuPage.lua")
-source(g_currentModDirectory .. "src/gui/RfEscBootstrap.lua")
-source(g_currentModDirectory .. "src/gui/RfEscUiDebugger.lua")
-source(g_currentModDirectory .. "src/gui/FdRfPdaGuest.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscModules.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfPdaMenuPage.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscBootstrap.lua")
+source(FertilizerDepotModDirectory .. "src/gui/RfEscUiDebugger.lua")
+source(FertilizerDepotModDirectory .. "src/gui/FdRfPdaGuest.lua")
 
 -- ─── Mission00 Lifecycle Hooks ───────────────────────────
 
@@ -127,9 +143,12 @@ local function onMissionLoadFinished(mission, ...)
                 DepotLogger.warning("Shift+D registration failed — registerActionEvent returned false")
             end
 
-            local dragOk, dragId = g_inputBinding:registerActionEvent(
-                InputAction.FD_HUD_DRAG, g_DepotManager,
-                g_DepotManager.toggleHUDEditMode, false, true, false, true)
+            local dragOk, dragId = false, nil
+            if not __rfMhOwnsHudKeys() then
+                dragOk, dragId = g_inputBinding:registerActionEvent(
+                    InputAction.FD_HUD_DRAG, g_DepotManager,
+                    g_DepotManager.toggleHUDEditMode, false, true, false, true)
+            end
             if dragOk and dragId then
                 g_DepotManager._hudDragEventId = dragId
                 g_inputBinding:setActionEventTextPriority(dragId, GS_PRIO_NORMAL)
@@ -207,6 +226,35 @@ end
 -- appendedFunction would create it AFTER onPostFinalizePlacement fires → depotId never set.
 Mission00.load                        = Utils.prependedFunction(Mission00.load,                        onMissionLoad)
 Mission00.loadMission00Finished       = Utils.appendedFunction(Mission00.loadMission00Finished,       onMissionLoadFinished)
+
+-- ---------------------------------------------------------
+-- Realistic Farming Control Center: publish a runnable delegate.
+--
+-- FD_INTERACT is deliberately absent: it acts on the depot trigger the player is
+-- standing in and means nothing from a menu. FD_HUD_DRAG is absent because
+-- MasterHUD owns the suite HUD keys (see DepotManager:toggleHUDEditMode). Both
+-- keep their directory row and live key readout.
+-- ---------------------------------------------------------
+local function registerControlCenterActions()
+    local registry = g_currentMission ~= nil and g_currentMission.rfActionRegistry or nil
+    if registry == nil then return end
+
+    registry.registerAction({
+        action     = "FD_OPEN_SETTINGS",
+        button     = "Open",
+        -- Opens a dialog of its own, which cannot sit behind this one.
+        closeFirst = true,
+        run = function()
+            local mgr = g_DepotManager
+            if mgr ~= nil and mgr.openSettingsDialog ~= nil then
+                mgr:openSettingsDialog()
+            end
+        end,
+    })
+end
+
+Mission00.loadMission00Finished = Utils.appendedFunction(
+    Mission00.loadMission00Finished, registerControlCenterActions)
 FSBaseMission.update                  = Utils.appendedFunction(FSBaseMission.update,                  onMissionUpdate)
 FSBaseMission.draw                    = Utils.appendedFunction(FSBaseMission.draw,                    onMissionDraw)
 FSBaseMission.mouseEvent              = Utils.prependedFunction(FSBaseMission.mouseEvent,             onMissionMouseEvent)

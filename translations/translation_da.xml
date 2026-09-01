@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <l10n>
     <texts>
     <!-- Store -->
@@ -78,7 +78,7 @@
     <text name="fd_depot_sell_confirm"  text="SÃ¦lg %.0fL %s til depotet for %s?"/>
     <text name="fd_depot_filling"       text="Fylder %.0fL %s i dit kÃ¸retÃ¸j..."/>
     <text name="input_FD_INTERACT"      text="Interager med gÃ¸dningsdepot"/>
-    <text name="input_FD_HUD_DRAG"      text="Sl Delivery HUD redigeringstilstand"/>    <text name="fd_products_tab"        text="Produkter"/>
+    <text name="input_FD_HUD_DRAG"      text="Sl Delivery HUD redigeringstilstand"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab"        text="Produkter"/>
     <text name="fd_products_order_bag"  text="Bestil sÃ¦k"/>
     <text name="fd_products_order_tank" text="Bestil tank"/>
     <text name="fd_products_label_bag"  text="SÃ¦k(ke)"/>

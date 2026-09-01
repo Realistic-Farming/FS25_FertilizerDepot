@@ -2,7 +2,7 @@
 -- FS25 Fertilizer Depot - Manager Singleton
 -- =========================================================
 
-local _depotMgrModName = g_currentModName
+local _depotMgrModName = (FertilizerDepotModName or g_currentModName)
 
 local function tr(key, fallback)
     local modEnv = g_modEnvironments and g_modEnvironments[_depotMgrModName]
@@ -58,7 +58,7 @@ local function findFertilizerInVehicle(vehicle, sfBridge)
 end
 
 ---@class DepotManager
-DepotManager = {}
+DepotManager = DepotManager or {}
 local DepotManager_mt = Class(DepotManager)
 
 local PROXIMITY_THRESHOLD     = 5.0    -- metres, depot & silo on-foot radius (keep < gate distance)
@@ -290,6 +290,13 @@ function DepotManager:openSettingsDialog()
 end
 
 function DepotManager:toggleHUDEditMode()
+    -- 2026-08-22 (Wizard): MasterHUD takeover. When MasterHUD is installed it owns the
+    -- suite-wide hide/move binds, so this mod's own per-mod key is deliberately inert:
+    -- one surface, one way to reach it. Standalone (no MasterHUD) this runs normally.
+    -- Canonical presence check, the same expression the suite's MasterHUD bridges use.
+    if ((g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD) ~= nil then
+        return
+    end
     if not self.hud then return end
     if self.hud.editMode then
         self.hud:exitEditMode()
