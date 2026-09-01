@@ -495,32 +495,13 @@
         <fillType name="SULFUR" priceScale="1"/>
     </buyingStation>
 
+    <!-- Pallet shop. Only FERTILIZER is listed: base-game pallet store images use
+         $data/... which resolve. SoilFertilizer's pallet store items use $moddir$,
+         which the game cannot resolve when a different mod's pallet shop renders
+         them, so listing SF types here fires 'Missing dds' errors. All SF types are
+         still sold in bulk at the buying/loading stations. -->
     <palletBuyingStation triggerNode="palletBuyingActivationTrigger">
         <fillType name="FERTILIZER" priceScale="1"/>
-        <fillType name="UREA" priceScale="1"/>
-        <fillType name="UAN32" priceScale="1"/>
-        <fillType name="UAN28" priceScale="1"/>
-        <fillType name="ANHYDROUS" priceScale="1"/>
-        <fillType name="STARTER" priceScale="1"/>
-        <fillType name="AN" priceScale="1"/>
-        <fillType name="AMS" priceScale="1"/>
-        <fillType name="MAP" priceScale="1"/>
-        <fillType name="DAP" priceScale="1"/>
-        <fillType name="POTASH" priceScale="1"/>
-        <fillType name="POLIFOSKA" priceScale="1"/>
-        <fillType name="LIQUID_UREA" priceScale="1"/>
-        <fillType name="LIQUID_AMS" priceScale="1"/>
-        <fillType name="LIQUID_MAP" priceScale="1"/>
-        <fillType name="LIQUID_DAP" priceScale="1"/>
-        <fillType name="LIQUID_POTASH" priceScale="1"/>
-        <fillType name="INSECTICIDE" priceScale="1"/>
-        <fillType name="FUNGICIDE" priceScale="1"/>
-        <fillType name="GYPSUM" priceScale="1"/>
-        <fillType name="COMPOST" priceScale="1"/>
-        <fillType name="BIOSOLIDS" priceScale="1"/>
-        <fillType name="CHICKEN_MANURE" priceScale="1"/>
-        <fillType name="PELLETIZED_MANURE" priceScale="1"/>
-        <fillType name="LIQUIDLIME" priceScale="1"/>
         <palletSpawner>
             <spawnPlaces>
                 <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" palletRotationOffset="0" maxLength="10"/>
