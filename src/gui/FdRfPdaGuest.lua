@@ -2,7 +2,7 @@
 -- FdRfPdaGuest - Esc RF PDA Fertilizer Depot framework (Table shell)
 -- Stage-8 densify 2026-08-05 (Samantha DESIGN + George ENGINE ACK).
 -- Soft-detect: mission.depotManager (preferred) then temporary g_DepotManager.
--- Read-only stock/price table + delivery title; no commerce writes.
+-- Read-only stock/price table; no commerce writes.
 -- =========================================================
 
 FdRfPdaGuest = FdRfPdaGuest or {}
@@ -147,26 +147,6 @@ local function farmId()
     return 0
 end
 
-local function statusLabel(status)
-    local S = DeliverySystem and DeliverySystem.STATUS
-    if S ~= nil then
-        if status == S.PENDING then return tr("fd_rf_pda_status_pending", "Pending") end
-        if status == S.LOADED then return tr("fd_rf_pda_status_loaded", "Loaded") end
-        if status == S.NONE then return tr("fd_rf_pda_status_idle", "Idle") end
-    end
-    if status == 1 then return tr("fd_rf_pda_status_pending", "Pending") end
-    if status == 2 then return tr("fd_rf_pda_status_loaded", "Loaded") end
-    return tr("fd_rf_pda_status_idle", "Idle")
-end
-
-local function isActiveStatus(status)
-    local S = DeliverySystem and DeliverySystem.STATUS
-    if S ~= nil then
-        return status == S.PENDING or status == S.LOADED
-    end
-    return status == 1 or status == 2
-end
-
 local function clearRows(container)
     for i = 1, MAX_ROWS do
         for _, c in ipairs({"A", "B", "C", "D"}) do
@@ -204,49 +184,9 @@ local function buildFarmDepots(mgr, fid)
     return ids
 end
 
---- Prefer depot with this farm's active delivery; else first filtered id.
---- Re-focus to active-delivery depot so title + stock stay coherent (George).
+--- Focus on the first depot owned by this farm (no delivery system anymore).
 local function pickFocusDepot(mgr, farmDepots, fid)
-    local ds = mgr and mgr.deliverySystem
-    if ds ~= nil and type(ds.getDelivery) == "function" then
-        for _, depotId in ipairs(farmDepots) do
-            local ok, rec = pcall(function() return ds:getDelivery(depotId) end)
-            if ok and rec ~= nil and rec.farmId == fid and isActiveStatus(rec.status) then
-                return depotId, rec
-            end
-        end
-    end
-    -- HUD parity fallback: farm-scan deliveries (first hit), re-focus if that depot is ours
-    if ds ~= nil and ds.deliveries ~= nil then
-        for depotId, rec in pairs(ds.deliveries) do
-            if rec ~= nil and rec.farmId == fid and isActiveStatus(rec.status) then
-                local idNum = tonumber(depotId) or depotId
-                for _, ownedId in ipairs(farmDepots) do
-                    if ownedId == idNum or tostring(ownedId) == tostring(depotId) then
-                        return ownedId, rec
-                    end
-                end
-                -- Active delivery on another farm's placeable: still paint HUD digits in title
-                -- via returned rec, but keep stock on first owned depot if any.
-                return farmDepots[1], rec
-            end
-        end
-    end
     return farmDepots[1], nil
-end
-
-local function deliveryTitleLine(rec)
-    local idle = (rec == nil)
-        or (DeliverySystem ~= nil and rec.status == DeliverySystem.STATUS.NONE)
-        or rec.status == 0
-    local statusText = statusLabel(idle and 0 or rec.status)
-    local lbl = tr("fd_rf_pda_lbl_status", "Delivery")
-    if idle then
-        return string.format("%s: %s  ·  %s",
-            lbl, statusText, tr("fd_rf_pda_idle_copy", "no active delivery"))
-    end
-    return string.format("%s: %s  ·  %s",
-        lbl, statusText, formatMoney(rec.deliveryCost))
 end
 
 local function seasonHint(pricing)
@@ -519,7 +459,7 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
     clearHostDupes(container)
     showTableMode(container)
     paintSide(container, "rf_pda_side_info_fertilizer_depot",
-        "Depot glance: delivery status/cost, stock vs capacity, buy/sell.\n"
+        "Depot glance: stock vs capacity, buy/sell.\n"
         .. "Esc never buys or sells - open the depot placeable dialog for that.")
     paintHeaders(container)
 
@@ -543,46 +483,16 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
 
     local fid = farmId()
     local farmDepots = buildFarmDepots(mgr, fid)
-    local focusId, deliveryRec = pickFocusDepot(mgr, farmDepots, fid)
+    local focusId = pickFocusDepot(mgr, farmDepots, fid)
 
-    -- BUILD 21:41: delivery status reads UNDER the stock table, not in the top title.
-    -- The column headers already announce the table, so a second title line above it was
-    -- both redundant and the wrong place for a live status. rfFwTableTitle is hidden and
-    -- cleared; resetFwTableTitlePos above still runs so the shared baseline is reasserted
-    -- for the other Table-mode modules (Income, Dairy, NPCFavor) that do use it.
+    -- BUILD 21:41: rfFwTableTitle stays hidden; the column headers already announce the
+    -- table and resetFwTableTitlePos above still reasserts the shared baseline for the
+    -- other Table-mode modules (Income, Dairy, NPCFavor).
     setVis(titleEl, false)
     setText(titleEl, "")
 
-    -- Delivery posture resolved exactly as before (HUD digit parity via getDelivery /
-    -- farm-scan); only where it is painted has changed.
-    local deliveryLine
-    if focusId == nil and deliveryRec == nil then
-        deliveryLine = deliveryTitleLine(nil)
-    else
-        -- Prefer getDelivery(focus) when focus known and rec not already from scan
-        local ds = mgr.deliverySystem
-        local rec = deliveryRec
-        if focusId ~= nil and ds ~= nil and type(ds.getDelivery) == "function" then
-            local ok, focusRec = pcall(function() return ds:getDelivery(focusId) end)
-            if ok and focusRec ~= nil and focusRec.farmId == fid and isActiveStatus(focusRec.status) then
-                rec = focusRec
-            elseif ok and focusRec ~= nil and (deliveryRec == nil) then
-                -- Idle on focus; keep idle title (no stale cost)
-                if not isActiveStatus(focusRec.status) then
-                    rec = nil
-                end
-            end
-        end
-        -- If farm-scan found active delivery but focus getDelivery idle, keep HUD digits (rec from scan)
-        deliveryLine = deliveryTitleLine(rec)
-    end
-
-    -- More: delivery FIRST, then focus honesty + pending + 8-of-N
+    -- More: focus honesty + 8-of-N
     local moreParts = {}
-    local pendingPartIndex = nil
-    if deliveryLine ~= nil and deliveryLine ~= "" then
-        moreParts[#moreParts + 1] = deliveryLine
-    end
     local depotCount = #farmDepots
     if focusId ~= nil then
         moreParts[#moreParts + 1] = string.format(
@@ -590,14 +500,6 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
             tonumber(focusId) or 0, depotCount)
     elseif depotCount == 0 then
         moreParts[#moreParts + 1] = tr("fd_rf_pda_no_depot", "no depot on your farm yet")
-    end
-
-    if type(mgr.getPendingOrder) == "function" then
-        local ok, order = pcall(function() return mgr:getPendingOrder(fid) end)
-        if ok and order ~= nil then
-            moreParts[#moreParts + 1] = tr("fd_rf_pda_pending_order", "Pending order: not yet placed")
-            pendingPartIndex = #moreParts
-        end
     end
 
     -- Fill list + stock rows for focus only
@@ -620,9 +522,7 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
     --
     -- The footer is now committed through one function that takes the range as an argument,
     -- and every exit calls it: the range is passed true only on the path that has actually
-    -- proven focusId, nFill > 0 and hasAnyEntry, which is George's guard verbatim. The
-    -- delivery status, focus honesty and pending-order parts are unaffected and still print
-    -- on the empty paths, because those are true regardless of stock.
+    -- proven focusId, nFill > 0 and hasAnyEntry, which is George's guard verbatim.
     local function commitMore(withRange)
         local parts = moreParts
         if withRange and nFill > MAX_ROWS then
@@ -631,17 +531,7 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
             parts[#parts + 1] = string.format(
                 tr("fd_rf_pda_showing_of", "Showing %d of %d"), MAX_ROWS, nFill)
         end
-        -- rfFwMore is ONE line: RF_TreatTargetLine at 19px across 1140px, so roughly 120
-        -- glyphs before it clips. Delivery is the live status and outranks a static pending
-        -- notice, so when both are present and the line will not fit, pending is what drops.
-        local MORE_LINE_BUDGET = 120
-        local moreText = table.concat(parts, "  ·  ")
-        if #moreText > MORE_LINE_BUDGET and pendingPartIndex ~= nil
-                and deliveryLine ~= nil and deliveryLine ~= "" then
-            table.remove(parts, pendingPartIndex)
-            moreText = table.concat(parts, "  ·  ")
-        end
-        setText(moreEl, moreText)
+        setText(moreEl, table.concat(parts, "  ·  "))
     end
 
     -- BUILD 09:19 (PB-08): the zero-state says what to DO about it, not just that it is
@@ -657,21 +547,8 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
         setText(emptyEl, tr(key, fallback))
     end
 
-    -- Hint: season (optional distance dropped under clutter)
+    -- Hint: season
     local hint = seasonHint(mgr.pricing)
-    if deliveryRec ~= nil and isActiveStatus(deliveryRec.status) then
-        local S = DeliverySystem and DeliverySystem.STATUS
-        local loaded = (S ~= nil and deliveryRec.status == S.LOADED) or deliveryRec.status == 2
-        if loaded and focusId ~= nil and mgr.deliverySystem ~= nil
-            and type(mgr.deliverySystem.getDeliveryTruckDistance) == "function"
-            and hint == ""
-        then
-            local ok, dist = pcall(function() return mgr.deliverySystem:getDeliveryTruckDistance(focusId) end)
-            if ok and type(dist) == "number" then
-                hint = string.format("%s: %.0fm", tr("fd_rf_pda_lbl_distance", "Distance"), dist)
-            end
-        end
-    end
     -- SF teach stays in side body (densify copy); optional quiet append only if hint empty
     if hint == "" then
         local sfPresent = g_currentMission ~= nil and g_currentMission.soilFertilityManager ~= nil
@@ -771,7 +648,7 @@ function FdRfPdaGuest.tryRegister()
         local ok = registerFn(host, {
             id = PANEL_ID,
             title = tr("fd_rf_pda_module_title", "Fertilizer Depot"),
-            blurb = tr("fd_rf_pda_blurb", "Delivery posture plus stock and buy/sell prices for your focused depot. Read-only."),
+            blurb = tr("fd_rf_pda_blurb", "Stock and buy/sell prices for your focused depot. Read-only."),
             order = PANEL_ORDER,
             isAvailable = function() return getMgr() ~= nil end,
             onShow = FdRfPdaGuest.onShow,

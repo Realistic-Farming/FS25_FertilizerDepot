@@ -1,11 +1,3 @@
--- 2026-08-22 (Wizard): with MasterHUD installed this mod's own HUD hide/move keys must not
--- merely be inert, they must not REGISTER at all - that is what removes their rows from the
--- F1 legend and the Controls list. Only the HUD drag action is gated here; FD_OPEN_SETTINGS
--- and FD_INTERACT are untouched.
-local function __rfMhOwnsHudKeys()
-    return ((g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD) ~= nil
-end
-
 -- =========================================================
 -- FS25 Fertilizer Depot - Entry Point
 -- =========================================================
@@ -34,10 +26,8 @@ source(modDir .. "src/integrations/DepotProStaffBridge.lua")
 source(modDir .. "src/integrations/DepotMarketDynamicsBridge.lua")
 source(modDir .. "src/integrations/DepotFuelCostsBridge.lua")
 source(modDir .. "src/integrations/DepotSettingsHubBridge.lua")
-source(modDir .. "src/integrations/DepotMasterHUDBridge.lua")
 source(modDir .. "src/DepotPricing.lua")
 source(modDir .. "src/DepotSystem.lua")
-source(modDir .. "src/delivery/DeliverySystem.lua")
 source(modDir .. "src/DepotManager.lua")
 
 -- Phase 3: Network (NetworkSync bridge replaces old event classes)
@@ -45,13 +35,10 @@ source(modDir .. "src/integrations/FDNetworkSyncBridge.lua")
 
 -- Phase 4: Placeables
 source(modDir .. "src/placeable/PlaceableDepot.lua")
-source(modDir .. "src/placeable/PlaceableSilo.lua")
-source(modDir .. "src/placeable/PlaceableDepotPickup.lua")
 
 -- Phase 5: UI (lazy-loaded on first open, but class must be defined)
 source(modDir .. "src/ui/DepotDialog.lua")
 source(modDir .. "src/ui/DepotSettingsDialog.lua")
-source(modDir .. "src/ui/DepotHUD.lua")
 
 -- Esc RF PDA guest (Wizard local; keep across development merge)
 source(FertilizerDepotModDirectory .. "src/gui/RfEscModules.lua")
@@ -103,7 +90,6 @@ local function onMissionLoadFinished(mission, ...)
     -- absent). Handles (g_currentMission.settingsHub / .masterHUD) are published
     -- by the bedrock mods at Mission00.load, so they are ready by now.
     DepotSettingsHubBridge.register(g_DepotManager)
-    DepotMasterHUDBridge.register(g_DepotManager)
     FDNetworkSyncBridge.register()
 
     -- Pricing integration bridges (pcall-guarded, neutral fallback when absent)
@@ -143,20 +129,6 @@ local function onMissionLoadFinished(mission, ...)
                 DepotLogger.warning("Shift+D registration failed — registerActionEvent returned false")
             end
 
-            local dragOk, dragId = false, nil
-            if not __rfMhOwnsHudKeys() then
-                dragOk, dragId = g_inputBinding:registerActionEvent(
-                    InputAction.FD_HUD_DRAG, g_DepotManager,
-                    g_DepotManager.toggleHUDEditMode, false, true, false, true)
-            end
-            if dragOk and dragId then
-                g_DepotManager._hudDragEventId = dragId
-                g_inputBinding:setActionEventTextPriority(dragId, GS_PRIO_NORMAL)
-                DepotLogger.info("FD_HUD_DRAG registered in PLAYER context")
-            else
-                DepotLogger.warning("FD_HUD_DRAG registration failed")
-            end
-
             g_inputBinding:endActionEventsModification()
         end
     end
@@ -165,22 +137,6 @@ end
 local function onMissionUpdate(mission, dt)
     if g_DepotManager then
         g_DepotManager:update(dt)
-    end
-end
-
-local function onMissionDraw(mission)
-    -- When MasterHUD is present it owns the single draw loop (our draw was
-    -- registered as a self-draw via the bridge); stand down so the depot HUD
-    -- never draws twice. Absent MasterHUD, this hook runs the draw as before.
-    if DepotMasterHUDBridge ~= nil and DepotMasterHUDBridge.active then return end
-    if g_DepotManager then
-        g_DepotManager:drawHUD()
-    end
-end
-
-local function onMissionMouseEvent(mission, posX, posY, isDown, isUp, button, ...)
-    if g_DepotManager and g_DepotManager.hud then
-        g_DepotManager.hud:onMouseEvent(posX, posY, isDown, isUp, button)
     end
 end
 
@@ -231,9 +187,7 @@ Mission00.loadMission00Finished       = Utils.appendedFunction(Mission00.loadMis
 -- Realistic Farming Control Center: publish a runnable delegate.
 --
 -- FD_INTERACT is deliberately absent: it acts on the depot trigger the player is
--- standing in and means nothing from a menu. FD_HUD_DRAG is absent because
--- MasterHUD owns the suite HUD keys (see DepotManager:toggleHUDEditMode). Both
--- keep their directory row and live key readout.
+-- standing in and means nothing from a menu.
 -- ---------------------------------------------------------
 local function registerControlCenterActions()
     local registry = g_currentMission ~= nil and g_currentMission.rfActionRegistry or nil
@@ -256,8 +210,6 @@ end
 Mission00.loadMission00Finished = Utils.appendedFunction(
     Mission00.loadMission00Finished, registerControlCenterActions)
 FSBaseMission.update                  = Utils.appendedFunction(FSBaseMission.update,                  onMissionUpdate)
-FSBaseMission.draw                    = Utils.appendedFunction(FSBaseMission.draw,                    onMissionDraw)
-FSBaseMission.mouseEvent              = Utils.prependedFunction(FSBaseMission.mouseEvent,             onMissionMouseEvent)
 FSBaseMission.delete                  = Utils.appendedFunction(FSBaseMission.delete,                  onMissionDelete)
 FSBaseMission.sendInitialClientState  = Utils.appendedFunction(FSBaseMission.sendInitialClientState,  onSendInitialClientState)
 FSCareerMissionInfo.saveToXMLFile     = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,     onSaveToXML)

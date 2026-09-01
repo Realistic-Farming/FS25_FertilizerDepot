@@ -61,10 +61,8 @@ end
 DepotManager = DepotManager or {}
 local DepotManager_mt = Class(DepotManager)
 
-local PROXIMITY_THRESHOLD     = 5.0    -- metres, depot & silo on-foot radius (keep < gate distance)
-local SILO_VEHICLE_PROXIMITY  = 10.0   -- metres, vehicle near silo (larger — harder to park precisely)
+local PROXIMITY_THRESHOLD     = 5.0    -- metres, depot on-foot radius
 local VEHICLE_UNLOAD_PROXIMITY= 8.0    -- metres, vehicle near depot unload marker
-local SILO_FILL_COOLDOWN      = 2000   -- ms between silo fill triggers
 local DEPOT_SELL_COOLDOWN     = 5000   -- ms cooldown after sell dialog closes
 
 function DepotManager.new()
@@ -73,44 +71,26 @@ function DepotManager.new()
     self.sfBridge     = SoilFertilizerBridge.new()
     self.pricing      = DepotPricing.new(self.sfBridge)
     self.depotSystem  = DepotSystem.new(self.pricing)
-    self.deliverySystem = nil   -- created in initialize() after all singletons exist
 
     self.depots       = {}
     self.depotNodes   = {}
     self.depotUnloadNodes = {}
     self.depotProductSpawnNodes = {}
-    self.silos        = {}
-    self.siloNodes    = {}
-    self._nextSiloId  = 1
 
-    -- Pickup zone registry (PlaceableDepotPickup instances)
-    self.pickupPlaceables = {}
-    self.pickupNodes      = {}
-    self._nextPickupId    = 1
-
-    self.pendingOrders = {}
     self.activeDialog  = nil
 
     self._initialized       = false
     self._nearDepotId       = nil
-    self._nearSiloId        = nil       -- on-foot silo proximity
-    self._nearVehicleSiloId = nil       -- vehicle silo proximity (auto-trigger)
     self._nearUnloadDepotId = nil
-    self._nearPickupId      = nil       -- on-foot pickup zone proximity
     self._proximityTimer    = 0
     self._settingsEventId   = nil
 
-    -- Single persistent ACTIVATE_HANDTOOL event (shared for depot + silo + pickup)
+    -- Single persistent ACTIVATE_HANDTOOL event (depot open)
     self._interactEventId  = nil
-    self._siloFillCooldown = 0
     self._depotSellCooldown= 0
 
     -- Pending context for YesNo callbacks
-    self._pendingSiloFill       = nil
     self._pendingDepotSell      = nil
-    self._pendingDeliveryPickup = nil
-
-    self.hud = nil   -- created in initialize()
 
     return self
 end
@@ -118,28 +98,17 @@ end
 function DepotManager:initialize()
     if self._initialized then return end
     self._initialized = true
-    self.deliverySystem = DeliverySystem.new(
-        self.depotSystem, self.pricing, self.sfBridge, self.settings)
-    self.hud = DepotHUD.new()
     DepotLogger.info("DepotManager initialized (SF installed: %s)",
         tostring(self.sfBridge:isInstalled()))
     addConsoleCommand("SoilDebugDepot",   "Toggle FertDepot debug logging",            "cmdDebugDepot",      self)
     addConsoleCommand("FDFillStock",      "Fill all depot storage to max [depotId]",   "cmdFDFillStock",     self)
     addConsoleCommand("FDEmptyStock",     "Empty all depot storage [depotId]",         "cmdFDEmptyStock",    self)
-    addConsoleCommand("FDCancelDelivery", "Cancel active delivery for depot [depotId]","cmdFDCancelDelivery",self)
 end
 
 function DepotManager:delete()
     if self.activeDialog then
         self.activeDialog:close()
         self.activeDialog = nil
-    end
-    if self.hud then
-        self.hud:delete()
-        self.hud = nil
-    end
-    if self.deliverySystem then
-        self.deliverySystem:cleanup()
     end
     if self._settingsEventId and g_inputBinding then
         g_inputBinding:removeActionEvent(self._settingsEventId)
@@ -191,75 +160,6 @@ function DepotManager:registerDepotProductSpawnNode(depotId, node)
     DepotLogger.info("Depot #%d product spawn node registered: %s", depotId, tostring(node))
 end
 
--- ─── Pickup Zone Registration ────────────────────────────
-
-function DepotManager:registerPickup(placeablePickup)
-    local id = self._nextPickupId
-    self._nextPickupId = self._nextPickupId + 1
-    self.pickupPlaceables[id] = placeablePickup
-    local spec = placeablePickup[PlaceableDepotPickup.SPEC_TABLE_NAME]
-    self.pickupNodes[id] = (spec and spec.playerTriggerNode) or placeablePickup.rootNode
-    DepotLogger.info("Pickup zone #%d registered", id)
-    return id
-end
-
-function DepotManager:unregisterPickup(pickupId)
-    self.pickupPlaceables[pickupId] = nil
-    self.pickupNodes[pickupId] = nil
-    if self._nearPickupId == pickupId then
-        self._nearPickupId = nil
-        self:_updateInteractPrompt()
-    end
-    DepotLogger.info("Pickup zone #%d unregistered", pickupId)
-end
-
--- ─── Silo Registration ───────────────────────────────────
-
-function DepotManager:registerSilo(placeableSilo, loadStationNode)
-    local id = self._nextSiloId
-    self._nextSiloId = self._nextSiloId + 1
-    self.silos[id] = placeableSilo
-    self.siloNodes[id] = loadStationNode or placeableSilo.rootNode
-    DepotLogger.info("Silo #%d registered (loadStation node: %s)", id, tostring(self.siloNodes[id]))
-    return id
-end
-
-function DepotManager:unregisterSilo(siloId)
-    self.silos[siloId] = nil
-    self.siloNodes[siloId] = nil
-    if self._nearSiloId == siloId then
-        self._nearSiloId = nil
-        self:_updateInteractPrompt()
-    end
-    if self._nearVehicleSiloId == siloId then
-        self._nearVehicleSiloId = nil
-    end
-    DepotLogger.info("Silo #%d unregistered", siloId)
-end
-
--- ─── Pending Orders ──────────────────────────────────────
-
-function DepotManager:setPendingOrder(farmId, depotId, fillTypeName, fillTypeIndex, maxLiters, displayName)
-    self.pendingOrders[farmId] = {
-        depotId      = depotId,
-        fillTypeName  = fillTypeName,
-        fillTypeIndex = fillTypeIndex,
-        maxLiters     = maxLiters,
-        displayName   = displayName or fillTypeName,
-    }
-    self:_updateInteractPrompt()
-    DepotLogger.info("Pending order set for farm %d: %s %.0fL", farmId, fillTypeName, maxLiters)
-end
-
-function DepotManager:getPendingOrder(farmId)
-    return self.pendingOrders[farmId]
-end
-
-function DepotManager:clearPendingOrder(farmId)
-    self.pendingOrders[farmId] = nil
-    self:_updateInteractPrompt()
-end
-
 -- ─── Network Helpers ─────────────────────────────────────
 
 function DepotManager:broadcastSync(depotId)
@@ -289,30 +189,9 @@ function DepotManager:openSettingsDialog()
     DepotSettingsDialog.show()
 end
 
-function DepotManager:toggleHUDEditMode()
-    -- 2026-08-22 (Wizard): MasterHUD takeover. When MasterHUD is installed it owns the
-    -- suite-wide hide/move binds, so this mod's own per-mod key is deliberately inert:
-    -- one surface, one way to reach it. Standalone (no MasterHUD) this runs normally.
-    -- Canonical presence check, the same expression the suite's MasterHUD bridges use.
-    if ((g_currentMission ~= nil and g_currentMission.masterHUD) or g_masterHUD) ~= nil then
-        return
-    end
-    if not self.hud then return end
-    if self.hud.editMode then
-        self.hud:exitEditMode()
-    else
-        self.hud:enterEditMode()
-    end
-end
-
 -- ─── Update ──────────────────────────────────────────────
 
 function DepotManager:update(dt)
-    if self.hud then self.hud:update(dt) end
-
-    if self._siloFillCooldown > 0 then
-        self._siloFillCooldown = self._siloFillCooldown - dt
-    end
     if self._depotSellCooldown > 0 then
         self._depotSellCooldown = self._depotSellCooldown - dt
     end
@@ -322,8 +201,6 @@ function DepotManager:update(dt)
     self._proximityTimer = 0
 
     self:_checkDepotProximity()
-    self:_checkSiloProximity()
-    self:_checkPickupProximity()
     self:_checkDepotVehicles()
 end
 
@@ -351,54 +228,6 @@ function DepotManager:_updateInteractPrompt()
     local evId = self:_getOrRegisterInteractEvent()
     if not evId or not g_inputBinding then return end
 
-    local farmId = g_localPlayer and g_localPlayer.farmId or 0
-
-    -- Silo takes priority when on foot near silo
-    if self._nearSiloId then
-        local order = self.pendingOrders[farmId]
-        if order then
-            local label = string.format(
-                tr("fd_silo_collect_action", "Collect %s (%.0fL)"),
-                order.displayName, order.maxLiters)
-            g_inputBinding:setActionEventText(evId, label)
-            g_inputBinding:setActionEventTextVisibility(evId, true)
-            g_inputBinding:setActionEventActive(evId, true)
-            return
-        else
-            g_inputBinding:setActionEventText(evId,
-                tr("fd_silo_no_order", "No pending order. Confirm a type at the Depot first."))
-            g_inputBinding:setActionEventTextVisibility(evId, true)
-            g_inputBinding:setActionEventActive(evId, false)
-            return
-        end
-    end
-
-    -- Pickup zone: show collect prompt when a PENDING delivery exists for this farm
-    if self._nearPickupId then
-        local farmId = g_localPlayer and g_localPlayer.farmId or 0
-        local hasDelivery = false
-        if self.deliverySystem then
-            for _, rec in pairs(self.deliverySystem.deliveries) do
-                if rec.farmId == farmId and rec.status == DeliverySystem.STATUS.PENDING then
-                    hasDelivery = true
-                    break
-                end
-            end
-        end
-        if hasDelivery then
-            g_inputBinding:setActionEventText(evId,
-                tr("fd_delivery_pickup_action", "Collect Delivery"))
-            g_inputBinding:setActionEventTextVisibility(evId, true)
-            g_inputBinding:setActionEventActive(evId, true)
-        else
-            g_inputBinding:setActionEventText(evId,
-                tr("fd_delivery_no_pending", "No pending delivery."))
-            g_inputBinding:setActionEventTextVisibility(evId, true)
-            g_inputBinding:setActionEventActive(evId, false)
-        end
-        return
-    end
-
     -- Depot dialog (only when inside building via physical trigger)
     if self._nearDepotId then
         g_inputBinding:setActionEventText(evId,
@@ -414,45 +243,10 @@ function DepotManager:_updateInteractPrompt()
 end
 
 function DepotManager:_onInteractAction()
-    -- Silo fill (on foot E-key path)
-    if self._nearSiloId then
-        if self._siloFillCooldown > 0 then return end
-        local farmId = g_localPlayer and g_localPlayer.farmId or 0
-        local order = self.pendingOrders[farmId]
-        if not order then return end
-        self:_tryShowSiloFillDialog(self._nearSiloId, farmId, order)
-        return
-    end
-
-    -- Delivery pickup at supplier zone
-    if self._nearPickupId then
-        self:_tryShowDeliveryPickupDialog()
-        return
-    end
-
-    -- Depot open
     if self._nearDepotId then
         DepotLogger.info("_onInteractAction: open depot #%d", self._nearDepotId)
         self:openDialog(self._nearDepotId)
     end
-end
-
-function DepotManager:_onSiloFillConfirm(result)
-    local ctx = self._pendingSiloFill
-    self._pendingSiloFill = nil
-    if not result or not ctx then return end
-
-    DepotLogger.info("Silo fill confirmed: depot=%d silo=%d %s %.0fL farm=%d",
-        ctx.depotId, ctx.siloId, ctx.fillTypeName, ctx.maxLiters, ctx.farmId)
-
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SILO_FILL, {
-        depotId = ctx.depotId, siloId = ctx.siloId,
-        fillTypeName = ctx.fillTypeName, fillTypeIndex = ctx.fillTypeIndex,
-        requestedLiters = ctx.maxLiters, farmId = ctx.farmId,
-    })
-
-    self.pendingOrders[ctx.farmId] = nil
-    self:_updateInteractPrompt()
 end
 
 -- ─── Depot Proximity (on-foot player) ───────────────────
@@ -506,242 +300,6 @@ function DepotManager:_checkDepotProximity()
         end
         self:_updateInteractPrompt()
     end
-end
-
--- ─── Silo Proximity ──────────────────────────────────────
--- On foot : sets _nearSiloId → shows E-key prompt → player presses E → YesNo.
--- In vehicle: auto-shows YesNo when vehicle pulls up (same pattern as depot sell).
-
-function DepotManager:_checkSiloProximity()
-    if not next(self.siloNodes) then return end
-
-    local cv = g_currentMission and g_currentMission.controlledVehicle
-
-    if cv then
-        self:_checkSiloProximityVehicle(cv)
-    else
-        self:_checkSiloProximityOnFoot()
-    end
-end
-
-function DepotManager:_checkSiloProximityVehicle(cv)
-    -- Clear any on-foot silo state when the player gets in a vehicle
-    if self._nearSiloId then
-        self._nearSiloId = nil
-        self:_updateInteractPrompt()
-    end
-
-    if not cv.rootNode then return end
-    local ok, vx, vy, vz = pcall(getWorldTranslation, cv.rootNode)
-    if not ok or not vx then return end
-
-    local nearSiloId = nil
-    for id, node in pairs(self.siloNodes) do
-        if node then
-            local nok, sx, sy, sz = pcall(getWorldTranslation, node)
-            if nok and sx then
-                local dist = math.sqrt((vx - sx) ^ 2 + (vz - sz) ^ 2)
-                if dist <= SILO_VEHICLE_PROXIMITY then
-                    nearSiloId = id
-                    break
-                end
-            end
-        end
-    end
-
-    if nearSiloId ~= self._nearVehicleSiloId then
-        local prev = self._nearVehicleSiloId
-        self._nearVehicleSiloId = nearSiloId
-        if nearSiloId and not prev then
-            DepotLogger.info("Silo proximity: vehicle entered silo #%d", nearSiloId)
-            local farmId = g_localPlayer and g_localPlayer.farmId or 0
-            local order = self.pendingOrders[farmId]
-            if order and self._siloFillCooldown <= 0 then
-                self:_tryShowSiloFillDialog(nearSiloId, farmId, order)
-            end
-        elseif not nearSiloId and prev then
-            DepotLogger.info("Silo proximity: vehicle left silo #%d", prev)
-        end
-    end
-end
-
-function DepotManager:_checkSiloProximityOnFoot()
-    -- Clear vehicle silo state when player exits vehicle
-    if self._nearVehicleSiloId then
-        self._nearVehicleSiloId = nil
-    end
-
-    local px, pz
-    if g_localPlayer and g_localPlayer.rootNode then
-        local ok, x, y, z = pcall(getWorldTranslation, g_localPlayer.rootNode)
-        if ok and x then px, pz = x, z end
-    end
-
-    if not px then
-        if self._nearSiloId then
-            self._nearSiloId = nil
-            self:_updateInteractPrompt()
-        end
-        return
-    end
-
-    local nearSiloId = nil
-    for id, node in pairs(self.siloNodes) do
-        if node then
-            local ok, sx, sy, sz = pcall(getWorldTranslation, node)
-            if ok and sx then
-                local dist = math.sqrt((px - sx) ^ 2 + (pz - sz) ^ 2)
-                if dist <= PROXIMITY_THRESHOLD then
-                    nearSiloId = id
-                    break
-                end
-            end
-        end
-    end
-
-    if nearSiloId ~= self._nearSiloId then
-        local prev = self._nearSiloId
-        self._nearSiloId = nearSiloId
-        if nearSiloId then
-            DepotLogger.info("Silo proximity: entered silo #%d (on foot)", nearSiloId)
-        elseif prev then
-            DepotLogger.info("Silo proximity: left silo #%d (on foot)", prev)
-        end
-        self:_updateInteractPrompt()
-    elseif nearSiloId then
-        self:_updateInteractPrompt()
-    end
-end
-
--- Shared: builds context and shows YesNo confirmation for silo fill.
--- Called from both the on-foot E-key path and the vehicle auto-trigger path.
-function DepotManager:_tryShowSiloFillDialog(siloId, farmId, order)
-    local depotId = order.depotId
-    if not depotId or not self.depots[depotId] then
-        depotId = next(self.depots)
-    end
-    if not depotId then
-        DepotLogger.warning("Silo fill: no depot registered")
-        return
-    end
-
-    self._pendingSiloFill = {
-        depotId      = depotId,
-        siloId       = siloId,
-        fillTypeName = order.fillTypeName,
-        fillTypeIndex= order.fillTypeIndex,
-        maxLiters    = order.maxLiters,
-        displayName  = order.displayName,
-        farmId       = farmId,
-    }
-
-    self._siloFillCooldown = SILO_FILL_COOLDOWN
-
-    local text = string.format(
-        tr("fd_silo_fill_confirm", "Collect %.0fL of %s?\n\nYour vehicle will be filled."),
-        order.maxLiters, order.displayName)
-    YesNoDialog.show(DepotManager._onSiloFillConfirm, self, text)
-end
-
--- ─── Pickup Zone Proximity (on-foot) ────────────────────
-
-function DepotManager:_checkPickupProximity()
-    if not next(self.pickupNodes) then return end
-    -- Only relevant when on foot
-    if g_currentMission and g_currentMission.controlledVehicle then
-        if self._nearPickupId then
-            self._nearPickupId = nil
-            self:_updateInteractPrompt()
-        end
-        return
-    end
-
-    local px, pz
-    if g_localPlayer and g_localPlayer.rootNode then
-        local ok, x, y, z = pcall(getWorldTranslation, g_localPlayer.rootNode)
-        if ok and x then px, pz = x, z end
-    end
-
-    if not px then
-        if self._nearPickupId then
-            self._nearPickupId = nil
-            self:_updateInteractPrompt()
-        end
-        return
-    end
-
-    local nearId = nil
-    for id, node in pairs(self.pickupNodes) do
-        if node then
-            local ok, nx, ny, nz = pcall(getWorldTranslation, node)
-            if ok and nx then
-                local dist = math.sqrt((px - nx)^2 + (pz - nz)^2)
-                if dist <= DepotConstants.DELIVERY.PROXIMITY_PICKUP then
-                    nearId = id
-                    break
-                end
-            end
-        end
-    end
-
-    if nearId ~= self._nearPickupId then
-        local prev = self._nearPickupId
-        self._nearPickupId = nearId
-        if nearId then
-            DepotLogger.info("Pickup proximity: entered zone #%d", nearId)
-        elseif prev then
-            DepotLogger.info("Pickup proximity: left zone #%d", prev)
-        end
-        self:_updateInteractPrompt()
-    elseif nearId then
-        self:_updateInteractPrompt()
-    end
-end
-
-function DepotManager:_tryShowDeliveryPickupDialog()
-    local farmId = g_localPlayer and g_localPlayer.farmId or 0
-    if not self.deliverySystem then return end
-
-    -- Find a PENDING delivery for this farm across all depots
-    local depotId, delivery = nil, nil
-    for dId, rec in pairs(self.deliverySystem.deliveries) do
-        if rec.farmId == farmId and rec.status == DeliverySystem.STATUS.PENDING then
-            depotId  = dId
-            delivery = rec
-            break
-        end
-    end
-    if not delivery then return end
-
-    -- Client-side money pre-check — gives immediate feedback instead of silent server rejection
-    local farm = g_farmManager and g_farmManager:getFarmById(farmId)
-    if farm and farm:getBalance() < delivery.deliveryCost then
-        if g_currentMission and g_currentMission.hud then
-            g_currentMission.hud:showBlinkingWarning(
-                tr("fd_depot_no_money", "Not enough money."), 3000)
-        end
-        return
-    end
-
-    self._pendingDeliveryPickup = { depotId = depotId, farmId = farmId }
-
-    local costStr = g_i18n and g_i18n:formatMoney(delivery.deliveryCost, 0, true)
-                   or string.format("$%.2f", delivery.deliveryCost)
-    local text = string.format(
-        tr("fd_delivery_pickup_confirm",
-           "Collect delivery for %s?\n\nGoods will be stocked when you return to your depot."),
-        costStr)
-    YesNoDialog.show(DepotManager._onDeliveryPickupConfirm, self, text)
-end
-
-function DepotManager:_onDeliveryPickupConfirm(result)
-    local ctx = self._pendingDeliveryPickup
-    self._pendingDeliveryPickup = nil
-    if not result or not ctx then return end
-    DepotLogger.info("Delivery pickup confirmed: depot=%d farm=%d", ctx.depotId, ctx.farmId)
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_PICKUP, {
-        depotId = ctx.depotId, farmId = ctx.farmId,
-    })
 end
 
 -- ─── Vehicle at Depot Unload Trigger ─────────────────────
@@ -833,12 +391,6 @@ function DepotManager:_onDepotSellConfirm(result)
     })
 end
 
--- ─── HUD ─────────────────────────────────────────────────
-
-function DepotManager:drawHUD()
-    if self.hud then self.hud:draw() end
-end
-
 -- ─── Console Commands ────────────────────────────────────
 
 function DepotManager:cmdDebugDepot()
@@ -890,30 +442,4 @@ function DepotManager:cmdFDEmptyStock(depotIdArg)
     end)
     return string.format("%s FDEmptyStock: emptied %d depot(s)",
         DepotConstants.LOG_PREFIX, depotCount)
-end
-
-function DepotManager:cmdFDCancelDelivery(depotIdArg)
-    if not g_server then
-        return DepotConstants.LOG_PREFIX .. " FDCancelDelivery: server only"
-    end
-    if not self.deliverySystem then
-        return DepotConstants.LOG_PREFIX .. " FDCancelDelivery: deliverySystem not initialized"
-    end
-    local targetId = depotIdArg and tonumber(depotIdArg) or nil
-    if not targetId then
-        return DepotConstants.LOG_PREFIX .. " FDCancelDelivery: usage: FDCancelDelivery <depotId>"
-    end
-    local rec = self.deliverySystem:getDelivery(targetId)
-    if not rec then
-        return string.format("%s FDCancelDelivery: no active delivery for depot #%d",
-            DepotConstants.LOG_PREFIX, targetId)
-    end
-    local farmId = rec.farmId
-    local ok, penalty = self.deliverySystem:cancelDelivery(targetId, farmId)
-    if ok then
-        FDNetworkSyncBridge.markDirty()
-        return string.format("%s FDCancelDelivery: depot #%d cancelled (penalty=$%.2f)",
-            DepotConstants.LOG_PREFIX, targetId, penalty or 0)
-    end
-    return DepotConstants.LOG_PREFIX .. " FDCancelDelivery: failed"
 end

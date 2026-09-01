@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+    depotPlaceable.xml
+    Fertilizer Depot store building: the vendored industrial fertilizer
+    production hall with its FULL machinery (production chains, selling,
+    loading, buying, pallet buying, billboards, levers, colors),
+    plus the mod's own fertilizerDepot buy/store/sell system layered on top.
+    The mod's functional nodes map onto the hall's real nodes:
+      playerTrigger      -> playerTriggerMarker (0>16|0|0)
+      unloadTrigger      -> unloadTriggerMarkerFertilizer (0>13|1|3)
+      productSpawnMarker -> palletSpawner (0>18)
+-->
 <placeable type="fertilizerDepotType">
 
     <storeData>
@@ -23,7 +34,7 @@
     </storeData>
 
     <base>
-        <filename>$data/placeables/mapUS/farmersMarketUS/farmersMarketUS.i3d</filename>
+        <filename>i3d/fertilizerProduction_chem.i3d</filename>
         <canBeDeleted>true</canBeDeleted>
         <canBeRenamed>true</canBeRenamed>
     </base>
@@ -33,7 +44,7 @@
             <testArea startNode="testAreaStart01" endNode="testAreaEnd01"/>
         </testAreas>
         <sounds>
-            <place template="largeImp"/>
+            <place template="smallImp"/>
         </sounds>
     </placement>
 
@@ -42,22 +53,44 @@
                    heightNode="clearAreaHeight01"/>
     </clearAreas>
 
-    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30">
+    <leveling requireLeveling="true" maxSmoothDistance="0" maxSlope="100" maxEdgeAngle="100">
         <levelAreas>
             <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01"
-                       heightNode="levelAreaHeight01" groundType="asphalt"/>
+                       heightNode="levelAreaHeight01"/>
         </levelAreas>
         <paintAreas>
             <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01"
-                       heightNode="paintAreaHeight01" groundType="asphalt"/>
+                       heightNode="paintAreaHeight01" groundType="grass"/>
+            <paintArea startNode="paintAreaStart02" widthNode="paintAreaWidth02"
+                       heightNode="paintAreaHeight02" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart03" widthNode="paintAreaWidth03"
+                       heightNode="paintAreaHeight03" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart04" widthNode="paintAreaWidth04"
+                       heightNode="paintAreaHeight04" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart05" widthNode="paintAreaWidth05"
+                       heightNode="paintAreaHeight05" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart06" widthNode="paintAreaWidth06"
+                       heightNode="paintAreaHeight06" groundType="asphalt"/>
+            <paintArea startNode="paintAreaStart07" widthNode="paintAreaWidth07"
+                       heightNode="paintAreaHeight07" groundType="asphalt"/>
         </paintAreas>
     </leveling>
 
+    <foliageAreas>
+        <foliageArea startNode="foliageAreaStart01" widthNode="foliageAreaWidth01" heightNode="foliageAreaHeight01" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart02" widthNode="foliageAreaWidth02" heightNode="foliageAreaHeight02" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart03" widthNode="foliageAreaWidth03" heightNode="foliageAreaHeight03" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart04" widthNode="foliageAreaWidth04" heightNode="foliageAreaHeight04" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+        <foliageArea startNode="foliageAreaStart05" widthNode="foliageAreaWidth05" heightNode="foliageAreaHeight05" decoFoliage="decoFoliageUS" fruitType="meadow"/>
+    </foliageAreas>
+
     <indoorAreas>
         <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01"/>
-        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02"/>
-        <indoorArea startNode="indoorAreaStart03" widthNode="indoorAreaWidth03" heightNode="indoorAreaHeight03"/>
     </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01"/>
+    </tipOcclusionUpdateAreas>
 
     <ai>
         <updateAreas>
@@ -65,225 +98,560 @@
         </updateAreas>
     </ai>
 
-    <tipOcclusionUpdateAreas>
-        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01"
-                                endNode="tipOcclusionUpdateAreaEnd01"/>
-    </tipOcclusionUpdateAreas>
+    <infoTrigger triggerNode="infoTrigger"/>
 
-    <!-- Player dialog trigger: infoTrigger at building center (0,0,0) — truly inside -->
-    <fertilizerDepot playerTrigger="infoTrigger" unloadTrigger="unloadTriggerMarker" productSpawnMarker="palletTrigger"/>
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="worldPosition" teleportNode="playerTriggerMarker"/>
+        <hotspot type="UNLOADING" linkNode="exactFillNodeManure" teleportNode="exactFillNodeManure"/>
+        <hotspot type="UNLOADING" linkNode="exactFillNodeFertilizer" teleportNode="exactFillNodeFertilizer"/>
+        <hotspot type="LOADING" linkNode="loadingTriggerFertilizer" teleportNode="loadingTriggerFertilizer"/>
+        <hotspot type="LOADING" linkNode="loadingTriggerBuying" teleportNode="loadingTriggerBuying"/>
+        <hotspot type="SHOP" linkNode="palletBuyingActivationTriggerMarker" teleportNode="palletBuyingActivationTriggerMarker"/>
+    </hotspots>
 
-    <!-- Animated gates and doors (identical to vanilla farmersMarket) -->
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="i3d/metalHall_props.i3d" node="0" linkNode="props"/>
+        <dynamicallyLoadedPart filename="$data/placeables/shared/sellingStationGeneric/sellingStationGenericNoCoverWideGrid.i3d" node="0" linkNode="grainGate"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo01"/>
+        <dynamicallyLoadedPart filename="i3d/bagSilo.i3d" node="0" linkNode="bagSilo02"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d" node="0" linkNode="siloBridge01"/>
+        <dynamicallyLoadedPart filename="i3d/siloBridge.i3d" node="0" linkNode="siloBridge02"/>
+    </dynamicallyLoadedParts>
+
+    <triggerMarkers>
+        <triggerMarker node="unloadTriggerMarkerManure" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="unloadTriggerMarkerFertilizer" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="loadTriggerMarkerFertilizer" adjustToGround="true" filename="$data/shared/assets/marker/markerIconLoad.i3d"/>
+        <triggerMarker node="loadTriggerMarkerBuying" adjustToGround="true" filename="$data/shared/assets/marker/markerIconLoad.i3d"/>
+        <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="palletBuyingActivationTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconShopping.i3d"/>
+        <triggerMarker node="warningStripes01"/>
+        <triggerMarker node="warningStripes02"/>
+        <triggerMarker node="warningStripes03"/>
+        <triggerMarker node="warningStripes04"/>
+    </triggerMarkers>
+
     <animatedObjects>
-        <animatedObject saveId="gate01">
-            <animation duration="3.5">
-                <part node="gate01_doorLeft">
-                    <keyFrame time="0" translation="1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
+        <animatedObject saveId="leverSpawner1">
+            <animation duration="1.0">
+                <part node="lever01">
+                    <keyFrame time="0.0" rotation="0 0 40"/>
+                    <keyFrame time="1.0" rotation="0 0 -40"/>
                 </part>
-                <part node="gate01_doorRight">
-                    <keyFrame time="0" translation="-1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
+                <part node="informationBillboard01">
+                    <keyFrame time="0.0" visibility="true"/>
+                    <keyFrame time="1.0" visibility="false"/>
                 </part>
             </animation>
-            <controls triggerNode="triggerGate01" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="gate01_doorLeft" template="slidingGateWoodLoop"/>
-                <posEnd  linkNode="gate01_doorLeft" template="woodDoorOpen"/>
-                <negEnd  linkNode="gate01_doorLeft" template="woodDoorClose"/>
-            </sounds>
+            <controls triggerNode="leverTrigger01" posAction="ACTIVATE_HANDTOOL" posText="action_turnOnInformation" negText="action_turnOffInformation"/>
         </animatedObject>
-
-        <animatedObject saveId="gate02">
-            <animation duration="3.5">
-                <part node="gate02_doorLeft">
-                    <keyFrame time="0" translation="1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
+        <animatedObject saveId="leverSpawner2">
+            <animation duration="1.0">
+                <part node="lever02">
+                    <keyFrame time="0.0" rotation="0 0 40"/>
+                    <keyFrame time="1.0" rotation="0 0 -40"/>
                 </part>
-                <part node="gate02_doorRight">
-                    <keyFrame time="0" translation="-1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
-                </part>
-            </animation>
-            <controls triggerNode="triggerGate02" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="gate02_doorLeft" template="slidingGateWoodLoop"/>
-                <posEnd  linkNode="gate02_doorLeft" template="woodDoorOpen"/>
-                <negEnd  linkNode="gate02_doorLeft" template="woodDoorClose"/>
-            </sounds>
-        </animatedObject>
-
-        <animatedObject saveId="gate03">
-            <animation duration="3.5">
-                <part node="gate03_doorLeft">
-                    <keyFrame time="0" translation="-1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
-                </part>
-                <part node="gate03_doorRight">
-                    <keyFrame time="0" translation="1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
+                <part node="informationBillboard02">
+                    <keyFrame time="0.0" visibility="true"/>
+                    <keyFrame time="1.0" visibility="false"/>
                 </part>
             </animation>
-            <controls triggerNode="triggerGate03" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="gate03_doorRight" template="slidingGateWoodLoop"/>
-                <posEnd  linkNode="gate03_doorRight" template="woodDoorOpen"/>
-                <negEnd  linkNode="gate03_doorRight" template="woodDoorClose"/>
-            </sounds>
-        </animatedObject>
-
-        <animatedObject saveId="gate04">
-            <animation duration="3.5">
-                <part node="gate04_doorLeft">
-                    <keyFrame time="0" translation="-1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
-                </part>
-                <part node="gate04_doorRight">
-                    <keyFrame time="0" translation="1.186 0 0"/>
-                    <keyFrame time="1" translation="0 0 0"/>
-                </part>
-            </animation>
-            <controls triggerNode="triggerGate04" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="gate04_doorRight" template="slidingGateWoodLoop"/>
-                <posEnd  linkNode="gate04_doorRight" template="woodDoorOpen"/>
-                <negEnd  linkNode="gate04_doorRight" template="woodDoorClose"/>
-            </sounds>
-        </animatedObject>
-
-        <animatedObject saveId="door01">
-            <animation duration="1.5">
-                <part node="door01">
-                    <keyFrame time="0.25" rotation="0 0 0"/>
-                    <keyFrame time="1.25" rotation="0 95 0"/>
-                </part>
-                <part node="door01Opener">
-                    <keyFrame time="0.00" rotation="0 0 0"/>
-                    <keyFrame time="0.25" rotation="0 0 -25"/>
-                    <keyFrame time="0.75" rotation="0 0 0"/>
-                </part>
-            </animation>
-            <controls triggerNode="triggerDoor01" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="door01" template="woodDoorSqueaksSmall"/>
-                <posEnd  linkNode="door01" template="woodDoorOpen"/>
-                <negEnd  linkNode="door01" template="woodDoorCloseRandom"/>
-            </sounds>
-        </animatedObject>
-
-        <animatedObject saveId="door02">
-            <animation duration="1.5">
-                <part node="door02">
-                    <keyFrame time="0.25" rotation="0 0 0"/>
-                    <keyFrame time="1.25" rotation="0 95 0"/>
-                </part>
-                <part node="door02Opener">
-                    <keyFrame time="0.00" rotation="0 0 0"/>
-                    <keyFrame time="0.25" rotation="0 0 25"/>
-                    <keyFrame time="0.75" rotation="0 0 0"/>
-                </part>
-            </animation>
-            <controls triggerNode="triggerDoor02" posAction="ACTIVATE_HANDTOOL"
-                      posText="action_openGate" negText="action_closeGate"/>
-            <sounds>
-                <moving  linkNode="door02" template="woodDoorSqueaksSmall"/>
-                <posEnd  linkNode="door02" template="woodDoorOpen"/>
-                <negEnd  linkNode="door02" template="woodDoorCloseRandom"/>
-            </sounds>
+            <controls triggerNode="leverTrigger02" posAction="ACTIVATE_HANDTOOL" posText="action_turnOnBillboard" negText="action_turnOffBillboard"/>
         </animatedObject>
     </animatedObjects>
 
-    <!-- Map hotspot anchored at the unload marker (front of selling area) -->
-    <hotspots>
-        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker"/>
-    </hotspots>
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <!-- Base fallback production (works without SoilFertilizer):
+                 chemical inputs -> vanilla fertilizer -->
+            <production id="fertilizer_ammonia" name="%s (%s + %s + %s)" params="$l10n_fillType_fertilizer|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid|$l10n_fillType_potassiumChloride" cyclesPerHour="5" costsPerActiveHour="12">
+                <inputs>
+                    <input fillType="AMMONIA" amount="333"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="333"/>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="333"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FERTILIZER" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="fertilizer_urea" name="%s (%s + %s + %s)" params="$l10n_fillType_fertilizer|$l10n_fillType_urea|$l10n_fillType_phosphoricAcid|$l10n_fillType_potassiumChloride" cyclesPerHour="5" costsPerActiveHour="12">
+                <inputs>
+                    <input fillType="UREA" amount="333"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="333"/>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="333"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FERTILIZER" amount="1000"/>
+                </outputs>
+            </production>
 
-    <!-- In-world markers -->
-    <triggerMarkers>
-        <!-- Vehicle/trailer zone: park here to buy or sell -->
-        <triggerMarker node="unloadTriggerMarker"
-                       filename="$data/shared/assets/marker/markerIconLoad.i3d"
-                       adjustToGround="true"/>
-        <!-- Product output zone: bags/tanks spawn here -->
-        <triggerMarker node="palletTrigger"
-                       filename="$data/shared/assets/marker/markerIconPallet.i3d"
-                       adjustToGround="true"/>
-        <triggerMarker node="warningStripes01"/>
-        <triggerMarker node="infoTrigger"
-                       filename="$data/shared/assets/marker/markerIconWrench.i3d"
-                       adjustToGround="true"/>
-    </triggerMarkers>
+            <!-- â”€â”€ Liquid nitrogen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="uan32" name="%s (%s + %s)" params="$l10n_sf_uan32_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UAN32" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="uan28" name="%s (%s + %s)" params="$l10n_sf_uan28_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UAN28" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="anhydrous" name="%s (%s + %s)" params="$l10n_sf_anhydrous_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="900"/>
+                    <input fillType="WATER" amount="100"/>
+                </inputs>
+                <outputs>
+                    <output fillType="ANHYDROUS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="starter" name="%s (%s + %s + %s)" params="$l10n_sf_starter_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="400"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="300"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="STARTER" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- â”€â”€ Solid granular â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="urea" name="%s (%s + %s)" params="$l10n_sf_urea_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="700"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="UREA" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="an" name="%s (%s + %s)" params="$l10n_sf_an_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="AN" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="ams" name="%s (%s + %s + %s)" params="$l10n_sf_ams_title|$l10n_fillType_ammonia|$l10n_fillType_water|$l10n_fillType_sulfur" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="600"/>
+                    <input fillType="WATER" amount="300"/>
+                    <input fillType="SULFUR" amount="100"/>
+                </inputs>
+                <outputs>
+                    <output fillType="AMS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="map" name="%s (%s + %s)" params="$l10n_sf_map_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="MAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="dap" name="%s (%s + %s)" params="$l10n_sf_dap_title|$l10n_fillType_ammonia|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMMONIA" amount="700"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="DAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="potash" name="%s (%s + %s)" params="$l10n_sf_potash_title|$l10n_fillType_potassiumChloride|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="POTASH" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="polifoska" name="%s (%s + %s)" params="$l10n_sf_polifoska_title|$l10n_fillType_potassiumChloride|$l10n_fillType_phosphoricAcid" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASSIUM_CHLORIDE" amount="500"/>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="POLIFOSKA" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- â”€â”€ Liquid equivalents (dissolved granular) â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="liquid_urea" name="%s (%s + %s)" params="$l10n_sf_liquid_urea_title|$l10n_sf_urea_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="UREA" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_UREA" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_ams" name="%s (%s + %s)" params="$l10n_sf_liquid_ams_title|$l10n_sf_ams_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="AMS" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_AMS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_map" name="%s (%s + %s)" params="$l10n_sf_liquid_map_title|$l10n_sf_map_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="MAP" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_MAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_dap" name="%s (%s + %s)" params="$l10n_sf_liquid_dap_title|$l10n_sf_dap_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="DAP" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_DAP" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="liquid_potash" name="%s (%s + %s)" params="$l10n_sf_liquid_potash_title|$l10n_sf_potash_title|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="POTASH" amount="600"/>
+                    <input fillType="WATER" amount="400"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUID_POTASH" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- â”€â”€ Crop protection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="insecticide" name="%s (%s + %s)" params="$l10n_sf_insecticide_title|$l10n_fillType_ammonia|$l10n_fillType_water" cyclesPerHour="3" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="AMMONIA" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="INSECTICIDE" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="fungicide" name="%s (%s + %s)" params="$l10n_sf_fungicide_title|$l10n_fillType_phosphoricAcid|$l10n_fillType_water" cyclesPerHour="3" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="PHOSPHORIC_ACID" amount="500"/>
+                    <input fillType="WATER" amount="500"/>
+                </inputs>
+                <outputs>
+                    <output fillType="FUNGICIDE" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- â”€â”€ Organics / amendments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="gypsum" name="%s (%s + %s)" params="$l10n_sf_gypsum_title|$l10n_fillType_lime|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="LIME" amount="800"/>
+                    <input fillType="WATER" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="GYPSUM" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="compost" name="%s (%s + %s)" params="$l10n_sf_compost_title|$l10n_fillType_manure|$l10n_fillType_liquidManure" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="LIQUIDMANURE" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="COMPOST" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="biosolids" name="%s (%s + %s)" params="$l10n_sf_biosolids_title|$l10n_fillType_manure|$l10n_fillType_liquidManure" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="700"/>
+                    <input fillType="LIQUIDMANURE" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="BIOSOLIDS" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="chicken_manure" name="%s (%s + %s)" params="$l10n_sf_chicken_manure_title|$l10n_fillType_manure|$l10n_fillType_compost" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="COMPOST" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="CHICKEN_MANURE" amount="1000"/>
+                </outputs>
+            </production>
+            <production id="pelletized_manure" name="%s (%s + %s)" params="$l10n_sf_pelletized_manure_title|$l10n_fillType_manure|$l10n_fillType_compost" cyclesPerHour="5" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="MANURE" amount="800"/>
+                    <input fillType="COMPOST" amount="200"/>
+                </inputs>
+                <outputs>
+                    <output fillType="PELLETIZED_MANURE" amount="1000"/>
+                </outputs>
+            </production>
+
+            <!-- â”€â”€ Liquid lime â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <production id="liquidlime" name="%s (%s + %s)" params="$l10n_sf_liquidlime_title|$l10n_fillType_lime|$l10n_fillType_water" cyclesPerHour="5" costsPerActiveHour="8">
+                <inputs>
+                    <input fillType="LIME" amount="700"/>
+                    <input fillType="WATER" amount="300"/>
+                </inputs>
+                <outputs>
+                    <output fillType="LIQUIDLIME" amount="1000"/>
+                </outputs>
+            </production>
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="AMMONIA" capacity="100000"/>
+            <capacity fillType="PHOSPHORIC_ACID" capacity="100000"/>
+            <capacity fillType="POTASSIUM_CHLORIDE" capacity="100000"/>
+            <capacity fillType="UREA" capacity="100000"/>
+            <capacity fillType="WATER" capacity="100000"/>
+            <capacity fillType="LIME" capacity="100000"/>
+            <capacity fillType="MANURE" capacity="100000"/>
+            <capacity fillType="LIQUIDMANURE" capacity="100000"/>
+            <capacity fillType="COMPOST" capacity="100000"/>
+            <capacity fillType="SULFUR" capacity="100000"/>
+            <capacity fillType="FERTILIZER" capacity="1000000"/>
+            <capacity fillType="UAN32" capacity="1000000"/>
+            <capacity fillType="UAN28" capacity="1000000"/>
+            <capacity fillType="ANHYDROUS" capacity="1000000"/>
+            <capacity fillType="STARTER" capacity="1000000"/>
+            <capacity fillType="AN" capacity="1000000"/>
+            <capacity fillType="AMS" capacity="1000000"/>
+            <capacity fillType="MAP" capacity="1000000"/>
+            <capacity fillType="DAP" capacity="1000000"/>
+            <capacity fillType="POTASH" capacity="1000000"/>
+            <capacity fillType="POLIFOSKA" capacity="1000000"/>
+            <capacity fillType="LIQUID_UREA" capacity="1000000"/>
+            <capacity fillType="LIQUID_AMS" capacity="1000000"/>
+            <capacity fillType="LIQUID_MAP" capacity="1000000"/>
+            <capacity fillType="LIQUID_DAP" capacity="1000000"/>
+            <capacity fillType="LIQUID_POTASH" capacity="1000000"/>
+            <capacity fillType="INSECTICIDE" capacity="1000000"/>
+            <capacity fillType="FUNGICIDE" capacity="1000000"/>
+            <capacity fillType="GYPSUM" capacity="1000000"/>
+            <capacity fillType="COMPOST" capacity="1000000"/>
+            <capacity fillType="BIOSOLIDS" capacity="1000000"/>
+            <capacity fillType="CHICKEN_MANURE" capacity="1000000"/>
+            <capacity fillType="PELLETIZED_MANURE" capacity="1000000"/>
+            <capacity fillType="LIQUIDLIME" capacity="1000000"/>
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false" allowMissions="true">
+            <unloadTrigger exactFillRootNode="exactFillNodeManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR" allowMissions="true" stationName="$l10n_stationName_fertilizerChemIn"/>
+            <palletTrigger triggerNode="palletTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR"/>
+            <baleTrigger triggerNode="baleTriggerManure" aiNode="unloadTriggerAINodeManure" fillTypes="AMMONIA PHOSPHORIC_ACID UREA WATER SULFUR"/>
+            <unloadTrigger exactFillRootNode="exactFillNodeFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE LIQUIDMANURE COMPOST AMS MAP DAP POTASH" allowMissions="false" stationName="$l10n_stationName_fertilizerManureChemIn"/>
+            <palletTrigger triggerNode="palletTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE LIQUIDMANURE COMPOST AMS MAP DAP POTASH"/>
+            <baleTrigger triggerNode="baleTriggerFertilizer" aiNode="unloadTriggerAINodeManure" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE LIQUIDMANURE COMPOST AMS MAP DAP POTASH"/>
+        </sellingStation>
+
+        <loadingStation node="loadingStation" supportsExtension="false">
+            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER UAN32 UAN28 ANHYDROUS STARTER UREA AN AMS MAP DAP POTASH POLIFOSKA LIQUID_UREA LIQUID_AMS LIQUID_MAP LIQUID_DAP LIQUID_POTASH INSECTICIDE FUNGICIDE GYPSUM COMPOST BIOSOLIDS CHICKEN_MANURE PELLETIZED_MANURE LIQUIDLIME" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="true">
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffectFertilizer" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
+                <effectNode effectNode="pipeEffectSmokeFertilizer" materialType="unloadingSmoke" fadeTime="0.5"/>
+            </loadTrigger>
+        </loadingStation>
+
+        <playerTrigger node="playerTrigger"/>
+        <sounds>
+            <idle template="placeableSmallIdleGeneric" linkNode="0>"/>
+            <active template="feedingRobotLoop" linkNode="0>"/>
+        </sounds>
+    </productionPoint>
+
+    <buyingStation node="buyingStation" supportsExtension="false">
+        <loadTrigger triggerNode="loadingTriggerBuying" fillTypes="FERTILIZER POTASSIUM_CHLORIDE LIME MANURE LIQUIDMANURE COMPOST WATER" fillLitersPerSecond="1000" infiniteCapacity="true" stationName="$l10n_stationName_fertilizerChemBuying" aiNode="loadTriggerAINodeBuying" autoStart="false">
+            <effectNode effectClass="PipeEffect" effectNode="pipeEffectBuying" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="0.8 0.8 1 0" controlPoint="3 0 0 0"/>
+            <effectNode effectNode="pipeEffectSmokeBuying" materialType="unloadingSmoke" fadeTime="0.5"/>
+        </loadTrigger>
+        <loadTrigger triggerNode="loadingTriggerBuyingChem" fillTypes="AMMONIA PHOSPHORIC_ACID UREA SULFUR" fillLitersPerSecond="1000" infiniteCapacity="true" aiNode="loadTriggerAINodeBuying" autoStart="false"/>
+        <fillType name="FERTILIZER" priceScale="1"/>
+        <fillType name="AMMONIA" priceScale="1"/>
+        <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
+        <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
+        <fillType name="UREA" priceScale="1"/>
+        <fillType name="WATER" priceScale="1"/>
+        <fillType name="LIME" priceScale="1"/>
+        <fillType name="MANURE" priceScale="1"/>
+        <fillType name="LIQUIDMANURE" priceScale="1"/>
+        <fillType name="COMPOST" priceScale="1"/>
+        <fillType name="SULFUR" priceScale="1"/>
+    </buyingStation>
+
+    <!-- Pallet shop. Only FERTILIZER is listed: base-game pallet store images use
+         $data/... which resolve. SoilFertilizer's pallet store items use $moddir$,
+         which the game cannot resolve when a different mod's pallet shop renders
+         them, so listing SF types here fires 'Missing dds' errors. All SF types are
+         still sold in bulk at the buying/loading stations. -->
+    <palletBuyingStation triggerNode="palletBuyingActivationTrigger">
+        <fillType name="FERTILIZER" priceScale="1"/>
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" palletRotationOffset="0" maxLength="10"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" palletRotationOffset="0" maxLength="10"/>
+            </spawnPlaces>
+        </palletSpawner>
+    </palletBuyingStation>
+
+    <colorConfigurations defaultColorIndex="14" useDefaultColors="false">
+        <material slotName="metalWall"/>
+        <colorConfiguration color="RUDOLFHOERMANN_GREEN"/>
+        <colorConfiguration color="RUDOLFHOERMANN_BEIGE"/>
+        <colorConfiguration color="RUDOLFHOERMANN_RED"/>
+        <colorConfiguration color="RUDOLFHOERMANN_BLUE"/>
+        <colorConfiguration color="RUDOLFHOERMANN_DARKGREY"/>
+        <colorConfiguration color="RUDOLFHOERMANN_LIGHTGREY"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WHITEALU"/>
+        <colorConfiguration color="RUDOLFHOERMANN_GREYALU"/>
+        <colorConfiguration color="RUDOLFHOERMANN_OXIDRED"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WOODDARK"/>
+        <colorConfiguration color="RUDOLFHOERMANN_WOODBRIGHT"/>
+        <colorConfiguration color="RUDOLFHOERMANN_LIGHTGREEN"/>
+        <colorConfiguration color="RUDOLFHOERMANN_DARKBEIGE"/>
+    </colorConfigurations>
+
+    <!-- The mod's own fertilizerDepot system layered on the production hall -->
+    <fertilizerDepot playerTrigger="playerTriggerMarker" unloadTrigger="unloadTriggerMarkerFertilizer" productSpawnMarker="palletSpawner"/>
 
     <i3dMappings>
-        <!-- Clear / level / paint areas -->
-        <i3dMapping id="clearAreaStart01"  node="0>0|0"/>
-        <i3dMapping id="clearAreaWidth01"  node="0>0|0|0"/>
-        <i3dMapping id="clearAreaHeight01" node="0>0|0|1"/>
+        <i3dMapping id="worldPosition" node="0>"/>
 
-        <i3dMapping id="levelAreaStart01"  node="0>1|0"/>
-        <i3dMapping id="levelAreaWidth01"  node="0>1|0|0"/>
-        <i3dMapping id="levelAreaHeight01" node="0>1|0|1"/>
+        <i3dMapping id="props" node="0>4|0"/>
 
-        <i3dMapping id="paintAreaStart01"  node="0>2|0"/>
-        <i3dMapping id="paintAreaWidth01"  node="0>2|0|0"/>
-        <i3dMapping id="paintAreaHeight01" node="0>2|0|1"/>
+        <i3dMapping id="clearAreaStart01" node="0>6|0"/>
+        <i3dMapping id="clearAreaWidth01" node="0>6|0|0"/>
+        <i3dMapping id="clearAreaHeight01" node="0>6|0|1"/>
 
-        <!-- Indoor areas -->
-        <i3dMapping id="indoorAreaStart01"  node="0>3|0"/>
-        <i3dMapping id="indoorAreaWidth01"  node="0>3|0|0"/>
-        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1"/>
-        <i3dMapping id="indoorAreaStart02"  node="0>3|1"/>
-        <i3dMapping id="indoorAreaWidth02"  node="0>3|1|0"/>
-        <i3dMapping id="indoorAreaHeight02" node="0>3|1|1"/>
-        <i3dMapping id="indoorAreaStart03"  node="0>3|2"/>
-        <i3dMapping id="indoorAreaWidth03"  node="0>3|2|0"/>
-        <i3dMapping id="indoorAreaHeight03" node="0>3|2|1"/>
+        <i3dMapping id="levelAreaStart01" node="0>7|0"/>
+        <i3dMapping id="levelAreaWidth01" node="0>7|0|0"/>
+        <i3dMapping id="levelAreaHeight01" node="0>7|0|1"/>
 
-        <!-- Test areas -->
-        <i3dMapping id="testAreaStart01" node="0>4|0"/>
-        <i3dMapping id="testAreaEnd01"   node="0>4|0|0"/>
+        <i3dMapping id="paintAreaStart01" node="0>8|0"/>
+        <i3dMapping id="paintAreaWidth01" node="0>8|0|0"/>
+        <i3dMapping id="paintAreaHeight01" node="0>8|0|1"/>
+        <i3dMapping id="paintAreaStart02" node="0>8|1"/>
+        <i3dMapping id="paintAreaWidth02" node="0>8|1|0"/>
+        <i3dMapping id="paintAreaHeight02" node="0>8|1|1"/>
+        <i3dMapping id="paintAreaStart03" node="0>8|2"/>
+        <i3dMapping id="paintAreaWidth03" node="0>8|2|0"/>
+        <i3dMapping id="paintAreaHeight03" node="0>8|2|1"/>
+        <i3dMapping id="paintAreaStart04" node="0>8|3"/>
+        <i3dMapping id="paintAreaWidth04" node="0>8|3|0"/>
+        <i3dMapping id="paintAreaHeight04" node="0>8|3|1"/>
+        <i3dMapping id="paintAreaStart05" node="0>8|4"/>
+        <i3dMapping id="paintAreaWidth05" node="0>8|4|0"/>
+        <i3dMapping id="paintAreaHeight05" node="0>8|4|1"/>
+        <i3dMapping id="paintAreaStart06" node="0>8|5"/>
+        <i3dMapping id="paintAreaWidth06" node="0>8|5|0"/>
+        <i3dMapping id="paintAreaHeight06" node="0>8|5|1"/>
+        <i3dMapping id="paintAreaStart07" node="0>8|6"/>
+        <i3dMapping id="paintAreaWidth07" node="0>8|6|0"/>
+        <i3dMapping id="paintAreaHeight07" node="0>8|6|1"/>
 
-        <!-- Tip occlusion -->
-        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0"/>
-        <i3dMapping id="tipOcclusionUpdateAreaEnd01"   node="0>5|0|0"/>
+        <i3dMapping id="foliageAreaStart01" node="0>19|0"/>
+        <i3dMapping id="foliageAreaWidth01" node="0>19|0|0"/>
+        <i3dMapping id="foliageAreaHeight01" node="0>19|0|1"/>
+        <i3dMapping id="foliageAreaStart02" node="0>19|1"/>
+        <i3dMapping id="foliageAreaWidth02" node="0>19|1|0"/>
+        <i3dMapping id="foliageAreaHeight02" node="0>19|1|1"/>
+        <i3dMapping id="foliageAreaStart03" node="0>19|2"/>
+        <i3dMapping id="foliageAreaWidth03" node="0>19|2|0"/>
+        <i3dMapping id="foliageAreaHeight03" node="0>19|2|1"/>
+        <i3dMapping id="foliageAreaStart04" node="0>19|3"/>
+        <i3dMapping id="foliageAreaWidth04" node="0>19|3|0"/>
+        <i3dMapping id="foliageAreaHeight04" node="0>19|3|1"/>
+        <i3dMapping id="foliageAreaStart05" node="0>19|4"/>
+        <i3dMapping id="foliageAreaWidth05" node="0>19|4|0"/>
+        <i3dMapping id="foliageAreaHeight05" node="0>19|4|1"/>
 
-        <!-- Gate door panels -->
-        <i3dMapping id="gate01_doorLeft"  node="0>7|0|0"/>
-        <i3dMapping id="gate01_doorRight" node="0>7|1|0"/>
-        <i3dMapping id="gate02_doorLeft"  node="0>7|2|0"/>
-        <i3dMapping id="gate02_doorRight" node="0>7|3|0"/>
-        <i3dMapping id="gate03_doorLeft"  node="0>7|4|0"/>
-        <i3dMapping id="gate03_doorRight" node="0>7|5|0"/>
-        <i3dMapping id="gate04_doorLeft"  node="0>7|6|0"/>
-        <i3dMapping id="gate04_doorRight" node="0>7|7|0"/>
+        <i3dMapping id="indoorAreaStart01" node="0>9|0"/>
+        <i3dMapping id="indoorAreaWidth01" node="0>9|0|0"/>
+        <i3dMapping id="indoorAreaHeight01" node="0>9|0|1"/>
 
-        <!-- Small door panels -->
-        <i3dMapping id="door01"       node="0>7|8|0"/>
-        <i3dMapping id="door01Opener" node="0>7|8|0|0"/>
-        <i3dMapping id="door02"       node="0>7|9|0"/>
-        <i3dMapping id="door02Opener" node="0>7|9|0|0"/>
+        <i3dMapping id="testAreaStart01" node="0>10|0"/>
+        <i3dMapping id="testAreaEnd01" node="0>10|0|0"/>
 
-        <!-- Interaction triggers for animated objects -->
-        <i3dMapping id="triggerGate01" node="0>7|10"/>
-        <i3dMapping id="triggerGate02" node="0>7|11"/>
-        <i3dMapping id="triggerGate03" node="0>7|12"/>
-        <i3dMapping id="triggerGate04" node="0>7|13"/>
-        <i3dMapping id="triggerDoor01" node="0>7|14"/>
-        <i3dMapping id="triggerDoor02" node="0>7|15"/>
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>11|0"/>
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>11|0|0"/>
 
-        <!-- Player dialog trigger (building center, collisionFilterMask=0x100000 = player) -->
-        <i3dMapping id="infoTrigger"         node="0>6"/>
+        <i3dMapping id="infoTrigger" node="0>17"/>
 
-        <!-- Selling station area (vehicle unload / sell zone) -->
-        <i3dMapping id="unloadTriggerMarker" node="0>8|0|1"/>
-        <!-- Product output zone (bags/tanks spawn here) -->
-        <i3dMapping id="palletTrigger"       node="0>8|1|1"/>
-        <i3dMapping id="warningStripes01"    node="0>8|1|3"/>
+        <i3dMapping id="sellingStation" node="0>13"/>
+        <i3dMapping id="exactFillNodeManure" node="0>13|0|0"/>
+        <i3dMapping id="palletTriggerManure" node="0>13|0|1"/>
+        <i3dMapping id="baleTriggerManure" node="0>13|0|2"/>
+        <i3dMapping id="unloadTriggerAINodeManure" node="0>13|0|4"/>
+        <i3dMapping id="unloadTriggerMarkerManure" node="0>13|0|3"/>
+        <i3dMapping id="exactFillNodeFertilizer" node="0>13|1|0"/>
+        <i3dMapping id="palletTriggerFertilizer" node="0>13|1|1"/>
+        <i3dMapping id="baleTriggerFertilizer" node="0>13|1|2"/>
+        <i3dMapping id="unloadTriggerAINodeFertilizer" node="0>13|1|4"/>
+        <i3dMapping id="unloadTriggerMarkerFertilizer" node="0>13|1|3"/>
+
+        <i3dMapping id="loadingStation" node="0>14|0"/>
+        <i3dMapping id="loadingTriggerFertilizer" node="0>14|0|0"/>
+        <i3dMapping id="dischargeNodeFertilizer" node="0>14|0|1"/>
+        <i3dMapping id="pipeEffectFertilizer" node="0>14|0|2|0"/>
+        <i3dMapping id="pipeEffectSmokeFertilizer" node="0>14|0|2|1"/>
+        <i3dMapping id="loadTriggerAINodeFertilizer" node="0>14|0|3"/>
+        <i3dMapping id="loadTriggerMarkerFertilizer" node="0>14|0|4"/>
+
+        <i3dMapping id="buyingStation" node="0>14|1"/>
+        <i3dMapping id="loadingTriggerBuying" node="0>14|1|0"/>
+        <i3dMapping id="dischargeNodeBuying" node="0>14|1|1"/>
+        <i3dMapping id="pipeEffectBuying" node="0>14|1|2|0"/>
+        <i3dMapping id="pipeEffectSmokeBuying" node="0>14|1|2|1"/>
+        <i3dMapping id="loadTriggerAINodeBuying" node="0>14|1|3"/>
+        <i3dMapping id="loadTriggerMarkerBuying" node="0>14|1|4"/>
+        <i3dMapping id="loadingTriggerBuyingChem" node="0>14|2|0"/>
+
+        <i3dMapping id="playerTrigger" node="0>16|0"/>
+        <i3dMapping id="playerTriggerMarker" node="0>16|0|0"/>
+
+        <i3dMapping id="palletSpawner" node="0>18"/>
+        <i3dMapping id="palletAreaStart01" node="0>18|0"/>
+        <i3dMapping id="palletAreaEnd01" node="0>18|0|0"/>
+        <i3dMapping id="palletAreaStart02" node="0>18|1"/>
+        <i3dMapping id="palletAreaEnd02" node="0>18|1|0"/>
+        <i3dMapping id="palletBuyingActivationTriggerMarker" node="0>18|2|0"/>
+        <i3dMapping id="palletBuyingActivationTrigger" node="0>18|2"/>
+
+        <i3dMapping id="warningStripes01" node="0>15|0"/>
+        <i3dMapping id="warningStripes02" node="0>15|1"/>
+        <i3dMapping id="warningStripes03" node="0>15|2"/>
+        <i3dMapping id="warningStripes04" node="0>15|3"/>
+
+        <i3dMapping id="billboard" node="0>5|2"/>
+
+        <i3dMapping id="grainGate" node="0>4|5|0"/>
+        <i3dMapping id="bagSilo01" node="0>4|2|0"/>
+        <i3dMapping id="bagSilo02" node="0>4|2|1"/>
+        <i3dMapping id="siloBridge01" node="0>4|3|0"/>
+        <i3dMapping id="siloBridge02" node="0>4|3|1"/>
+
+        <i3dMapping id="lever01" node="0>20|0|0|0"/>
+        <i3dMapping id="lever02" node="0>20|1|0|0"/>
+        <i3dMapping id="leverTrigger01" node="0>20|0|1"/>
+        <i3dMapping id="leverTrigger02" node="0>20|1|1"/>
+        <i3dMapping id="informationBillboard01" node="0>5|3"/>
+        <i3dMapping id="informationBillboard02" node="0>5|4"/>
     </i3dMappings>
 
 </placeable>

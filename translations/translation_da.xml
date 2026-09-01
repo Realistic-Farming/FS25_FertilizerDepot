@@ -50,10 +50,7 @@
     <text name="fd_error_farm"   text="Farmen findes ikke"/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Silo til pÃ¥fyldning af gÃ¸dning"/>
-    <text name="fd_silo_function" text="KÃ¸r hen med vognen for at fylde enhver type gÃ¸dning. KrÃ¦ver gÃ¸dningsdepot."/>
-    <text name="fd_silo_desc"     text="GÃ¸dningspÃ¥fyldningssiloen er den anden halvdel af gÃ¸dningsdepotsystemet. Placer den nÃ¦r dine marker, og kÃ¸r hen for at fylde op."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Indstillinger for gÃ¸dningsdepot"/>
     <text name="fd_settings_seasonal"   text="SÃ¦sonbestemte priser"/>
@@ -72,10 +69,7 @@
     <text name="fd_depot_select_btn"    text="VÃ¦lg"/>
     <text name="fd_depot_select_first"  text="VÃ¦lg fÃ¸rst en type."/>
     <text name="fd_depot_order_set"     text="Ordre oprettet: %s %.0fL â€” gÃ¥ til siloen for at hente."/>
-    <text name="fd_silo_collect_action" text="Hent %s (%.0fL)"/>
-    <text name="fd_silo_no_order"       text="Ingen ventende ordre. BekrÃ¦ft fÃ¸rst en type ved depotet."/>
-    <text name="fd_silo_fill_confirm"   text="Hent %.0fL %s?&#10;&#10;Dit kÃ¸retÃ¸j vil blive fyldt op."/>
-    <text name="fd_depot_sell_confirm"  text="SÃ¦lg %.0fL %s til depotet for %s?"/>
+                <text name="fd_depot_sell_confirm"  text="SÃ¦lg %.0fL %s til depotet for %s?"/>
     <text name="fd_depot_filling"       text="Fylder %.0fL %s i dit kÃ¸retÃ¸j..."/>
     <text name="input_FD_INTERACT"      text="Interager med gÃ¸dningsdepot"/>
     <text name="input_FD_HUD_DRAG"      text="Sl Delivery HUD redigeringstilstand"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab"        text="Produkter"/>
@@ -88,46 +82,15 @@
     <text name="fd_products_no_object"  text="Intet fysisk objekt registreret for denne type."/>
     <text name="fd_products_ordered"    text="%dÃ— %s %s bestilt â€” leveres til depotet."/>
     <text name="fd_depot_selected"      text="Valgt"/>
-    <text name="fd_pickup_name"         text="GÃ¸dningsleverandÃ¸r"/>
-    <text name="fd_pickup_function"     text="LeverandÃ¸rens afhentningszone til leveringsordrer. PlacÃ©r den nÃ¦r butikken i spillet."/>
-    <text name="fd_col_needed"          text="BehÃ¸ves"/>
-    <text name="fd_col_amount"          text="MÃ¦ngde"/>
-    <text name="fd_col_revenue"         text="IndtÃ¦gt"/>
-
+                <text name="fd_col_amount"          text="MÃ¦ngde"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+    
     <!-- Delivery system â€” Interaction prompts -->
-    <text name="fd_delivery_pickup_action" text="Hent levering"/>
-    <text name="fd_delivery_no_pending"    text="Ingen ventende levering."/>
-
+        
     <!-- Delivery system â€” HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="GÃ¸dningslevering"/>
-    <text name="fd_delivery_hud_pending" text="KÃ¸r til afhentningszonen for at hente din ordre"/>
-    <text name="fd_delivery_hud_loaded"  text="ReturnÃ©r til dit depot for at fuldfÃ¸re leveringen"/>
-
+            
     <!-- Delivery system â€” YesNo dialogs -->
-    <text name="fd_delivery_pickup_confirm"   text="Hent levering for %s?&#10;&#10;Varerne lÃ¦gges pÃ¥ lager, nÃ¥r du vender tilbage til dit depot."/>
-    <text name="fd_delivery_order_confirm"    text="Afgiv leveringsordre for %d fyldtype(r)?&#10;&#10;Samlet pris ved afhentning: %s&#10;(10%% leveringsgebyr inkluderet)"/>
-    <text name="fd_delivery_cancel_confirm"   text="Annuller leveringsordre?&#10;&#10;En bÃ¸de pÃ¥ %s (20%% af leveringsomkostningen) vil blive trukket."/>
-    <text name="fd_delivery_complete_confirm" text="FuldfÃ¸r levering og fyld dit depot op?&#10;&#10;Alle bestilte fyldtyper tilfÃ¸jes til lageret."/>
-
+                
     <!-- Delivery system â€” ORDER tab status messages -->
-    <text name="fd_delivery_no_pickup_placed"  text="PlacÃ©r fÃ¸rst en afhentningszone for gÃ¸dningsleverandÃ¸ren nÃ¦r butikken i spillet."/>
-    <text name="fd_delivery_all_full"          text="Alle fyldtyper er pÃ¥ maksimal kapacitet â€” ingen levering nÃ¸dvendig."/>
-    <text name="fd_delivery_cost_summary"      text="Basis: $%.2f  +  Gebyr: $%.2f  =  I alt: $%.2f"/>
-    <text name="fd_delivery_status_pending"    text="Levering afventer â€” kÃ¸r til afhentningszonen for at hente  |  Annulleringsgebyr: %s"/>
-    <text name="fd_delivery_status_ready"      text="Levering klar â€” klik for at fylde dit depot op."/>
-    <text name="fd_delivery_status_park"       text="ParkÃ©r leveringskÃ¸retÃ¸jet inden for 25 m af aflÃ¦sningszonen (%.0fm vÃ¦k)"/>
-    <text name="fd_delivery_status_return"     text="ReturnÃ©r til depotet og parkÃ©r nÃ¦r aflÃ¦sningszonen."/>
-    <text name="fd_delivery_place_btn"         text="Afgiv leveringsordre"/>
-    <text name="fd_delivery_cancel_btn"        text="Annuller ordre"/>
-    <text name="fd_delivery_complete_btn"      text="FuldfÃ¸r levering"/>
-    <text name="fd_delivery_order_placed"      text="Ordre afgivet â€” kÃ¸r til afhentningszonen."/>
-    <text name="fd_delivery_cancelled"         text="Levering annulleret."/>
-    <text name="fd_delivery_completing"        text="Levering fuldfÃ¸rt! Lageret er blevet opdateret."/>
-    <text name="fd_delivery_already_active"    text="En levering er allerede i gang."/>
-    <text name="fd_delivery_no_pickup"         text="Ingen leverandÃ¸r-afhentningszone er placeret pÃ¥ dette kort."/>
-    <text name="fd_delivery_stock_full"        text="Alle fyldtyper er pÃ¥ maksimal kapacitet â€” ingen levering nÃ¸dvendig."/>
-    <text name="fd_delivery_none"              text="Ingen aktiv levering."/>
-    <text name="fd_delivery_wrong_status"      text="Leveringen er ikke i korrekt status til denne handling."/>
-    <text name="fd_delivery_wrong_farm"        text="Denne levering tilhÃ¸rer en anden gÃ¥rd."/>
-    </texts>
+                                                                                </texts>
 </l10n>

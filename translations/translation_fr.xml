@@ -50,10 +50,7 @@
     <text name="fd_error_farm"   text="Ferme introuvable."/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Silo de remplissage d’engrais"/>
-    <text name="fd_silo_function" text="Rendez-vous avec une remorque pour remplir tout type d’engrais. Nécessite le dépôt d’engrais."/>
-    <text name="fd_silo_desc"     text="Le silo de remplissage d’engrais est la seconde partie du système de dépôt d’engrais. Placez-le près de vos champs et approchez-vous pour remplir."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Paramètres du dépôt d’engrais"/>
     <text name="fd_settings_seasonal"   text="Prix saisonniers"/>
@@ -73,10 +70,7 @@
     <text name="fd_depot_select_btn" text="Sélectionner"/>
     <text name="fd_depot_select_first" text="Sélectionnez d’abord un type de remplissage."/>
     <text name="fd_depot_order_set" text="Commande définie : %s %.0fL — rendez-vous au silo pour récupérer."/>
-    <text name="fd_silo_collect_action" text="Récupérer %s (%.0fL)"/>
-    <text name="fd_silo_no_order" text="Aucune commande en attente. Confirmez d’abord un type au dépôt."/>
-    <text name="fd_silo_fill_confirm" text="Récupérer %.0fL de %s ?&#10;&#10;Votre véhicule sera rempli."/>
-    <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
+                <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
     <text name="fd_depot_filling" text="Remplissage de %.0fL de %s dans votre véhicule..."/>
     <text name="input_FD_INTERACT" text="Interagir avec le dépôt d’engrais"/>
     <text name="input_FD_HUD_DRAG" text="Basculer le mode d’édition du HUD de livraison"/><text name="input_FD_TOGGLE_HUD" text="Afficher/Masquer le HUD de livraison"/>    <text name="fd_products_tab" text="Produits"/>
@@ -89,40 +83,9 @@
     <text name="fd_products_no_object" text="Aucun objet physique enregistré pour ce type."/>
     <text name="fd_products_ordered" text="%d× %s %s commandé(s) — livraison au dépôt."/>
     <text name="fd_depot_selected" text="Sélectionné"/>
-    <text name="fd_pickup_name" text="Fournisseur d’engrais"/>
-    <text name="fd_pickup_function" text="Zone de récupération des livraisons fournisseur. À placer près du magasin du jeu."/>
-    <text name="fd_col_needed" text="Nécessaire"/>
-    <text name="fd_col_amount" text="Quantité"/>
-    <text name="fd_col_revenue" text="Revenu"/>
-    <text name="fd_delivery_pickup_action" text="Récupérer la livraison"/>
-    <text name="fd_delivery_no_pending" text="Aucune livraison en attente."/>
-
+                <text name="fd_col_amount" text="Quantité"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+            
     <!-- Delivery system, HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="Livraison d’engrais"/>
-    <text name="fd_delivery_hud_pending" text="Rendez-vous dans la zone de récupération pour collecter votre commande"/>
-    <text name="fd_delivery_hud_loaded"  text="Retournez à votre dépôt pour finaliser la livraison"/>
-    <text name="fd_delivery_pickup_confirm" text="Récupérer la livraison pour %s ?&#10;&#10;Les marchandises seront stockées lorsque vous retournerez à votre dépôt."/>
-    <text name="fd_delivery_order_confirm" text="Passer une commande de livraison pour %d type(s) de remplissage ?&#10;&#10;Coût total au retrait : %s&#10;(10%% de frais de livraison inclus)"/>
-    <text name="fd_delivery_cancel_confirm" text="Annuler la commande de livraison ?&#10;&#10;Une pénalité de %s (20%% du coût de livraison) sera déduite."/>
-    <text name="fd_delivery_complete_confirm" text="Finaliser la livraison et approvisionner votre dépôt ?&#10;&#10;Tous les types de remplissage commandés seront ajoutés au stockage."/>
-    <text name="fd_delivery_no_pickup_placed" text="Placez d’abord une zone de récupération fournisseur près du magasin du jeu."/>
-    <text name="fd_delivery_all_full" text="Tous les types de remplissage sont au maximum — aucune livraison nécessaire."/>
-    <text name="fd_delivery_cost_summary" text="Base : $%.2f  +  Frais : $%.2f  =  Total : $%.2f"/>
-    <text name="fd_delivery_status_pending" text="Livraison en attente — rendez-vous dans la zone de récupération pour collecter  |  Pénalité d’annulation : %s"/>
-    <text name="fd_delivery_status_ready" text="Livraison prête — cliquez pour approvisionner votre dépôt."/>
-    <text name="fd_delivery_status_park" text="Garez le véhicule de livraison à moins de 25 m de la zone de déchargement (%.0fm restants)"/>
-    <text name="fd_delivery_status_return" text="Retournez au dépôt et garez-vous près de la zone de déchargement."/>
-    <text name="fd_delivery_place_btn" text="Passer une commande"/>
-    <text name="fd_delivery_cancel_btn" text="Annuler la commande"/>
-    <text name="fd_delivery_complete_btn" text="Finaliser la livraison"/>
-    <text name="fd_delivery_order_placed" text="Commande passée — rendez-vous dans la zone de récupération."/>
-    <text name="fd_delivery_cancelled" text="Livraison annulée."/>
-    <text name="fd_delivery_completing" text="Livraison terminée ! Le stock a été ajouté."/>
-    <text name="fd_delivery_already_active" text="Une livraison est déjà en cours."/>
-    <text name="fd_delivery_no_pickup" text="Aucune zone de récupération fournisseur placée sur cette carte."/>
-    <text name="fd_delivery_stock_full" text="Tous les types de remplissage sont au maximum — aucune livraison nécessaire."/>
-    <text name="fd_delivery_none" text="Aucune livraison active."/>
-    <text name="fd_delivery_wrong_status" text="La livraison n’est pas dans l’état correct pour cette action."/>
-    <text name="fd_delivery_wrong_farm" text="Cette livraison appartient à une autre ferme."/>
-    </texts>
+                                                                                                            </texts>
 </l10n>
