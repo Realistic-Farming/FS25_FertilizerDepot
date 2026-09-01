@@ -497,9 +497,6 @@
 
     <palletBuyingStation triggerNode="palletBuyingActivationTrigger">
         <fillType name="FERTILIZER" priceScale="1"/>
-        <fillType name="AMMONIA" priceScale="1"/>
-        <fillType name="PHOSPHORIC_ACID" priceScale="1"/>
-        <fillType name="POTASSIUM_CHLORIDE" priceScale="1"/>
         <fillType name="UREA" priceScale="1"/>
         <fillType name="UAN32" priceScale="1"/>
         <fillType name="UAN28" priceScale="1"/>
