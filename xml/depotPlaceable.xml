@@ -463,7 +463,7 @@
         </sellingStation>
 
         <loadingStation node="loadingStation" supportsExtension="false">
-            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER UAN32 UAN28 ANHYDROUS STARTER UREA AN AMS MAP DAP POTASH POLIFOSKA LIQUID_UREA LIQUID_AMS LIQUID_MAP LIQUID_DAP LIQUID_POTASH INSECTICIDE FUNGICIDE GYPSUM COMPOST BIOSOLIDS CHICKEN_MANURE PELLETIZED_MANURE LIQUIDLIME" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="true">
+            <loadTrigger triggerNode="loadingTriggerFertilizer" fillLitersPerSecond="1000" dischargeNode="dischargeNodeFertilizer" fillTypes="FERTILIZER UAN32 UAN28 ANHYDROUS STARTER UREA AN AMS MAP DAP POTASH POLIFOSKA LIQUID_UREA LIQUID_AMS LIQUID_MAP LIQUID_DAP LIQUID_POTASH INSECTICIDE FUNGICIDE GYPSUM COMPOST BIOSOLIDS CHICKEN_MANURE PELLETIZED_MANURE LIQUIDLIME" stationName="$l10n_stationName_fertilizerCemStorageOut" aiNode="loadTriggerAINodeFertilizer" autoStart="false">
                 <effectNode effectClass="PipeEffect" effectNode="pipeEffectFertilizer" materialType="pipe" fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
                 <effectNode effectNode="pipeEffectSmokeFertilizer" materialType="unloadingSmoke" fadeTime="0.5"/>
             </loadTrigger>
