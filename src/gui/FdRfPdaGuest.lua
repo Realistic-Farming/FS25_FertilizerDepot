@@ -147,6 +147,26 @@ local function farmId()
     return 0
 end
 
+-- The separator the shared footer already uses, so the table reads as one voice.
+local VEH_SEP = "-"
+
+-- BUILD 21:40 (George CLOSED DESIGN 21:35 item 5): the old fixed eight-row table is dead chrome.
+-- Its rows moved into the shared SmoothList at 17:21, but the eleven hairline Bitmaps were never
+-- hidden by either sheet painter, so they stood behind the sheet as a second frame. The door now
+-- declares them visible="false"; this is the belt that also covers an older door copy, and it is
+-- what stops them coming back if any other module hands the chrome over still visible.
+local LEGACY_GRID_IDS = {
+    "rfFwRuleHead", "rfFwRuleRow1", "rfFwRuleRow2", "rfFwRuleRow3", "rfFwRuleRow4",
+    "rfFwRuleRow5", "rfFwRuleRow6", "rfFwRuleRow7",
+    "rfFwRuleCol1", "rfFwRuleCol2", "rfFwRuleCol3",
+}
+
+local function hideLegacyGrid(container)
+    for _, id in ipairs(LEGACY_GRID_IDS) do
+        setVis(findDescendant(container, id), false)
+    end
+end
+
 local function clearRows(container)
     for i = 1, MAX_ROWS do
         for _, c in ipairs({"A", "B", "C", "D"}) do
@@ -155,6 +175,111 @@ local function clearRows(container)
             setText(el, "")
         end
     end
+end
+
+-- BUILD 17:21 (George CLOSED DESIGN 14:00): the shared Esc table scrolls. Rows go into the door's one
+-- SmoothList (rfFwSheetList) instead of the eight fixed rfFwRow* lines, so a long list is reachable
+-- instead of being cut off under a footer that counted rows nobody could reach. The 32 static cells
+-- stay declared in the door because Dairy, NPC Favor and Pro Staff each hide them by id; this guest
+-- just stops writing to them.
+local _sheetRows = {}
+local _sheetContainer = nil
+
+local fdSheetSource = {}
+
+function fdSheetSource:getNumberOfItemsInSection(list, section)
+    return #_sheetRows
+end
+
+function fdSheetSource:populateCellForItemInSection(list, section, index, cell)
+    if cell == nil or type(cell.getDescendantByName) ~= "function" then return end
+    local row = _sheetRows[index]
+    if row == nil then return end
+    setText(cell:getDescendantByName("rfFwSheetA"), row[1])
+    setText(cell:getDescendantByName("rfFwSheetB"), row[2])
+    setText(cell:getDescendantByName("rfFwSheetC"), row[3])
+    setText(cell:getDescendantByName("rfFwSheetD"), row[4])
+end
+
+--- setDataSource by identity - this module's source, not whichever Table guest showed last - then
+--- setDelegate explicitly (the XML loader made the host page the delegate), and reloadData only once
+--- the engine has finished loading the list. No timer ever calls this.
+local function syncSheet(container, rows)
+    _sheetRows = rows or {}
+    -- The host hands onSheetRow an index and nothing else, so the container the sheet was painted
+    -- into is remembered here for the band lookup.
+    _sheetContainer = container
+    local list = findDescendant(container, "rfFwSheetList")
+    local box = findDescendant(container, "rfFwSheetBox")
+    if list == nil then
+        setVis(box, false)
+        return false
+    end
+    if list.dataSource ~= fdSheetSource and type(list.setDataSource) == "function" then
+        list:setDataSource(fdSheetSource)
+    end
+    if type(list.setDelegate) == "function" and list.delegate ~= fdSheetSource then
+        list:setDelegate(fdSheetSource)
+    end
+    setVis(box, #_sheetRows > 0)
+    if #_sheetRows == 0 then
+        setVis(findDescendant(container, "rfFwSheetBand"), false)
+    end
+    if list.isLoaded and type(list.reloadData) == "function" then
+        pcall(list.reloadData, list)
+    end
+    return true
+end
+
+--- BUILD 19:15 (George CLOSED DESIGN 18:55 item 2): the readout for the row the player clicked. Three
+--- lines under the sheet: what it is and how much of it the depot holds, the two prices, and the one
+--- sentence that matters, which is that this page never moves stock or money. Read-only, so there is
+--- no chip and no selection highlight (SmoothListElement publishes no setSelectedIndex).
+---@param index number row index into the array syncSheet last built
+function FdRfPdaGuest.onSheetRow(index)
+    local container = _sheetContainer
+    if container == nil then return end
+    local band = findDescendant(container, "rfFwSheetBand")
+    if band == nil then return end
+    local row = _sheetRows[tonumber(index) or 0]
+    if row == nil then
+        setVis(band, false)
+        setText(band, "")
+        return
+    end
+    -- BUILD 21:40: line 1 is the hall bin, the same figure the Stock column now prints. A fill
+    -- type this hall has no recipe for has no capacity to quote, so it is named as such.
+    local head
+    if row.cap ~= nil then
+        head = string.format(tr("fd_rf_pda_band_hall", "%s: hall %s / %s L"),
+            tostring(row.name or row[1]), tostring(row.hall or "0"), tostring(row.cap))
+    else
+        head = string.format(tr("fd_rf_pda_band_absent", "%s: this hall does not stock it"),
+            tostring(row.name or row[1]))
+    end
+    if row.onVehicle ~= nil then
+        head = head .. string.format(tr("fd_rf_pda_band_onveh", "  %s on vehicle: %s L"),
+            VEH_SEP, tostring(math.floor(row.onVehicle)))
+    end
+    local tail = tr("fd_rf_pda_band_readonly",
+        "This page is a read-out. Buying and selling happen at the depot itself.")
+    if (tonumber(row.hall) or 0) <= 0 and row.onVehicle ~= nil then
+        -- The one case where the page can actually tell the player what to do next. The hall fills
+        -- from its unload triggers: ProductionPoint loads that station from the .sellingStation key
+        -- (ProductionPoint.lua 212-213) and gives it the hall storage as a target (line 270), so
+        -- tipping is what puts litres in the bin. Selling in the walk-in dialog credits the other
+        -- book and would not move this number.
+        tail = string.format(tr("fd_rf_pda_band_empty_hall",
+            "Hall empty. %s L is on your vehicle: tip it in at the depot to store it."),
+            tostring(math.floor(row.onVehicle)))
+    end
+    local lines = {
+        head,
+        string.format(tr("fd_rf_pda_band_prices", "Buy %s   Sell %s"), tostring(row[3]), tostring(row[4])),
+        tail,
+    }
+    setText(band, table.concat(lines, "\n"))
+    setVis(band, true)
 end
 
 local function paintHeaders(container)
@@ -458,6 +583,7 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
     resetFwTableTitlePos(container)
     clearHostDupes(container)
     showTableMode(container)
+    hideLegacyGrid(container)
     paintSide(container, "rf_pda_side_info_fertilizer_depot",
         "Depot glance: stock vs capacity, buy/sell.\n"
         .. "Esc never buys or sells - open the depot placeable dialog for that.")
@@ -523,15 +649,11 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
     -- The footer is now committed through one function that takes the range as an argument,
     -- and every exit calls it: the range is passed true only on the path that has actually
     -- proven focusId, nFill > 0 and hasAnyEntry, which is George's guard verbatim.
-    local function commitMore(withRange)
-        local parts = moreParts
-        if withRange and nFill > MAX_ROWS then
-            parts = {}
-            for i = 1, #moreParts do parts[i] = moreParts[i] end
-            parts[#parts + 1] = string.format(
-                tr("fd_rf_pda_showing_of", "Showing %d of %d"), MAX_ROWS, nFill)
-        end
-        setText(moreEl, table.concat(parts, "  ·  "))
+    -- BUILD 17:21: the range sentence is gone with the fixed rows. The stock list scrolls, so
+    -- there is no longer a count of rows the player cannot reach, and PB-08's whole argument about
+    -- when the range may be printed goes with it. The footer is just the footer.
+    local function commitMore()
+        setText(moreEl, table.concat(moreParts, "  ·  "))
     end
 
     -- BUILD 09:19 (PB-08): the zero-state says what to DO about it, not just that it is
@@ -558,76 +680,205 @@ function FdRfPdaGuest._paintShow(container, lightOnly)
     end
     setText(hintEl, hint)
 
-    if focusId == nil or mgr.depotSystem == nil or type(mgr.depotSystem.getStorageInfo) ~= "function" then
+    if focusId == nil then
         clearRows(container)
+        syncSheet(container, {})
         -- No focus depot means the farm has none to focus on; that is the "place a depot"
         -- case, not the "your depot is empty" case.
-        paintEmptyState(focusId ~= nil)
-        commitMore(false)
+        paintEmptyState(false)
+        commitMore()
         return
     end
 
-    local okInfo, storageInfo = pcall(function() return mgr.depotSystem:getStorageInfo(focusId) end)
-    if not okInfo or type(storageInfo) ~= "table" then
-        storageInfo = {}
+    -- BUILD 21:40 (George CLOSED DESIGN 21:35): Stock is the PRODUCTION HALL, not the shop book.
+    -- The depot placeable is a vendored Giants productionPoint. The player tips into its unload
+    -- triggers and the fill lands in the hall bins - 100000 L for the ten chemical inputs,
+    -- 1000000 L for the outputs, per xml/depotPlaceable.xml. depotSystem.storageLevel is a
+    -- different book: a flat 50000 L per fill type that only the walk-in dialog writes and reads.
+    -- Esc was reading that book, which is why every row still said 0 / 50000 after he filled the
+    -- building. This page now reads the hall and nothing else. The two books are deliberately not
+    -- merged, and nothing here writes either one or invents a third.
+    local hallPoint = nil
+    do
+        local placeable = (type(mgr.depots) == "table") and mgr.depots[focusId] or nil
+        local spec = placeable ~= nil and placeable.spec_productionPoint or nil
+        local pp = spec ~= nil and spec.productionPoint or nil
+        if pp ~= nil and type(pp.getFillLevel) == "function" and type(pp.getCapacity) == "function" then
+            hallPoint = pp
+        end
     end
-
-    local hasAnyEntry = false
-    for _ in pairs(storageInfo) do
-        hasAnyEntry = true
-        break
-    end
-
-    if nFill == 0 or not hasAnyEntry then
+    if hallPoint == nil then
         clearRows(container)
+        syncSheet(container, {})
+        setVis(emptyEl, true)
+        setText(emptyEl, tr("fd_rf_pda_no_hall",
+            "no stock data yet - this depot's production hall did not answer"))
+        commitMore()
+        return
+    end
+
+    -- getFillLevel and getCapacity take a fill type INDEX. The bridge caches its index list on the
+    -- first call, and buyFillType already re-resolves from the name (DepotSystem.lua 248-254) to
+    -- dodge SoilFertilizer index drift, so ask the live manager by name first and keep the cached
+    -- index as the fallback.
+    local function liveFillTypeIndex(ft)
+        if ft == nil then return nil end
+        if ft.name ~= nil and g_fillTypeManager ~= nil
+            and type(g_fillTypeManager.getFillTypeIndexByName) == "function" then
+            local okIdx, idx = pcall(function()
+                return g_fillTypeManager:getFillTypeIndexByName(ft.name)
+            end)
+            if okIdx then
+                idx = tonumber(idx)
+                if idx ~= nil and idx > 0 then return idx end
+            end
+        end
+        local cached = tonumber(ft.fillTypeIndex)
+        if cached ~= nil and cached > 0 then return cached end
+        return nil
+    end
+
+    -- BUILD 21:40 (item 4): what this farm is carrying, anywhere on the map, as a readout only.
+    -- Farm-wide by design: buildNearbyFillMap is distance filtered (8 m from the depot root, 15 m
+    -- from the unload and spawn nodes) so it is blind to a trailer standing in a field.
+    --
+    -- The seen-set is not decoration. Every Vehicle registers itself with the vehicle system
+    -- (Vehicle.lua:1010), so vehicleSystem.vehicles ALREADY lists attached implements as their own
+    -- entries, and this pass SUMS rather than taking first-wins the way buildNearbyFillMap does.
+    -- Walking getAttachedImplements without the set would count a hooked trailer twice, once as a
+    -- list entry and once through its tractor. The walk is kept because it costs nothing here and
+    -- it is the only thing that would find an implement the system somehow never registered.
+    -- Read through the Giants getters, once per show, no timer, nothing written back.
+    local onVehicleByFill = {}
+    do
+        local vs = g_currentMission ~= nil and g_currentMission.vehicleSystem or nil
+        local list = vs ~= nil and vs.vehicles or nil
+        if type(list) == "table" then
+            local seen = {}
+            local addVehicle
+            addVehicle = function(veh, depth)
+                if veh == nil or seen[veh] ~= nil or depth > 8 then return end
+                seen[veh] = true
+                local spec = veh.spec_fillUnit
+                if spec ~= nil and type(spec.fillUnits) == "table"
+                    and type(veh.getOwnerFarmId) == "function"
+                    and type(veh.getFillUnitFillType) == "function"
+                    and type(veh.getFillUnitFillLevel) == "function" then
+                    local okOwn, owner = pcall(function() return veh:getOwnerFarmId() end)
+                    if okOwn and owner == fid then
+                        for fuIdx = 1, #spec.fillUnits do
+                            local okT, ftIdx = pcall(function() return veh:getFillUnitFillType(fuIdx) end)
+                            local okL, level = pcall(function() return veh:getFillUnitFillLevel(fuIdx) end)
+                            ftIdx = okT and tonumber(ftIdx) or nil
+                            level = (okL and tonumber(level)) or 0
+                            if ftIdx ~= nil and ftIdx > 0 and level > 0 then
+                                onVehicleByFill[ftIdx] = (onVehicleByFill[ftIdx] or 0) + level
+                            end
+                        end
+                    end
+                end
+                if type(veh.getAttachedImplements) == "function" then
+                    local okImp, impls = pcall(function() return veh:getAttachedImplements() end)
+                    if okImp and type(impls) == "table" then
+                        for _, impl in ipairs(impls) do
+                            if impl ~= nil and impl.object ~= nil then
+                                addVehicle(impl.object, depth + 1)
+                            end
+                        end
+                    end
+                end
+            end
+            for _, veh in ipairs(list) do
+                addVehicle(veh, 1)
+            end
+        end
+    end
+
+    -- The hall answers for every fill type it has a recipe for, so an empty hall is a wall of
+    -- honest zeros rather than a missing table. The only empty case left is an empty catalogue.
+    if nFill == 0 then
+        clearRows(container)
+        syncSheet(container, {})
         -- A focus depot exists here by definition (the guard above returned otherwise), so
         -- this is the standing-but-empty case: tell the player to order, not to build.
         paintEmptyState(true)
-        commitMore(false)
+        commitMore()
         return
     end
 
     setVis(emptyEl, false)
     setText(emptyEl, "")
-    -- The only path that has proven focusId ~= nil, nFill > 0 and hasAnyEntry, so the only
-    -- path allowed to print a range.
-    commitMore(true)
-    local show = math.min(nFill, MAX_ROWS)
+    commitMore()
     local pricing = mgr.pricing
-    for i = 1, MAX_ROWS do
-        local a = findDescendant(container, "rfFwRow" .. i .. "A")
-        local b = findDescendant(container, "rfFwRow" .. i .. "B")
-        local c = findDescendant(container, "rfFwRow" .. i .. "C")
-        local d = findDescendant(container, "rfFwRow" .. i .. "D")
-        if i <= show then
-            local ft = fillList[i]
-            local name = ft and ft.name or "?"
-            local display = (ft and ft.displayName) or name
-            local entry = storageInfo[name]
-            local current = entry and (tonumber(entry.current) or 0) or 0
-            local capacity = entry and (tonumber(entry.capacity) or 0) or 0
-            local buy, sell = "--", "--"
-            if pricing ~= nil and type(pricing.getBuyPrice) == "function" then
-                local okB, bv = pcall(function() return pricing:getBuyPrice(name) end)
-                if okB then buy = formatMoney(bv) end
-            end
-            if pricing ~= nil and type(pricing.getSellPrice) == "function" then
-                local okS, sv = pcall(function() return pricing:getSellPrice(name) end)
-                if okS then sell = formatMoney(sv) end
-            end
-            setVis(a, true); setVis(b, true); setVis(c, true); setVis(d, true)
-            setText(a, tostring(display))
-            setText(b, string.format("%s / %s", tostring(current), tostring(capacity)))
-            setText(c, buy)
-            setText(d, sell)
-        else
-            setVis(a, false); setVis(b, false); setVis(c, false); setVis(d, false)
-            setText(a, ""); setText(b, ""); setText(c, ""); setText(d, "")
+    -- Every fill type the depot stocks goes into the list; the box scrolls past the eight the old
+    -- fixed sheet could show, which is the whole point of the change.
+    local rows = {}
+    for i = 1, nFill do
+        local ft = fillList[i]
+        local name = ft and ft.name or "?"
+        local display = (ft and ft.displayName) or name
+        local idx = liveFillTypeIndex(ft)
+        local current, capacity = 0, 0
+        if idx ~= nil then
+            local okCap, cap = pcall(function() return hallPoint:getCapacity(idx) end)
+            if okCap then capacity = tonumber(cap) or 0 end
+            local okLvl, lvl = pcall(function() return hallPoint:getFillLevel(idx) end)
+            if okLvl then current = tonumber(lvl) or 0 end
         end
+        local buy, sell = "--", "--"
+        if pricing ~= nil and type(pricing.getBuyPrice) == "function" then
+            local okB, bv = pcall(function() return pricing:getBuyPrice(name) end)
+            -- BUILD 20:53: per 1000 L with two decimals, the format the depot's own window uses.
+            -- formatMoney asks g_i18n for ZERO decimals on a PER-LITRE price, so every live price
+            -- under half a unit per litre printed as zero.
+            if okB then buy = string.format("$%.2f/kL", (bv or 0) * 1000) end
+        end
+        if pricing ~= nil and type(pricing.getSellPrice) == "function" then
+            local okS, sv = pcall(function() return pricing:getSellPrice(name) end)
+            if okS then sell = string.format("$%.2f/kL", (sv or 0) * 1000) end
+        end
+        local onVehicle = (ft ~= nil and ft.fillTypeIndex ~= nil) and onVehicleByFill[ft.fillTypeIndex] or nil
+        -- ProductionPoint.getCapacity returns 0 for a fill type that is neither an input nor an
+        -- output of this hall's recipes. Two of the thirty in the bridge catalogue are like that,
+        -- LIQUIDFERTILIZER and DIGESTATE, and neither appears anywhere in depotPlaceable.xml, so
+        -- the hall genuinely cannot hold them. Printing 0 / 0 would read as a fault; say it plainly
+        -- instead, and keep the row rather than hiding it.
+        local stockCell
+        if capacity > 0 then
+            stockCell = string.format("%d / %d", math.floor(current), math.floor(capacity))
+        else
+            stockCell = tr("fd_rf_pda_stock_absent", "0 / not stocked here")
+        end
+        if onVehicle ~= nil then
+            -- The tank reading never changes shape, so a zero row still reads 0 / 50000; the
+            -- vehicle load is added after it rather than replacing it.
+            stockCell = string.format("%s  %s %s L", stockCell, VEH_SEP, tostring(math.floor(onVehicle)))
+        end
+        rows[i] = {
+            tostring(display),
+            stockCell,
+            buy,
+            sell,
+            name = tostring(display),
+            hall = tostring(math.floor(current)),
+            cap = (capacity > 0) and tostring(math.floor(capacity)) or nil,
+            onVehicle = onVehicle,
+        }
     end
+    clearRows(container)
+    syncSheet(container, rows)
 end
 
 function FdRfPdaGuest.onHide() end
+
+--- BUILD 19:15: the Esc Help footer asks whichever module is showing to open its own guide, so
+--- every companion ships and owns its own help instead of borrowing Soil's.
+---@param container table|nil
+function FdRfPdaGuest.onOpenHelp(container)
+    if FdGuideDialog ~= nil and type(FdGuideDialog.show) == "function" then
+        FdGuideDialog.show()
+    end
+end
 
 function FdRfPdaGuest.tryRegister()
     if RfEscBootstrap ~= nil then
@@ -638,6 +889,12 @@ function FdRfPdaGuest.tryRegister()
                 profilesXml = MOD_DIR .. "xml/gui/rfEscProfiles.xml",
                 iconPath = "textures/ui/menuIcon.dds",
             })
+            -- BUILD 19:15 (George CLOSED DESIGN 18:55 item 5): load this mod's Field Guide at the
+            -- same moment the door itself loads. A GUI loaded from a mod directory later, once the
+            -- mod's own file system context has closed, fails to open.
+            if FdGuideDialog ~= nil and type(FdGuideDialog.register) == "function" then
+                pcall(FdGuideDialog.register, MOD_DIR)
+            end
             if not doorOk then print("[FertilizerDepot] FdRfPdaGuest: WARNING ensureDoor failed (will retry)") end
         end
     end
@@ -653,6 +910,8 @@ function FdRfPdaGuest.tryRegister()
             isAvailable = function() return getMgr() ~= nil end,
             onShow = FdRfPdaGuest.onShow,
             onHide = FdRfPdaGuest.onHide,
+            onOpenHelp = FdRfPdaGuest.onOpenHelp,
+            onSheetRow = FdRfPdaGuest.onSheetRow,
         })
         if ok then
             _registered = true

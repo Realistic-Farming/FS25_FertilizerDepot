@@ -22,7 +22,6 @@ end
 
 ---@class DepotDialog
 DepotDialog = DepotDialog or {}
-DepotDialog.ROWS        = 8
 DepotDialog.TAB_BUY      = "buy"
 DepotDialog.TAB_SELL     = "sell"
 DepotDialog.TAB_PRODUCTS = "products"
@@ -36,7 +35,12 @@ function DepotDialog.new(depotId)
     local self = MessageDialog.new(nil, DepotDialog_mt)
     self.depotId          = depotId
     self.tab              = DepotDialog.TAB_BUY
-    self.pageIndex        = 0
+    -- BUILD 17:21: one scrolling list, so there is no page offset any more. self.listRows is
+    -- what the list is showing right now, rebuilt by each refresh*Tab, and its index IS the index
+    -- into the backing array for that tab.
+    self.listRows         = {}
+    -- The Sell tab's armed fill type, by name so a rebuilt list cannot arm a different row.
+    self.sellArmedName    = nil
     self.fillTypes        = {}
     self.selectedFillType = nil
     self.orderAmount      = 1000
@@ -66,8 +70,6 @@ function DepotDialog.new(depotId)
     self.prodQtyDisplay       = nil
     self.prodTotalPrice       = nil
 
-    -- [1..ROWS] = {nameEl, stockEl, priceEl, actionBtn, actionTxt}
-    self.rows = {}
     -- Cached sell list built each refresh: [{ft, liters, revenue}, ...]
     self.sellList = {}
     return self
@@ -95,8 +97,8 @@ function DepotDialog.show(depotId)
     local dlg = _depotDialogInstance
     dlg.depotId          = depotId
     dlg.tab              = DepotDialog.TAB_BUY
-    dlg.pageIndex        = 0
     dlg.selectedFillType = nil
+    dlg.sellArmedName    = nil
     dlg.orderAmount      = 1000
     dlg.selectedProduct  = nil
     dlg.productQuantity  = 1
@@ -131,16 +133,7 @@ function DepotDialog:onGuiSetupFinished()
     self.prodQtyDisplay   = self:getDescendantById("prodQtyDisplay")
     self.prodTotalPrice   = self:getDescendantById("prodTotalPrice")
 
-    for i = 0, DepotDialog.ROWS - 1 do
-        local p = "row" .. i
-        self.rows[i + 1] = {
-            nameEl    = self:getDescendantById(p .. "name"),
-            stockEl   = self:getDescendantById(p .. "stock"),
-            priceEl   = self:getDescendantById(p .. "price"),
-            actionBtn = self:getDescendantById(p .. "action"),
-            actionTxt = self:getDescendantById(p .. "actionTxt"),
-        }
-    end
+    self.depotList = self:getDescendantById("depotList")
 end
 
 function DepotDialog:onOpen()
@@ -175,21 +168,21 @@ end
 
 function DepotDialog:onTabBuy()
     self.tab = DepotDialog.TAB_BUY
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self:_syncTabSections()
     self:refresh()
 end
 
 function DepotDialog:onTabSell()
     self.tab = DepotDialog.TAB_SELL
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self:_syncTabSections()
     self:refresh()
 end
 
 function DepotDialog:onTabProducts()
     self.tab = DepotDialog.TAB_PRODUCTS
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self.selectedProduct = nil
     self.productQuantity = 1
     self:_syncTabSections()
@@ -224,7 +217,6 @@ function DepotDialog:refresh()
         if self.colPriceHeader then self.colPriceHeader:setText(tr("fd_col_price", "Price / 1kL")) end
         self:refreshProductsTab()
     end
-    self:updatePagination()
 end
 
 function DepotDialog:updateSeasonLabel()
@@ -245,39 +237,30 @@ function DepotDialog:refreshBuyTab()
     local system  = g_DepotManager and g_DepotManager.depotSystem
     local pricing = g_DepotManager and g_DepotManager.pricing
 
-    for slot = 1, DepotDialog.ROWS do
-        local ftIdx = self.pageIndex + slot
-        local row   = self.rows[slot]
-        local ft    = self.fillTypes[ftIdx]
-
-        if ft and row then
-            local stored   = system and system:getStorageLevel(self.depotId, ft.name) or 0
-            local farmId = g_localPlayer and g_localPlayer.farmId or 1
-            local buyPrice = pricing and pricing:getBuyPrice(ft.name, farmId) or 0
-            local priceStr = string.format("$%.2f/kL", buyPrice * 1000)
-            local stockStr
-            if stored >= DepotConstants.STORAGE_CAPACITY then
-                stockStr = tr("fd_depot_stock_full", "Full")
-            elseif stored <= 0 then
-                stockStr = tr("fd_depot_stock_stocking", "Stocking")
-            else
-                stockStr = string.format("%dL", math.floor(stored))
-            end
-
-            if row.nameEl  then row.nameEl:setText(ft.displayName or ft.name) end
-            if row.stockEl then row.stockEl:setText(stockStr) end
-            if row.priceEl then row.priceEl:setText(priceStr) end
-
-            -- Highlight if this row is the currently selected type
-            local isSelected = self.selectedFillType and self.selectedFillType.name == ft.name
-            if row.actionTxt then
-                row.actionTxt:setText(isSelected and "Selected" or tr("fd_depot_select_btn", "Select"))
-            end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
+    local rows = {}
+    for i, ft in ipairs(self.fillTypes) do
+        local stored   = system and system:getStorageLevel(self.depotId, ft.name) or 0
+        local farmId = g_localPlayer and g_localPlayer.farmId or 1
+        local buyPrice = pricing and pricing:getBuyPrice(ft.name, farmId) or 0
+        local priceStr = string.format("$%.2f/kL", buyPrice * 1000)
+        local stockStr
+        if stored >= DepotConstants.STORAGE_CAPACITY then
+            stockStr = tr("fd_depot_stock_full", "Full")
+        elseif stored <= 0 then
+            stockStr = tr("fd_depot_stock_stocking", "Stocking")
         else
-            self:clearRow(slot)
+            stockStr = string.format("%dL", math.floor(stored))
         end
+        local isSelected = self.selectedFillType and self.selectedFillType.name == ft.name
+        rows[i] = {
+            name = ft.displayName or ft.name,
+            stock = stockStr,
+            price = priceStr,
+            action = isSelected and tr("fd_depot_selected", "Selected") or tr("fd_depot_select_btn", "Select"),
+        }
     end
+    self.listRows = rows
+    self:syncDepotList()
 end
 
 function DepotDialog:refreshSellTab()
@@ -302,21 +285,19 @@ function DepotDialog:refreshSellTab()
     -- Cache so executeSell uses the same snapshot as what was displayed
     self.sellList = sellTypes
 
-    for slot = 1, DepotDialog.ROWS do
-        local entry = sellTypes[self.pageIndex + slot]
-        local row   = self.rows[slot]
-        if entry and row then
-            local litersStr = string.format("%.0fL", entry.liters)
-            local revStr    = string.format("$%.2f", entry.revenue)
-            if row.nameEl   then row.nameEl:setText(entry.ft.displayName or entry.ft.name) end
-            if row.stockEl  then row.stockEl:setText(litersStr) end
-            if row.priceEl  then row.priceEl:setText(revStr) end
-            if row.actionTxt then row.actionTxt:setText(tr("fd_depot_sell_btn", "Sell All")) end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
-        else
-            self:clearRow(slot)
-        end
+    local rows = {}
+    for i, entry in ipairs(sellTypes) do
+        rows[i] = {
+            name = entry.ft.displayName or entry.ft.name,
+            stock = string.format("%.0fL", entry.liters),
+            price = string.format("$%.2f", entry.revenue),
+            action = (self.sellArmedName ~= nil and self.sellArmedName == entry.ft.name)
+                and tr("fd_depot_sell_confirm", "Confirm sale")
+                or tr("fd_depot_sell_btn", "Sell All"),
+        }
     end
+    self.listRows = rows
+    self:syncDepotList()
 
     if self.statusText then
         if #sellTypes == 0 then
@@ -339,43 +320,31 @@ function DepotDialog:refreshProductsTab()
         end
     end
 
-    for slot = 1, DepotDialog.ROWS do
-        local ftIdx = self.pageIndex + slot
-        local row   = self.rows[slot]
-        local ft    = self.productFillTypes[ftIdx]
-
-        if ft and row then
-            local stored      = system and system:getStorageLevel(self.depotId, ft.name) or 0
-            local pricePerUnit = pricing and
-                (pricing:getBuyPrice(ft.name) * ft.litresPerUnit) or 0
-            local priceStr = string.format("$%.2f/unit", pricePerUnit)
-            local stockStr
-            if stored <= 0 then
-                stockStr = tr("fd_depot_stock_stocking", "Stocking")
-            else
-                local units = math.floor(stored / ft.litresPerUnit)
-                stockStr = string.format("%d units", units)
-            end
-
-            if row.nameEl  then row.nameEl:setText(ft.displayName or ft.name) end
-            if row.stockEl then row.stockEl:setText(stockStr) end
-            if row.priceEl then row.priceEl:setText(priceStr) end
-
-            local isSelected = self.selectedProduct and self.selectedProduct.name == ft.name
-            if row.actionTxt then
-                if isSelected then
-                    row.actionTxt:setText(tr("fd_depot_selected", "Selected"))
-                elseif ft.productLabel == "bag" then
-                    row.actionTxt:setText(tr("fd_products_order_bag", "Order Bag"))
-                else
-                    row.actionTxt:setText(tr("fd_products_order_tank", "Order Tank"))
-                end
-            end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
+    local rows = {}
+    for i, ft in ipairs(self.productFillTypes) do
+        local stored      = system and system:getStorageLevel(self.depotId, ft.name) or 0
+        local pricePerUnit = pricing and
+            (pricing:getBuyPrice(ft.name) * ft.litresPerUnit) or 0
+        local priceStr = string.format("$%.2f/unit", pricePerUnit)
+        local stockStr
+        if stored <= 0 then
+            stockStr = tr("fd_depot_stock_stocking", "Stocking")
         else
-            self:clearRow(slot)
+            local units = math.floor(stored / ft.litresPerUnit)
+            stockStr = string.format("%d units", units)
         end
+        local action
+        if self.selectedProduct and self.selectedProduct.name == ft.name then
+            action = tr("fd_depot_selected", "Selected")
+        elseif ft.productLabel == "bag" then
+            action = tr("fd_products_order_bag", "Order Bag")
+        else
+            action = tr("fd_products_order_tank", "Order Tank")
+        end
+        rows[i] = { name = ft.displayName or ft.name, stock = stockStr, price = priceStr, action = action }
     end
+    self.listRows = rows
+    self:syncDepotList()
 
     self:_updateProductsOrderRow()
 end
@@ -401,33 +370,56 @@ function DepotDialog:_updateProductsOrderRow()
     end
 end
 
-function DepotDialog:clearRow(slot)
-    local row = self.rows[slot]
-    if not row then return end
-    if row.nameEl   then row.nameEl:setText("") end
-    if row.stockEl  then row.stockEl:setText("") end
-    if row.priceEl  then row.priceEl:setText("") end
-    if row.actionBtn then row.actionBtn:setVisible(false) end
+-- ---------------------------------------------------------
+-- BUILD 17:21: the one stock list. The dialog is its own dataSource AND delegate (the XML loader
+-- already made it the delegate; setDataSource is ours), so a row click lands on
+-- onListSelectionChanged below and there is no per-row Button to keep in step.
+-- ---------------------------------------------------------
+
+function DepotDialog:getNumberOfItemsInSection(list, section)
+    return #(self.listRows or {})
 end
 
-function DepotDialog:updatePagination()
-    local total
-    if self.tab == DepotDialog.TAB_BUY then
-        total = #self.fillTypes
-    elseif self.tab == DepotDialog.TAB_SELL then
-        total = #self.sellList
-    else
-        total = #self.productFillTypes
+function DepotDialog:populateCellForItemInSection(list, section, index, cell)
+    if cell == nil or type(cell.getDescendantByName) ~= "function" then return end
+    local row = (self.listRows or {})[index]
+    if row == nil then return end
+    local function put(name, value)
+        local el = cell:getDescendantByName(name)
+        if el ~= nil and type(el.setText) == "function" then el:setText(value or "") end
     end
+    put("cellName", row.name)
+    put("cellStock", row.stock)
+    put("cellPrice", row.price)
+    put("cellAction", row.action)
+end
 
-    local maxPage = math.max(0, math.ceil(total / DepotDialog.ROWS) - 1)
-    local curPage = math.floor(self.pageIndex / DepotDialog.ROWS)
+--- A click on a row is the row action. This is the engine's CLICK channel, not its selection-changed
+--- delegate: the delegate only fires when the index really changes (SmoothListElement hasChanged), and
+--- a SmoothList is born with selectedIndex 1, so the top row could never act on itself. notifyClick
+--- runs on every click because selectOnClick defaults to false. Index is the index into the tab's
+--- backing array, because listRows is built one-for-one from it in the same order. Do not also route
+--- onListSelectionChanged here: the engine selects before it notifies, so both would act twice.
+function DepotDialog:onDepotRowClick(list, section, index, element, wasAlreadySelected)
+    local i = tonumber(index)
+    if i == nil or i < 1 then return end
+    self:onRowAction(i)
+end
 
-    if self.pageLabel then
-        self.pageLabel:setText(string.format("%d / %d", curPage + 1, maxPage + 1))
+--- setDataSource once per element, by identity so a re-sourced chunk re-binds; reloadData only
+--- when the engine has finished loading the list. No timer ever calls this.
+function DepotDialog:syncDepotList()
+    local list = self.depotList
+    if list == nil then return end
+    if list.dataSource ~= self and type(list.setDataSource) == "function" then
+        list:setDataSource(self)
     end
-    if self.prevPageBtn then self.prevPageBtn:setVisible(self.pageIndex > 0) end
-    if self.nextPageBtn then self.nextPageBtn:setVisible(self.pageIndex + DepotDialog.ROWS < total) end
+    if type(list.setDelegate) == "function" and list.delegate ~= self then
+        list:setDelegate(self)
+    end
+    if list.isLoaded and type(list.reloadData) == "function" then
+        pcall(list.reloadData, list)
+    end
 end
 
 function DepotDialog:getSellCount()
@@ -481,7 +473,21 @@ end
 
 function DepotDialog:onRowAction(rowSlot)
     if self.tab == DepotDialog.TAB_SELL then
-        self:executeSell(rowSlot)
+        -- BUILD 17:21: selling a whole trailer load is the one irreversible thing on this window, and
+        -- the list acts on mouse DOWN over the full row width, with no release gate and nothing to
+        -- abort onto. So the first click arms the row and says so in its action cell; only a second
+        -- click on the SAME fill type sells. Buy and Products just move a selection, so they act at
+        -- once as before.
+        local entry = self.sellList[rowSlot]
+        if entry == nil or entry.ft == nil then return end
+        local name = entry.ft.name
+        if self.sellArmedName ~= nil and self.sellArmedName == name then
+            self.sellArmedName = nil
+            self:executeSell(rowSlot)
+        else
+            self.sellArmedName = name
+            self:refreshSellTab()
+        end
     elseif self.tab == DepotDialog.TAB_PRODUCTS then
         self:selectProductRow(rowSlot)
     else
@@ -490,8 +496,7 @@ function DepotDialog:onRowAction(rowSlot)
 end
 
 function DepotDialog:selectRow(rowSlot)
-    local ftIdx = self.pageIndex + rowSlot
-    local ft    = self.fillTypes[ftIdx]
+    local ft    = self.fillTypes[rowSlot]
     if not ft then return end
     self.selectedFillType = ft
     self.orderAmount      = 1000
@@ -507,8 +512,7 @@ function DepotDialog:selectRow(rowSlot)
 end
 
 function DepotDialog:selectProductRow(rowSlot)
-    local ftIdx = self.pageIndex + rowSlot
-    local ft    = self.productFillTypes[ftIdx]
+    local ft    = self.productFillTypes[rowSlot]
     if not ft then return end
     self.selectedProduct = ft
     self.productQuantity = 1
@@ -557,7 +561,7 @@ function DepotDialog:onProductConfirm()
 end
 
 function DepotDialog:executeSell(rowSlot)
-    local entry = self.sellList[self.pageIndex + rowSlot]
+    local entry = self.sellList[rowSlot]
     if not entry then return end
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
     self:showStatus(string.format(
@@ -575,33 +579,3 @@ function DepotDialog:onClickClose()
     self:close()
 end
 
--- ─── Pagination ──────────────────────────────────────────
-
-function DepotDialog:onPrevPage()
-    self.pageIndex = math.max(0, self.pageIndex - DepotDialog.ROWS)
-    self:refresh()
-end
-
-function DepotDialog:onNextPage()
-    local total
-    if self.tab == DepotDialog.TAB_BUY then
-        total = #self.fillTypes
-    elseif self.tab == DepotDialog.TAB_SELL then
-        total = #self.sellList
-    else
-        total = #self.productFillTypes
-    end
-    self.pageIndex = math.min(self.pageIndex + DepotDialog.ROWS, math.max(0, total - 1))
-    self:refresh()
-end
-
--- ─── Generated Row Callbacks ─────────────────────────────
-
-function DepotDialog:onAction0() self:onRowAction(1) end
-function DepotDialog:onAction1() self:onRowAction(2) end
-function DepotDialog:onAction2() self:onRowAction(3) end
-function DepotDialog:onAction3() self:onRowAction(4) end
-function DepotDialog:onAction4() self:onRowAction(5) end
-function DepotDialog:onAction5() self:onRowAction(6) end
-function DepotDialog:onAction6() self:onRowAction(7) end
-function DepotDialog:onAction7() self:onRowAction(8) end

@@ -45,6 +45,7 @@ source(FertilizerDepotModDirectory .. "src/gui/RfEscModules.lua")
 source(FertilizerDepotModDirectory .. "src/gui/RfPdaMenuPage.lua")
 source(FertilizerDepotModDirectory .. "src/gui/RfEscBootstrap.lua")
 source(FertilizerDepotModDirectory .. "src/gui/RfEscUiDebugger.lua")
+source(FertilizerDepotModDirectory .. "src/gui/FdGuideDialog.lua")
 source(FertilizerDepotModDirectory .. "src/gui/FdRfPdaGuest.lua")
 
 -- ─── Mission00 Lifecycle Hooks ───────────────────────────
