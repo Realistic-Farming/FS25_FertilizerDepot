@@ -49,113 +49,30 @@
 
             <Bitmap profile="depotDivider" position="0px -60px"/>
 
-            <!-- Row 0 -->
-            <GuiElement profile="depotRow" position="0px -72px">
-                <Text profile="depotCellName"  id="row0name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row0stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row0price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row0action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row0actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction0"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 1 -->
-            <GuiElement profile="depotRow" position="0px -94px">
-                <Text profile="depotCellName"  id="row1name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row1stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row1price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row1action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row1actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction1"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 2 -->
-            <GuiElement profile="depotRow" position="0px -116px">
-                <Text profile="depotCellName"  id="row2name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row2stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row2price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row2action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row2actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction2"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 3 -->
-            <GuiElement profile="depotRow" position="0px -138px">
-                <Text profile="depotCellName"  id="row3name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row3stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row3price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row3action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row3actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction3"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 4 -->
-            <GuiElement profile="depotRow" position="0px -160px">
-                <Text profile="depotCellName"  id="row4name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row4stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row4price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row4action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row4actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction4"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 5 -->
-            <GuiElement profile="depotRow" position="0px -182px">
-                <Text profile="depotCellName"  id="row5name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row5stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row5price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row5action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row5actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction5"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 6 -->
-            <GuiElement profile="depotRow" position="0px -204px">
-                <Text profile="depotCellName"  id="row6name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row6stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row6price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row6action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row6actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction6"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Row 7 -->
-            <GuiElement profile="depotRow" position="0px -226px">
-                <Text profile="depotCellName"  id="row7name"  position="-260px -5px" text=""/>
-                <Text profile="depotCellStock" id="row7stock" position="-60px  -5px" text=""/>
-                <Text profile="depotCellPrice" id="row7price" position="80px  -5px" text=""/>
-                <GuiElement profile="depotActionBtn" id="row7action" position="250px 0px">
-                    <Bitmap  profile="depotActionBg"  position="0px 0px"/>
-                    <Text    profile="depotActionTxt" id="row7actionTxt" position="0px 0px" text="Select"/>
-                    <Button  profile="depotActionHit" position="0px 0px" onClick="onAction7"/>
-                </GuiElement>
-            </GuiElement>
-
-            <!-- Pagination -->
-            <GuiElement profile="fdPageContainer" id="prevPageBtn" position="-90px -250px">
-                <Bitmap  profile="fdPageBg"  position="0px 0px"/>
-                <Text    profile="fdPageTxt" position="0px 0px" text="&lt;"/>
-                <Button  profile="fdPageHit" position="0px 0px" onClick="onPrevPage"/>
-            </GuiElement>
-            <Text profile="depotPageLabel" id="pageLabel" position="0px -251px" text="1 / 1"/>
-            <GuiElement profile="fdPageContainer" id="nextPageBtn" position="90px -250px">
-                <Bitmap  profile="fdPageBg"  position="0px 0px"/>
-                <Text    profile="fdPageTxt" position="0px 0px" text="&gt;"/>
-                <Button  profile="fdPageHit" position="0px 0px" onClick="onNextPage"/>
+            <!-- BUILD 17:21 (George CLOSED DESIGN 14:00): the eight fixed rows and the page arrows are
+                 gone. ONE SmoothList under a GuiElement host (the hang fence: a list never sits under a
+                 Map Bitmap), the same 22px cell pitch, and a slider box that shows itself only when the
+                 stock list is longer than the box (SliderElement:onBindUpdate hides its parent when the
+                 rows fit). Clicking a row IS the row action, so the eight onActionN callbacks are one
+                 delegate call; the action cell keeps the word the button used to carry.
+                 Cell X are the header X: the 840 box is centred inside the 860 header row, so a cell at
+                 160 lines up with the header at -260. -->
+            <GuiElement profile="depotListBox" id="depotListBox" position="0px -72px">
+                <SmoothList id="depotList" profile="depotList" handleFocus="false" onClick="onDepotRowClick"
+                            startClipperElementName="depotListStart" endClipperElementName="depotListEnd">
+                    <ListItem profile="depotListItem" height="22px">
+                        <Bitmap profile="depotListRowBg" name="alternating"/>
+                        <Text profile="depotListName"   name="cellName"   position="160px 0px" size="200px 22px"/>
+                        <Text profile="depotListStock"  name="cellStock"  position="360px 0px" size="120px 22px"/>
+                        <Text profile="depotListPrice"  name="cellPrice"  position="500px 0px" size="140px 22px"/>
+                        <Text profile="depotListAction" name="cellAction" position="670px 0px" size="120px 22px"/>
+                    </ListItem>
+                </SmoothList>
+                <Bitmap profile="depotListStartClipper" name="depotListStart"/>
+                <Bitmap profile="depotListStopClipper" name="depotListEnd"/>
+                <ThreePartBitmap profile="fs25_subCategoryListSliderBox">
+                    <Slider profile="fs25_listSlider" dataElementId="depotList" hideParentWhenEmpty="true"/>
+                </ThreePartBitmap>
             </GuiElement>
 
             <!-- Pre-order section (visible on Buy tab only) -->
@@ -243,6 +160,51 @@
         <Profile name="depotDivider" extends="baseReference" with="anchorTopCenter">
             <size value="820px 1px"/>
             <imageColor value="0.3 0.35 0.45 0.8"/>
+        </Profile>
+
+        <!-- BUILD 17:21: the one stock list. Same 22px pitch and the same cell colours the eight
+             fixed rows carried; the clippers are 12px because the engine's own are 39px, sized for a
+             420px roster box, and would fade three rows of this one. -->
+        <Profile name="depotListBox" extends="emptyPanel" with="anchorTopCenter">
+            <size value="840px 176px"/>
+        </Profile>
+        <Profile name="depotList" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
+            <size value="840px 176px"/>
+            <handleFocus value="false"/>
+        </Profile>
+        <Profile name="depotListItem" extends="emptyPanel" with="anchorTopStretchingX pivotTopLeft">
+            <height value="22px"/>
+        </Profile>
+        <Profile name="depotListRowBg" extends="baseReference" with="anchorStretchingYStretchingX">
+            <filename value="$dataS/menu/blank.png"/>
+            <imageColor value="0.118 0.129 0.141 0.85"/>
+            <imageSelectedColor value="0.10 0.16 0.32 0.95"/>
+            <alternateBackgroundColor value="0.145 0.157 0.173 0.85"/>
+        </Profile>
+        <Profile name="depotListCell" extends="fs25_textDefault" with="anchorStretchingYLeft">
+            <textSize value="13px"/>
+            <textMaxNumLines value="1"/>
+            <textVerticalAlignment value="middle"/>
+            <textAlignment value="left"/>
+        </Profile>
+        <Profile name="depotListName" extends="depotListCell">
+            <textColor value="1 1 1 1"/>
+        </Profile>
+        <Profile name="depotListStock" extends="depotListCell">
+            <textColor value="0.82 0.82 0.82 1"/>
+        </Profile>
+        <Profile name="depotListPrice" extends="depotListCell">
+            <textColor value="0.35 0.88 0.42 1"/>
+        </Profile>
+        <Profile name="depotListAction" extends="depotListCell">
+            <textBold value="true"/>
+            <textColor value="0.6 0.8 1 1"/>
+        </Profile>
+        <Profile name="depotListStartClipper" extends="fs25_secondaryMenuStartClipper">
+            <height value="12px"/>
+        </Profile>
+        <Profile name="depotListStopClipper" extends="fs25_secondaryMenuStopClipper">
+            <height value="12px"/>
         </Profile>
 
         <!-- Row containers -->
