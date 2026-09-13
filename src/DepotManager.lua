@@ -385,10 +385,13 @@ function DepotManager:_onDepotSellConfirm(result)
     DepotLogger.info("Depot sell confirmed: %.0fL %s for farm %d",
         ctx.amount, ctx.fillTypeName, ctx.farmId)
 
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
-        depotId = ctx.depotId, fillTypeName = ctx.fillTypeName,
-        fillTypeIndex = ctx.fillTypeIndex, liters = ctx.amount, farmId = ctx.farmId,
+    -- Positional, in handleSell's read order (FDNetworkSyncBridge.lua)
+    local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
+        ctx.depotId, ctx.fillTypeName, ctx.fillTypeIndex, ctx.amount, ctx.farmId,
     })
+    if not sent then
+        DepotLogger.warning("Depot sell not sent: no NetworkSync and not the host")
+    end
 end
 
 -- ─── Console Commands ────────────────────────────────────

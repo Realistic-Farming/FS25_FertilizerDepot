@@ -198,41 +198,32 @@ end
 -- Apply: read current UI states and send all settings to server, then close.
 function DepotSettingsDialog:onApplySettings()
     if not (g_currentMission.isMasterUser or g_server ~= nil) then return end
+    -- Positional {key, value}, in handleSettings' read order (FDNetworkSyncBridge.lua)
+    local allSent = true
+    local function send(key, value)
+        local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, { key, value })
+        allSent = allSent and sent
+    end
     if self.optSeasonalPricing then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-            key = "seasonalPricing",
-            value = tostring(self.optSeasonalPricing:getState() == 2),
-        })
+        send("seasonalPricing", tostring(self.optSeasonalPricing:getState() == 2))
     end
     if self.optStorageCapacity then
         local v = DepotSettings.CAPACITY_OPTIONS[self.optStorageCapacity:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "storageCapacity", value = tostring(v),
-            })
-        end
+        if v then send("storageCapacity", tostring(v)) end
     end
     if self.optSellRatio then
         local v = DepotSettings.SELL_RATIO_OPTIONS[self.optSellRatio:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "sellRatio", value = tostring(v),
-            })
-        end
+        if v then send("sellRatio", tostring(v)) end
     end
     if self.optBuyMultiplier then
         local v = DepotSettings.BUY_MULT_OPTIONS[self.optBuyMultiplier:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "buyMultiplier", value = tostring(v),
-            })
-        end
+        if v then send("buyMultiplier", tostring(v)) end
     end
     if self.optDebugLogging then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-            key = "debugLogging",
-            value = tostring(self.optDebugLogging:getState() == 2),
-        })
+        send("debugLogging", tostring(self.optDebugLogging:getState() == 2))
+    end
+    if not allSent then
+        DepotLogger.warning("Depot settings not sent: no NetworkSync and not the host")
     end
     self:close()
 end

@@ -10,8 +10,10 @@
 --
 -- Delegate-when-present:
 --   NetworkSync installed -> all networking via NS
---   NetworkSync absent    -> no networking (single-player only;
---                            the old event classes are removed)
+--   NetworkSync absent    -> no networking; a host (SP / listen
+--                            server) runs the action handlers
+--                            directly, a remote client cannot act
+--                            (the old event classes are removed)
 -- =========================================================
 
 FDNetworkSyncBridge = FDNetworkSyncBridge or {}
@@ -117,6 +119,15 @@ local function handleSettings(userId, args)
     FDNetworkSyncBridge.syncNow()
 end
 
+-- Action id -> handler. Used by register() and by the host-only direct path in
+-- sendAction when NetworkSync is not installed.
+local ACTION_HANDLERS = {
+    [FDNetworkSyncBridge.ACTION_PURCHASE]      = handlePurchase,
+    [FDNetworkSyncBridge.ACTION_SELL]          = handleSell,
+    [FDNetworkSyncBridge.ACTION_PRODUCT_ORDER] = handleProductOrder,
+    [FDNetworkSyncBridge.ACTION_SETTINGS]      = handleSettings,
+}
+
 -- =========================================================
 -- State serialization (server -> client full snapshot)
 -- =========================================================
@@ -219,19 +230,41 @@ function FDNetworkSyncBridge.syncNow()
 end
 
 ---Send a client action to the server via NS, or execute directly on host.
+---
+---args is a POSITIONAL array in the order the action's handler reads
+---(purchase/sell/product order: {depotId, fillTypeName, fillTypeIndex, amount, farmId};
+---settings: {key, value}). RealisticFarmingActionEvent serializes args[1..#args],
+---so a named table arrives on the server as an empty one.
+---
+---Delegate-when-present: with NetworkSync absent there is no wire, but a host
+---(SP or listen server, g_server set) can still run the handler locally. A
+---remote client without NetworkSync has no path and gets false back; callers
+---must surface that instead of reporting success.
 ---@param actionId string
 ---@param args table
 ---@return boolean handled
 function FDNetworkSyncBridge.sendAction(actionId, args)
     if not FDNetworkSyncBridge.active or not FDNetworkSyncBridge._ns then
-        return false
+        if g_server == nil then
+            return false
+        end
+        local handler = ACTION_HANDLERS[actionId]
+        if handler == nil then
+            return false
+        end
+        local ok, err = pcall(handler, nil, args)
+        if not ok then
+            DepotLogger.error("FDNetworkSyncBridge: local action '%s' failed: %s",
+                tostring(actionId), tostring(err))
+            return false
+        end
+        return true
     end
     if g_currentMission ~= nil and g_currentMission:getIsServer() then
         FDNetworkSyncBridge._ns:_applyAction(actionId, args, nil)
-    else
-        FDNetworkSyncBridge._ns:requestAction(actionId, args)
+        return true
     end
-    return true
+    return FDNetworkSyncBridge._ns:requestAction(actionId, args) ~= false
 end
 
 -- =========================================================
@@ -251,13 +284,13 @@ function FDNetworkSyncBridge.register()
 
     local ok, err = pcall(function()
         ns:registerAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
-            adminOnly = false, onAction = handlePurchase })
+            adminOnly = false, onAction = ACTION_HANDLERS[FDNetworkSyncBridge.ACTION_PURCHASE] })
         ns:registerAction(FDNetworkSyncBridge.ACTION_SELL, {
-            adminOnly = false, onAction = handleSell })
+            adminOnly = false, onAction = ACTION_HANDLERS[FDNetworkSyncBridge.ACTION_SELL] })
         ns:registerAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
-            adminOnly = false, onAction = handleProductOrder })
+            adminOnly = false, onAction = ACTION_HANDLERS[FDNetworkSyncBridge.ACTION_PRODUCT_ORDER] })
         ns:registerAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-            adminOnly = false, onAction = handleSettings })
+            adminOnly = false, onAction = ACTION_HANDLERS[FDNetworkSyncBridge.ACTION_SETTINGS] })
 
         ns:registerModule(FDNetworkSyncBridge.STATE_MODULE_ID, {
             channel      = FDNetworkSyncBridge.STATE_CHANNEL,
