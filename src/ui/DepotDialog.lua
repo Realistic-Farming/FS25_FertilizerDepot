@@ -452,18 +452,27 @@ function DepotDialog:onConfirmOrder()
     local ft     = self.selectedFillType
     local system = g_DepotManager and g_DepotManager.depotSystem
 
-    -- A compatible vehicle must be parked near the depot to fill it directly
-    local vehicle, unitIndex = system and system:findCompatibleVehicle(
-        self.depotId, ft.fillTypeIndex, false)
+    -- A compatible vehicle must be parked near the depot to fill it directly.
+    -- Plain assignment, not `system and system:find...`: `and` truncates the call
+    -- to its first return value, which dropped unitIndex and always reported
+    -- "no trailer".
+    local vehicle, unitIndex
+    if system then
+        vehicle, unitIndex = system:findCompatibleVehicle(self.depotId, ft.fillTypeIndex, false)
+    end
 
     if vehicle and unitIndex then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
-            depotId = self.depotId, fillTypeName = ft.name,
-            fillTypeIndex = ft.fillTypeIndex, liters = self.orderAmount, farmId = farmId,
+        -- Positional, in handlePurchase's read order (FDNetworkSyncBridge.lua)
+        local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
+            self.depotId, ft.name, ft.fillTypeIndex, self.orderAmount, farmId,
         })
-        self:showStatus(string.format(
-            tr("fd_depot_filling", "Filling %.0fL of %s into your vehicle..."),
-            self.orderAmount, ft.displayName or ft.name))
+        if sent then
+            self:showStatus(string.format(
+                tr("fd_depot_filling", "Filling %.0fL of %s into your vehicle..."),
+                self.orderAmount, ft.displayName or ft.name))
+        else
+            self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+        end
     else
         self:showStatus(tr("fd_depot_no_trailer", "No compatible trailer nearby."))
     end
@@ -547,10 +556,14 @@ function DepotDialog:onProductConfirm()
         return
     end
 
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
-        depotId = self.depotId, fillTypeName = ft.name,
-        fillTypeIndex = ft.fillTypeIndex, quantity = self.productQuantity, farmId = farmId,
+    -- Positional, in handleProductOrder's read order (FDNetworkSyncBridge.lua)
+    local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
+        self.depotId, ft.name, ft.fillTypeIndex, self.productQuantity, farmId,
     })
+    if not sent then
+        self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+        return
+    end
 
     local label = ft.productLabel == "bag"
         and tr("fd_products_label_bag", "Bag(s)")
@@ -564,13 +577,17 @@ function DepotDialog:executeSell(rowSlot)
     local entry = self.sellList[rowSlot]
     if not entry then return end
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
-    self:showStatus(string.format(
-        tr("fd_depot_filling", "Selling %.0fL %s..."),
-        entry.liters, entry.ft.displayName or entry.ft.name))
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
-        depotId = self.depotId, fillTypeName = entry.ft.name,
-        fillTypeIndex = entry.ft.fillTypeIndex, liters = entry.liters, farmId = farmId,
+    -- Positional, in handleSell's read order (FDNetworkSyncBridge.lua)
+    local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
+        self.depotId, entry.ft.name, entry.ft.fillTypeIndex, entry.liters, farmId,
     })
+    if sent then
+        self:showStatus(string.format(
+            tr("fd_depot_filling", "Selling %.0fL %s..."),
+            entry.liters, entry.ft.displayName or entry.ft.name))
+    else
+        self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+    end
 end
 
 -- ─── Close ───────────────────────────────────────────────
