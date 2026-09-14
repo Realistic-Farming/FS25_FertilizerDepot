@@ -37,34 +37,88 @@ FDNetworkSyncBridge._ns         = nil
 -- =========================================================
 -- Server-side action handlers
 -- =========================================================
+-- RSF-F230: each transaction handler validates its positional payload before
+-- the owner is called, binds the acting farm to something the server trusts,
+-- and returns the owner's result tuple at the owner's own width so the host
+-- dialog can say what the depot actually did. The wire slot args[5] is what
+-- the client CLAIMED its farm was; it is never used for admission or charging.
 
-local function handlePurchase(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, fillTypeName, fillTypeIndex, liters, farmId =
-        args[1], args[2], args[3], args[4], args[5]
-    if not g_DepotManager then return end
-    local success = g_DepotManager.depotSystem:buyFillType(
+local SPECTATOR_FARM_ID = 0
+
+local function isFiniteNumber(x)
+    return type(x) == "number" and x == x and x > -math.huge and x < math.huge
+end
+
+--- Exactly five positional slots, each of the type the owner reads. Checks the
+--- individual slots rather than #args, which lies on a sparse array. The
+--- quantity rule is per action: litres and unit counts both just need to be a
+--- finite number above zero; the owner clamps them to its own bounds.
+local function validTransactionArgs(args)
+    if type(args) ~= "table" then return false end
+    if args[5] == nil or args[6] ~= nil then return false end
+    if type(args[1]) ~= "number" then return false end
+    if type(args[2]) ~= "string" then return false end
+    if type(args[3]) ~= "number" then return false end
+    if not isFiniteNumber(args[4]) or args[4] <= 0 then return false end
+    return true
+end
+
+--- The farm that pays and receives. On the host paths sendAction supplies the
+--- local player's farm as `localFarmId`; on the remote path NetworkSync supplies
+--- a non-nil `userId` and the farm is what the server resolves for that user.
+--- A nil user with no local farm is nobody, and nobody is charged. The native
+--- lookup returns the spectator farm OBJECT for an unmatched user, so a nil
+--- test alone is not a rejection: the spectator id and flag are checked too.
+---@return number|nil farmId
+local function resolveActorFarm(userId, localFarmId)
+    if localFarmId ~= nil then
+        if type(localFarmId) ~= "number" or localFarmId == SPECTATOR_FARM_ID then return nil end
+        return localFarmId
+    end
+    if userId == nil then return nil end
+    if g_farmManager == nil or type(g_farmManager.getFarmByUserId) ~= "function" then return nil end
+    local farm = g_farmManager:getFarmByUserId(userId)
+    if farm == nil or farm.isSpectator then return nil end
+    local id = nil
+    if type(farm.getId) == "function" then id = farm:getId() else id = farm.farmId end
+    if type(id) ~= "number" or id == SPECTATOR_FARM_ID then return nil end
+    return id
+end
+
+local function handlePurchase(userId, args, localFarmId)
+    if not validTransactionArgs(args) then return false, "fd_error_server", 0 end
+    local depotId, fillTypeName, fillTypeIndex, liters = args[1], args[2], args[3], args[4]
+    if not g_DepotManager then return false, "fd_error_server", 0 end
+    local farmId = resolveActorFarm(userId, localFarmId)
+    if farmId == nil then return false, "fd_error_farm", 0 end
+    local success, reason, actualLiters = g_DepotManager.depotSystem:buyFillType(
         depotId, fillTypeName, fillTypeIndex, liters, farmId)
     if success then
         FDNetworkSyncBridge.markDirty()
     end
+    return success, reason, actualLiters
 end
 
-local function handleSell(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, fillTypeName, fillTypeIndex, liters, farmId =
-        args[1], args[2], args[3], args[4], args[5]
-    if not g_DepotManager then return end
-    g_DepotManager.depotSystem:sellFillType(
+local function handleSell(userId, args, localFarmId)
+    if not validTransactionArgs(args) then return false, "fd_error_server", 0, 0 end
+    local depotId, fillTypeName, fillTypeIndex, liters = args[1], args[2], args[3], args[4]
+    if not g_DepotManager then return false, "fd_error_server", 0, 0 end
+    local farmId = resolveActorFarm(userId, localFarmId)
+    if farmId == nil then return false, "fd_error_farm", 0, 0 end
+    local success, reason, soldLiters, revenue = g_DepotManager.depotSystem:sellFillType(
         depotId, fillTypeName, fillTypeIndex, liters, farmId)
-    FDNetworkSyncBridge.markDirty()
+    if success then
+        FDNetworkSyncBridge.markDirty()
+    end
+    return success, reason, soldLiters, revenue
 end
 
-local function handleProductOrder(_userId, args)
-    if type(args) ~= "table" then return end
-    local depotId, fillTypeName, fillTypeIndex, quantity, farmId =
-        args[1], args[2], args[3], args[4], args[5]
-    if not g_DepotManager then return end
+local function handleProductOrder(userId, args, localFarmId)
+    if not validTransactionArgs(args) then return false, "fd_error_server" end
+    local depotId, fillTypeName, fillTypeIndex, quantity = args[1], args[2], args[3], args[4]
+    if not g_DepotManager then return false, "fd_error_server" end
+    local farmId = resolveActorFarm(userId, localFarmId)
+    if farmId == nil then return false, "fd_error_farm" end
     local placeable = g_DepotManager.depots[depotId]
     local spawnX, spawnZ = 0, 0
     local spawnNode = g_DepotManager.depotProductSpawnNodes[depotId]
@@ -76,9 +130,12 @@ local function handleProductOrder(_userId, args)
         local wx, _, wz = getWorldTranslation(placeable.rootNode)
         spawnX, spawnZ = wx, wz
     end
-    g_DepotManager.depotSystem:orderProduct(
+    local success, reason = g_DepotManager.depotSystem:orderProduct(
         depotId, fillTypeName, fillTypeIndex, quantity, spawnX, spawnZ, farmId)
-    FDNetworkSyncBridge.markDirty()
+    if success then
+        FDNetworkSyncBridge.markDirty()
+    end
+    return success, reason
 end
 
 local function handleSettings(userId, args)
@@ -240,29 +297,53 @@ end
 ---(SP or listen server, g_server set) can still run the handler locally. A
 ---remote client without NetworkSync has no path and gets false back; callers
 ---must surface that instead of reporting success.
+---
+---RSF-F230: on the two HOST paths the handler runs here, through the same table
+---and the same pcall, with the local player's farm as a trusted third argument
+---(transaction handlers only), and its result tuple is relayed as further
+---returns after `handled`. That is what NetworkSync:_applyAction does for a host
+---(nil user id, pcall) minus the discarded returns, so NetworkSync itself is
+---untouched. On the REMOTE path the first return still means "sent", nothing
+---more: no owner result comes back over the wire and a send is never a success.
 ---@param actionId string
 ---@param args table
----@return boolean handled
+---@return boolean handled  true when run locally or sent; false when neither
+---@return ... the owner's tuple, host paths only (buy 3, order 2, sell 4)
+local TRANSACTION_ACTIONS = {
+    [FDNetworkSyncBridge.ACTION_PURCHASE]      = true,
+    [FDNetworkSyncBridge.ACTION_SELL]          = true,
+    [FDNetworkSyncBridge.ACTION_PRODUCT_ORDER] = true,
+}
+
+local function runLocal(actionId, args)
+    local handler = ACTION_HANDLERS[actionId]
+    if handler == nil then
+        return false
+    end
+    local results
+    if TRANSACTION_ACTIONS[actionId] then
+        local localFarmId = g_localPlayer and g_localPlayer.farmId or nil
+        results = { pcall(handler, nil, args, localFarmId) }
+    else
+        results = { pcall(handler, nil, args) }
+    end
+    if not results[1] then
+        DepotLogger.error("FDNetworkSyncBridge: local action '%s' failed: %s",
+            tostring(actionId), tostring(results[2]))
+        return false
+    end
+    return true, unpack(results, 2)
+end
+
 function FDNetworkSyncBridge.sendAction(actionId, args)
     if not FDNetworkSyncBridge.active or not FDNetworkSyncBridge._ns then
         if g_server == nil then
             return false
         end
-        local handler = ACTION_HANDLERS[actionId]
-        if handler == nil then
-            return false
-        end
-        local ok, err = pcall(handler, nil, args)
-        if not ok then
-            DepotLogger.error("FDNetworkSyncBridge: local action '%s' failed: %s",
-                tostring(actionId), tostring(err))
-            return false
-        end
-        return true
+        return runLocal(actionId, args)
     end
     if g_currentMission ~= nil and g_currentMission:getIsServer() then
-        FDNetworkSyncBridge._ns:_applyAction(actionId, args, nil)
-        return true
+        return runLocal(actionId, args)
     end
     return FDNetworkSyncBridge._ns:requestAction(actionId, args) ~= false
 end

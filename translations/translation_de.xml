@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="Der Tank des Anhängers ist voll."/>
     <text name="fd_depot_tank_empty"    text="Der Tank des Anhängers ist leer."/>
     <text name="fd_depot_storage_full"  text="Der Depotlagerbestand ist voll."/>
+    <text name="fd_depot_request_sent" text="Anfrage an den Server gesendet."/>
     <text name="fd_depot_buy_success"   text="Kauf abgeschlossen."/>
     <text name="fd_depot_sell_success"  text="Verkauf abgeschlossen."/>
 

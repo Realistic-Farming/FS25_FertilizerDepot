@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="Trailer tank is full."/>
     <text name="fd_depot_tank_empty"    text="Trailer tank is empty."/>
     <text name="fd_depot_storage_full"  text="Depot storage is full."/>
+    <text name="fd_depot_request_sent" text="Запит надіслано на сервер."/>
     <text name="fd_depot_buy_success"   text="Purchase complete."/>
     <text name="fd_depot_sell_success"  text="Sale complete."/>
 

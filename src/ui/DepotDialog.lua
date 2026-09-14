@@ -160,6 +160,32 @@ function DepotDialog:onSyncReceived(depotId)
     if depotId == self.depotId then self:refresh() end
 end
 
+--- RSF-F230: what this machine can truthfully say after sendAction. A host has
+--- the owner's tuple; a client only knows the request left. `figure` is the
+--- owner's actual number for the host success line, already formatted.
+local function isServerHere()
+    return g_currentMission ~= nil and type(g_currentMission.getIsServer) == "function"
+        and g_currentMission:getIsServer() == true
+end
+
+local function resultStatus(sent, ok, reason, successKey, successFallback, figure)
+    if not sent then
+        return tr("fd_depot_send_failed", "Request could not be sent to the server.")
+    end
+    if not isServerHere() then
+        return tr("fd_depot_request_sent", "Request sent to the server.")
+    end
+    if ok == true then
+        local text = tr(successKey, successFallback)
+        if figure ~= nil and figure ~= "" then text = text .. " " .. figure end
+        return text
+    end
+    if type(reason) == "string" and reason ~= "" then
+        return tr(reason, reason)
+    end
+    return tr("fd_error_server", "Server error.")
+end
+
 function DepotDialog:showStatus(text)
     if self.statusText then self.statusText:setText(text) end
 end
@@ -462,17 +488,18 @@ function DepotDialog:onConfirmOrder()
     end
 
     if vehicle and unitIndex then
-        -- Positional, in handlePurchase's read order (FDNetworkSyncBridge.lua)
-        local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
-            self.depotId, ft.name, ft.fillTypeIndex, self.orderAmount, farmId,
-        })
-        if sent then
-            self:showStatus(string.format(
-                tr("fd_depot_filling", "Filling %.0fL of %s into your vehicle..."),
-                self.orderAmount, ft.displayName or ft.name))
-        else
-            self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+        -- Positional, in handlePurchase's read order (FDNetworkSyncBridge.lua).
+        -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+        local sent, ok, reason, actualLiters = FDNetworkSyncBridge.sendAction(
+            FDNetworkSyncBridge.ACTION_PURCHASE, {
+                self.depotId, ft.name, ft.fillTypeIndex, self.orderAmount, farmId,
+            })
+        local figure = nil
+        if ok == true then
+            figure = string.format("%.0fL %s", tonumber(actualLiters) or 0, ft.displayName or ft.name)
         end
+        self:showStatus(resultStatus(sent, ok, reason,
+            "fd_depot_buy_success", "Purchase complete.", figure))
     else
         self:showStatus(tr("fd_depot_no_trailer", "No compatible trailer nearby."))
     end
@@ -556,38 +583,43 @@ function DepotDialog:onProductConfirm()
         return
     end
 
-    -- Positional, in handleProductOrder's read order (FDNetworkSyncBridge.lua)
-    local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
-        self.depotId, ft.name, ft.fillTypeIndex, self.productQuantity, farmId,
-    })
-    if not sent then
-        self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+    -- Positional, in handleProductOrder's read order (FDNetworkSyncBridge.lua).
+    -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+    local sent, ok, reason = FDNetworkSyncBridge.sendAction(
+        FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
+            self.depotId, ft.name, ft.fillTypeIndex, self.productQuantity, farmId,
+        })
+    if sent and ok == true and isServerHere() then
+        -- The owner returns no quantity for an order; the dialog's own request
+        -- is the figure, as before. Nothing is padded onto the owner's tuple.
+        local label = ft.productLabel == "bag"
+            and tr("fd_products_label_bag", "Bag(s)")
+            or  tr("fd_products_label_tank", "Tank(s)")
+        self:showStatus(string.format(
+            tr("fd_products_ordered", "%d× %s %s ordered — delivering to depot."),
+            self.productQuantity, ft.displayName or ft.name, label))
         return
     end
-
-    local label = ft.productLabel == "bag"
-        and tr("fd_products_label_bag", "Bag(s)")
-        or  tr("fd_products_label_tank", "Tank(s)")
-    self:showStatus(string.format(
-        tr("fd_products_ordered", "%d× %s %s ordered — delivering to depot."),
-        self.productQuantity, ft.displayName or ft.name, label))
+    self:showStatus(resultStatus(sent, ok, reason, "fd_products_ordered", "Ordered.", nil))
 end
 
 function DepotDialog:executeSell(rowSlot)
     local entry = self.sellList[rowSlot]
     if not entry then return end
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
-    -- Positional, in handleSell's read order (FDNetworkSyncBridge.lua)
-    local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
-        self.depotId, entry.ft.name, entry.ft.fillTypeIndex, entry.liters, farmId,
-    })
-    if sent then
-        self:showStatus(string.format(
-            tr("fd_depot_filling", "Selling %.0fL %s..."),
-            entry.liters, entry.ft.displayName or entry.ft.name))
-    else
-        self:showStatus(tr("fd_depot_send_failed", "Request could not be sent to the server."))
+    -- Positional, in handleSell's read order (FDNetworkSyncBridge.lua).
+    -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+    local sent, ok, reason, soldLiters, revenue = FDNetworkSyncBridge.sendAction(
+        FDNetworkSyncBridge.ACTION_SELL, {
+            self.depotId, entry.ft.name, entry.ft.fillTypeIndex, entry.liters, farmId,
+        })
+    local figure = nil
+    if ok == true then
+        figure = string.format("%.0fL %s, $%.0f", tonumber(soldLiters) or 0,
+            entry.ft.displayName or entry.ft.name, tonumber(revenue) or 0)
     end
+    self:showStatus(resultStatus(sent, ok, reason,
+        "fd_depot_sell_success", "Sale complete.", figure))
 end
 
 -- ─── Close ───────────────────────────────────────────────
