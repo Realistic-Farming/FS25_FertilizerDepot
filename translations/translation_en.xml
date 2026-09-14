@@ -97,6 +97,7 @@
     <text name="fd_depot_storage_full"  text="Depot storage is full."/>
     <text name="fd_depot_filling"       text="Filling %.0fL of %s into your vehicle..."/>
     <text name="fd_depot_send_failed"   text="Request could not be sent to the server."/>
+    <text name="fd_depot_request_sent" text="Request sent to the server."/>
     <text name="fd_depot_buy_success"   text="Purchase complete."/>
     <text name="fd_depot_sell_success"  text="Sale complete."/>
 

@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="La citerne de la remorque est pleine."/>
     <text name="fd_depot_tank_empty"    text="La citerne de la remorque est vide."/>
     <text name="fd_depot_storage_full"  text="Le stockage du dépôt est plein."/>
+    <text name="fd_depot_request_sent" text="Demande envoyée au serveur."/>
     <text name="fd_depot_buy_success"   text="Achat effectué."/>
     <text name="fd_depot_sell_success"  text="Vente effectuée."/>
 

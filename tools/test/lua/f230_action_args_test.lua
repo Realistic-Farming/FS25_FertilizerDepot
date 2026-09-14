@@ -100,10 +100,19 @@ local function fakeNS(mode)
     function ns:registerModule() end
     function ns:markDirty() end
     function ns:syncNow() end
-    function ns:_applyAction(id, args, _conn)
+    -- Mirror of NetworkSync:_applyAction (NetworkSync.lua:310-333): a remote
+    -- connection resolves to a user id, the host's own call carries nil, the
+    -- handler runs under pcall and its returns are discarded.
+    function ns:_applyAction(id, args, conn)
         local a = self.actions[id]
         if a == nil then self.handlerErr = "unregistered " .. tostring(id); return end
-        local ok, err = pcall(a.onAction, nil, args)
+        local userId = nil
+        if conn ~= nil then
+            local user = g_currentMission.userManager
+                and g_currentMission.userManager:getUserByConnection(conn)
+            userId = user ~= nil and user:getId() or nil
+        end
+        local ok, err = pcall(a.onAction, userId, args)
         if not ok then self.handlerErr = err end
     end
     function ns:requestAction(id, args)
@@ -115,8 +124,23 @@ local function fakeNS(mode)
     return ns
 end
 
+-- RSF-F230: the server binds the acting farm itself. Remote user 501 belongs to
+-- farm 3, which is also the local player's farm, so every transport charges 3.
+local user501 = { getId = function() return 501 end, getIsMasterUser = function() return true end }
+g_currentMission.userManager = {
+    getUserByConnection = function(_self, conn) if conn == "conn" then return user501 end return nil end,
+    getUserByUserId     = function(_self, id)   if id == 501 then return user501 end return nil end,
+}
+g_farmManager = {
+    getFarmByUserId = function(_self, userId)
+        if userId == 501 then return { getId = function() return 3 end, isSpectator = false, isUserFarmManager = function() return true end } end
+        return nil
+    end,
+}
+
 local function setup(mode)
     freshManager()
+    g_currentMission.missionDynamicInfo = { isMultiplayer = (mode == "wire") }
     g_currentMission.getIsServer = function() return mode ~= "wire" end
     g_currentMission.networkSync = nil
     g_networkSync = nil
@@ -179,8 +203,11 @@ for _, mode in ipairs({ "host", "wire", "absent-host" }) do
     lastStatus = nil
     fakeDialog():onConfirmOrder()
     checkFive(mode .. " purchase", received.buy, { 7, "FERTILIZER", 12, 1500, 3 })
-    T.ok(mode .. " purchase status is Filling", lastStatus ~= nil and lastStatus:find("^Filling") ~= nil,
+    -- RSF-F230: a host reports the owner's result, a client only that it sent.
+    local wantStatus = (mode == "wire") and "^Request sent" or "^Purchase complete"
+    T.ok(mode .. " purchase status is truthful", lastStatus ~= nil and lastStatus:find(wantStatus) ~= nil,
         "status was " .. tostring(lastStatus))
+    T.ok(mode .. " purchase status never says Filling", lastStatus ~= nil and lastStatus:find("^Filling") == nil)
 
     fakeDialog():onProductConfirm()
     checkFive(mode .. " product order", received.order, { 7, "FERTILIZER", 12, 2, 3 })

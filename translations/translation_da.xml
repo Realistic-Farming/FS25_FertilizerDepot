@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="Vognen er fuld"/>
     <text name="fd_depot_tank_empty"    text="Vognen er tom"/>
     <text name="fd_depot_storage_full"  text="Lageret er fuldt"/>
+    <text name="fd_depot_request_sent" text="Anmodning sendt til serveren."/>
     <text name="fd_depot_buy_success"   text="KÃ¸b gennemfÃ¸rt"/>
     <text name="fd_depot_sell_success"  text="Salg gennemfÃ¸rt."/>
 
