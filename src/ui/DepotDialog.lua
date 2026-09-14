@@ -176,6 +176,10 @@ local function resultStatus(sent, ok, reason, successKey, successFallback, figur
         return tr("fd_depot_request_sent", "Request sent to the server.")
     end
     if ok == true then
+        if successKey == nil then
+            -- A caller that handles its own success line never reaches here.
+            return tr("fd_error_server", "Server error.")
+        end
         local text = tr(successKey, successFallback)
         if figure ~= nil and figure ~= "" then text = text .. " " .. figure end
         return text
@@ -600,7 +604,9 @@ function DepotDialog:onProductConfirm()
             self.productQuantity, ft.displayName or ft.name, label))
         return
     end
-    self:showStatus(resultStatus(sent, ok, reason, "fd_products_ordered", "Ordered.", nil))
+    -- Success on a host returned above; this line only ever renders not-sent,
+    -- request-sent or the owner's refusal, so no success key is passed.
+    self:showStatus(resultStatus(sent, ok, reason, nil, nil, nil))
 end
 
 function DepotDialog:executeSell(rowSlot)
