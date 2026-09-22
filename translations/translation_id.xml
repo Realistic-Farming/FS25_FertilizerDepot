@@ -61,7 +61,7 @@
     <text name="fd_settings_reset"      text="Reset Defaults"/>
     <text name="fd_settings_apply"     text="Terapkan"/>
     <text name="fd_settings_debug"     text="Debug Logging"/>
-    <text name="fd_settings_admin_only" text="View only â€” admin required to change settings"/>
+    <text name="fd_settings_admin_only" text="View only, admin required to change settings"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
@@ -70,7 +70,7 @@
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
     <text name="fd_depot_select_first" text="[EN] Select a fill type first."/>
-    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL â€” walk to silo to collect."/>
+    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL, walk to silo to collect."/>
                 <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
     <text name="fd_depot_filling" text="[EN] Filling %.0fL of %s into your vehicle..."/>
     <text name="input_FD_INTERACT" text="[EN] Interact with Fertilizer Depot"/>
@@ -82,7 +82,7 @@
     <text name="fd_products_none" text="[EN] No physical products available."/>
     <text name="fd_products_no_stock" text="[EN] Insufficient depot stock for this order."/>
     <text name="fd_products_no_object" text="[EN] No physical object registered for this type."/>
-    <text name="fd_products_ordered" text="[EN] %dÃ— %s %s ordered â€” delivering to depot."/>
+    <text name="fd_products_ordered" text="[EN] %d× %s %s ordered, delivering to depot."/>
     <text name="fd_depot_selected" text="[EN] Selected"/>
                 <text name="fd_col_amount" text="[EN] Amount"/>
                 <text name="fd_col_revenue" text="Revenue"/>
