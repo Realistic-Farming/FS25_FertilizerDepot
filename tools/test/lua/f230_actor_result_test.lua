@@ -342,7 +342,12 @@ do
                 if key == "fd_products_ordered" then return "%d x %s %s ordered" end
                 return key
             end,
-            hasText = function() return false end,
+            -- hasText must agree with getText or this declares an i18n the engine
+            -- cannot produce: I18N.lua:194 answers false only when texts[name] is
+            -- nil, and :186 then makes getText return the Missing sentence rather
+            -- than a translation. Inert while DepotDialog's tr() never asks, but
+            -- this becomes the reference the moment it does.
+            hasText = function(_self, key) return key == "fd_products_ordered" end,
         }
         answer.order = { true, "fd_products_ordered" }
         lastStatus = nil; fakeDialog():onProductConfirm()
