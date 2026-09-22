@@ -82,7 +82,7 @@
     <text name="fd_products_none" text="[EN] No physical products available."/>
     <text name="fd_products_no_stock" text="[EN] Insufficient depot stock for this order."/>
     <text name="fd_products_no_object" text="[EN] No physical object registered for this type."/>
-    <text name="fd_products_ordered" text="[EN] %dÃ— %s %s ordered â€” delivering to depot."/>
+    <text name="fd_products_ordered" text="[EN] %d× %s %s ordered, delivering to depot."/>
     <text name="fd_depot_selected" text="[EN] Selected"/>
                 <text name="fd_col_amount" text="[EN] Amount"/>
                 <text name="fd_col_revenue" text="Revenue"/>

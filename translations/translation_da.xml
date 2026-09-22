@@ -81,7 +81,7 @@
     <text name="fd_products_none"       text="Ingen fysiske produkter tilgÃ¦ngelige."/>
     <text name="fd_products_no_stock"   text="UtilstrÃ¦kkelig lagerbeholdning i depotet til denne ordre."/>
     <text name="fd_products_no_object"  text="Intet fysisk objekt registreret for denne type."/>
-    <text name="fd_products_ordered"    text="%dÃ— %s %s bestilt â€” leveres til depotet."/>
+    <text name="fd_products_ordered"    text="%d× %s %s bestilt, leveres til depotet."/>
     <text name="fd_depot_selected"      text="Valgt"/>
                 <text name="fd_col_amount"          text="MÃ¦ngde"/>
                 <text name="fd_col_revenue" text="Revenue"/>
