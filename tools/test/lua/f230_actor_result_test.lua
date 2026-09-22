@@ -328,6 +328,33 @@ do
     answer.order = { true, "fd_products_ordered" }
     lastStatus = nil; fakeDialog():onProductConfirm()
     T.ok("dialog host: order success uses the ordered message", has(lastStatus, "fd_products_ordered"))
+    -- Which SITE produced that key matters and the key alone cannot say: the
+    -- formatted line and the fall-through that used to pass the same key are
+    -- indistinguishable while getText hands back the key, because string.format on
+    -- a template with no specifiers drops every argument. Give the key a real
+    -- template for one case and the quantity and label become observable, which
+    -- pins the success sentence to the site that renders it. Remove the early
+    -- return above and this row fails, instead of the status quietly degrading.
+    do
+        local savedI18n = g_i18n
+        g_i18n = {
+            getText = function(_self, key)
+                if key == "fd_products_ordered" then return "%d x %s %s ordered" end
+                return key
+            end,
+            -- hasText must agree with getText or this declares an i18n the engine
+            -- cannot produce: I18N.lua:194 answers false only when texts[name] is
+            -- nil, and :186 then makes getText return the Missing sentence rather
+            -- than a translation. Inert while DepotDialog's tr() never asks, but
+            -- this becomes the reference the moment it does.
+            hasText = function(_self, key) return key == "fd_products_ordered" end,
+        }
+        answer.order = { true, "fd_products_ordered" }
+        lastStatus = nil; fakeDialog():onProductConfirm()
+        T.eq("dialog host: order success is the FORMATTED line, with quantity and label",
+             lastStatus, "2 x Fertilizer fd_products_label_bag ordered")
+        g_i18n = savedI18n
+    end
     answer.order = { false, "fd_products_no_object" }
     lastStatus = nil; fakeDialog():onProductConfirm()
     T.eq("dialog host: order refusal shows the owner reason", lastStatus, "fd_products_no_object")
