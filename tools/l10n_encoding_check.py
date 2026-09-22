@@ -34,8 +34,16 @@ fails. So this script does two independent things:
     because a repair that silently declines to touch something is the failure mode;
   - it re-reads from disk afterwards and tests every value against BOTH codecs.
 
+  - and it asserts the scan REACHED every l10n element in every file, because a
+    report of "still double-encoded: 0" over a file it never read is a false clean:
+    not a wrong answer, an unasked question.
+
 SCOPE. --fix touches only the keys named on the command line. Run with no arguments
 to see what is left. Values outside the named keys are reported, never written.
+
+NOT A CI GATE YET, for this repo. 45 values outside the four repaired keys are still
+double-encoded, so a bare run exits 1 at today's head by design. Wiring this into a
+required check before that sweep lands would block the repo on known work.
 """
 import glob
 import io
@@ -49,6 +57,20 @@ except Exception:
 
 CODECS = ("cp1252", "latin-1")
 VALUE = re.compile(r'<text name="([^"]+)"\s*text="([^"]*)"')
+
+# FS25 accepts TWO l10n element forms and iterates both, mods.lua:798 for
+# l10n.texts.text and :809 for l10n.elements.e, documented together at :1227.
+# This mod uses only the first. SoilFertilizer uses only the second.
+#
+# So the scan above can read a file and legitimately find nothing, and a report of
+# "still double-encoded: 0" over an unread file is a FALSE CLEAN: not a wrong
+# answer, an unasked question. It is the same shape as the failures this tool was
+# built to catch, one level up, and it would fire the moment the tool is pointed at
+# a mod using the other form.
+#
+# ELEMENT counts every l10n entry in either form. The scan is required to reach all
+# of them, and a file that yields none is a loud failure rather than a clean file.
+ELEMENT = re.compile(r'<text name="|<e k="')
 
 
 def demojibake(v):
@@ -64,18 +86,35 @@ def demojibake(v):
 
 
 def scan():
-    out = []
+    """Return (values, unreached) where unreached names files the scan could not read.
+
+    A file appears in `unreached` when it holds l10n elements the VALUE pattern did
+    not match. That is the false-clean guard: without it an unread file is silently
+    indistinguishable from a clean one.
+    """
+    out, unreached = [], []
     for p in sorted(glob.glob("translations/translation_*.xml")):
         s = io.open(p, encoding="utf-8").read()
+        before = len(out)
         for m in VALUE.finditer(s):
             out.append((p, m.group(1), m.group(2)))
-    return out
+        elements = len(ELEMENT.findall(s))
+        if elements != (len(out) - before):
+            unreached.append((p, elements, len(out) - before))
+    return out, unreached
 
 
-def report(vals):
+def report(scanned):
+    vals, unreached = scanned
     bad = [(p, k, v) for p, k, v in vals if demojibake(v)[1]]
     print("values scanned      : %d across %d files"
           % (len(vals), len(set(p for p, _, _ in vals))))
+    if unreached:
+        print("UNREAD FILES        : %d. This report is NOT a clean bill." % len(unreached))
+        for p, elements, read in unreached:
+            print("  %-3s holds %d l10n element(s), the scan reached %d"
+                  % (p.split("_")[-1][:-4], elements, read))
+        print("  FS25 accepts <text name= text=> and <e k= v=>; this scan reads the first.")
     print("still double-encoded: %d" % len(bad))
     if bad:
         by_codec = {}
@@ -131,15 +170,20 @@ def main():
         print()
         print("re-reading from disk and testing against BOTH codecs:")
         left = report(scan())
-        remaining = [(p, k) for p, k, v in scan() if demojibake(v)[1] and k in keys]
+        remaining = [(p, k) for p, k, v in scan()[0] if demojibake(v)[1] and k in keys]
         if remaining:
             print("STILL BROKEN IN A NAMED KEY: %s" % remaining)
             return 1
         print()
         print("named keys are clean; %d value(s) outside them remain and were not touched" % left)
         return 0 if ok else 1
-    # Non-zero when anything is still double-encoded, so this is safe to gate on.
-    return 1 if report(scan()) else 0
+    # Non-zero when anything is still double-encoded OR any file went unread.
+    #
+    # NOT YET A CI GATE for this repo: 45 values outside the four repaired keys are
+    # still double-encoded, so this exits 1 at today's head by design. Wiring it into
+    # a required check before that sweep lands would block the repo on known work.
+    scanned = scan()
+    return 1 if (report(scanned) or scanned[1]) else 0
 
 
 if __name__ == "__main__":
