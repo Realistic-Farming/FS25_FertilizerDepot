@@ -61,7 +61,7 @@
     <text name="fd_settings_reset"      text="Nulstil standardindstillinger"/>
     <text name="fd_settings_apply"      text="Anvend"/>
     <text name="fd_settings_debug"      text="Fejlretningslog"/>
-    <text name="fd_settings_admin_only" text="Kun visning â€” admin krÃ¦ves for at Ã¦ndre indstillinger"/>
+    <text name="fd_settings_admin_only" text="Kun visning, admin kræves for at ændre indstillinger"/>
     <text name="fd_settings_on"         text="TÃ†ND"/>
     <text name="fd_settings_off"        text="SLUK"/>
         <!-- Input action display name -->
@@ -69,7 +69,7 @@
 
     <text name="fd_depot_select_btn"    text="VÃ¦lg"/>
     <text name="fd_depot_select_first"  text="VÃ¦lg fÃ¸rst en type."/>
-    <text name="fd_depot_order_set"     text="Ordre oprettet: %s %.0fL â€” gÃ¥ til siloen for at hente."/>
+    <text name="fd_depot_order_set"     text="Ordre oprettet: %s %.0fL, gå til siloen for at hente."/>
                 <text name="fd_depot_sell_confirm"  text="SÃ¦lg %.0fL %s til depotet for %s?"/>
     <text name="fd_depot_filling"       text="Fylder %.0fL %s i dit kÃ¸retÃ¸j..."/>
     <text name="input_FD_INTERACT"      text="Interager med gÃ¸dningsdepot"/>

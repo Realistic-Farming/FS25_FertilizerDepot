@@ -61,7 +61,7 @@
     <text name="fd_settings_reset"      text="Réinitialiser"/>
     <text name="fd_settings_apply"     text="Appliquer"/>
     <text name="fd_settings_debug"     text="Journal de débogage"/>
-    <text name="fd_settings_admin_only" text="Lecture seule — administrateur requis pour modifier les paramètres"/>
+    <text name="fd_settings_admin_only" text="Lecture seule, administrateur requis pour modifier les paramètres"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
@@ -70,7 +70,7 @@
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="Sélectionner"/>
     <text name="fd_depot_select_first" text="Sélectionnez d’abord un type de remplissage."/>
-    <text name="fd_depot_order_set" text="Commande définie : %s %.0fL — rendez-vous au silo pour récupérer."/>
+    <text name="fd_depot_order_set" text="Commande définie : %s %.0fL, rendez-vous au silo pour récupérer."/>
                 <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
     <text name="fd_depot_filling" text="Remplissage de %.0fL de %s dans votre véhicule..."/>
     <text name="input_FD_INTERACT" text="Interagir avec le dépôt d’engrais"/>
