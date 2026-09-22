@@ -82,7 +82,7 @@
     <text name="fd_products_none" text="Aucun produit physique disponible."/>
     <text name="fd_products_no_stock" text="Stock insuffisant au dépôt pour cette commande."/>
     <text name="fd_products_no_object" text="Aucun objet physique enregistré pour ce type."/>
-    <text name="fd_products_ordered" text="%d× %s %s commandé(s) — livraison au dépôt."/>
+    <text name="fd_products_ordered" text="%d× %s %s commandé(s), livraison au dépôt."/>
     <text name="fd_depot_selected" text="Sélectionné"/>
                 <text name="fd_col_amount" text="Quantité"/>
                 <text name="fd_col_revenue" text="Revenue"/>
