@@ -59,9 +59,9 @@
     <text name="fd_settings_sell_ratio" text="Sell-Back Ratio"/>
     <text name="fd_settings_buy_mult"   text="Buy Price Multiplier"/>
     <text name="fd_settings_reset"      text="Reset Defaults"/>
-    <text name="fd_settings_apply"     text="ÐŸÑ€Ð¸Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ"/>
+    <text name="fd_settings_apply"     text="Применить"/>
     <text name="fd_settings_debug"     text="Debug Logging"/>
-    <text name="fd_settings_admin_only" text="View only â€” admin required to change settings"/>
+    <text name="fd_settings_admin_only" text="View only, admin required to change settings"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
@@ -70,7 +70,7 @@
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
     <text name="fd_depot_select_first" text="[EN] Select a fill type first."/>
-    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL â€” walk to silo to collect."/>
+    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL, walk to silo to collect."/>
                 <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
     <text name="fd_depot_filling" text="[EN] Filling %.0fL of %s into your vehicle..."/>
     <text name="input_FD_INTERACT" text="[EN] Interact with Fertilizer Depot"/>
