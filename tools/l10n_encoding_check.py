@@ -138,7 +138,8 @@ def main():
         print()
         print("named keys are clean; %d value(s) outside them remain and were not touched" % left)
         return 0 if ok else 1
-    return 1 if report(scan()) and False else 0
+    # Non-zero when anything is still double-encoded, so this is safe to gate on.
+    return 1 if report(scan()) else 0
 
 
 if __name__ == "__main__":
