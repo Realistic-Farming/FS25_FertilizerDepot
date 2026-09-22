@@ -2,17 +2,17 @@
 <l10n>
     <texts>
     <!-- Store -->
-    <text name="fd_shop_name"     text="GÃ¸dningsdepot"/>
-    <text name="fd_shop_desc"     text="Et placerbart gÃ¸dningsdepot, hvor du kan kÃ¸be, opbevare og sÃ¦lge alle typer gÃ¸dning til sÃ¦sonjusterede priser."/>
-    <text name="fd_shop_function" text="KÃ¸b, opbevar og sÃ¦lg gÃ¸dning"/>
+    <text name="fd_shop_name"     text="Gødningsdepot"/>
+    <text name="fd_shop_desc"     text="Et placerbart gødningsdepot, hvor du kan købe, opbevare og sælge alle typer gødning til sæsonjusterede priser."/>
+    <text name="fd_shop_function" text="Køb, opbevar og sælg gødning"/>
 
     <!-- Interaction prompt -->
-    <text name="fd_depot_open_action" text="Ã…ben GÃ¸dningsdepot"/>
+    <text name="fd_depot_open_action" text="Åben Gødningsdepot"/>
 
     <!-- Dialog -->
-    <text name="fd_depot_title"       text="GÃ¸dningsdepot"/>
-    <text name="fd_depot_buy"         text="KÃ¸b"/>
-    <text name="fd_depot_sell"        text="SÃ¦lg"/>
+    <text name="fd_depot_title"       text="Gødningsdepot"/>
+    <text name="fd_depot_buy"         text="Køb"/>
+    <text name="fd_depot_sell"        text="Sælg"/>
     <text name="fd_depot_close"       text="Luk"/>
 
     <!-- Column headers -->
@@ -21,8 +21,8 @@
     <text name="fd_col_price" text="Pris pr. 1.000 L"/>
 
     <!-- Buttons -->
-    <text name="fd_depot_buy_btn"     text="KÃ¸b"/>
-    <text name="fd_depot_sell_btn"    text="SÃ¦lg Alt"/>
+    <text name="fd_depot_buy_btn"     text="Køb"/>
+    <text name="fd_depot_sell_btn"    text="Sælg Alt"/>
     <text name="fd_depot_deposit_btn" text="Indbetaling"/>
 
     <!-- Stock labels -->
@@ -30,20 +30,20 @@
     <text name="fd_depot_stock_stocking" text="Opfyldning"/>
 
     <!-- Seasons -->
-    <text name="fd_season_spring" text="ForÃ¥r"/>
+    <text name="fd_season_spring" text="Forår"/>
     <text name="fd_season_summer" text="Sommer"/>
-    <text name="fd_season_fall"   text="EfterÃ¥r"/>
+    <text name="fd_season_fall"   text="Efterår"/>
     <text name="fd_season_winter" text="Vinter"/>
 
     <!-- Status / errors -->
     <text name="fd_depot_no_money"      text="Du har ikke nok penge"/>
-    <text name="fd_depot_no_trailer"    text="Ingen kompatibel vogn i nÃ¦rheden."/>
+    <text name="fd_depot_no_trailer"    text="Ingen kompatibel vogn i nærheden."/>
     <text name="fd_depot_tank_full"     text="Vognen er fuld"/>
     <text name="fd_depot_tank_empty"    text="Vognen er tom"/>
     <text name="fd_depot_storage_full"  text="Lageret er fuldt"/>
     <text name="fd_depot_request_sent" text="Anmodning sendt til serveren."/>
-    <text name="fd_depot_buy_success"   text="KÃ¸b gennemfÃ¸rt"/>
-    <text name="fd_depot_sell_success"  text="Salg gennemfÃ¸rt."/>
+    <text name="fd_depot_buy_success"   text="Køb gennemført"/>
+    <text name="fd_depot_sell_success"  text="Salg gennemført."/>
 
     <!-- Errors -->
     <text name="fd_error_server" text="Serverfejl."/>
@@ -53,37 +53,37 @@
     <!-- Filling Silo (second building) -->
             
     <!-- Settings dialog (Shift+D) -->
-    <text name="fd_settings_title"      text="Indstillinger for gÃ¸dningsdepot"/>
-    <text name="fd_settings_seasonal"   text="SÃ¦sonbestemte priser"/>
+    <text name="fd_settings_title"      text="Indstillinger for gødningsdepot"/>
+    <text name="fd_settings_seasonal"   text="Sæsonbestemte priser"/>
     <text name="fd_settings_capacity"   text="Lagerkapacitet pr. type"/>
-    <text name="fd_settings_sell_ratio" text="TilbagekÃ¸bssats"/>
-    <text name="fd_settings_buy_mult"   text="Multiplikator for kÃ¸bspris"/>
+    <text name="fd_settings_sell_ratio" text="Tilbagekøbssats"/>
+    <text name="fd_settings_buy_mult"   text="Multiplikator for købspris"/>
     <text name="fd_settings_reset"      text="Nulstil standardindstillinger"/>
     <text name="fd_settings_apply"      text="Anvend"/>
     <text name="fd_settings_debug"      text="Fejlretningslog"/>
     <text name="fd_settings_admin_only" text="Kun visning, admin kræves for at ændre indstillinger"/>
-    <text name="fd_settings_on"         text="TÃ†ND"/>
+    <text name="fd_settings_on"         text="TÆND"/>
     <text name="fd_settings_off"        text="SLUK"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Ã…bn depotindstillinger"/>
+    <text name="input_FD_OPEN_SETTINGS" text="Åbn depotindstillinger"/>
 
-    <text name="fd_depot_select_btn"    text="VÃ¦lg"/>
-    <text name="fd_depot_select_first"  text="VÃ¦lg fÃ¸rst en type."/>
+    <text name="fd_depot_select_btn"    text="Vælg"/>
+    <text name="fd_depot_select_first"  text="Vælg først en type."/>
     <text name="fd_depot_order_set"     text="Ordre oprettet: %s %.0fL, gå til siloen for at hente."/>
-                <text name="fd_depot_sell_confirm"  text="SÃ¦lg %.0fL %s til depotet for %s?"/>
-    <text name="fd_depot_filling"       text="Fylder %.0fL %s i dit kÃ¸retÃ¸j..."/>
-    <text name="input_FD_INTERACT"      text="Interager med gÃ¸dningsdepot"/>
+                <text name="fd_depot_sell_confirm"  text="Sælg %.0fL %s til depotet for %s?"/>
+    <text name="fd_depot_filling"       text="Fylder %.0fL %s i dit køretøj..."/>
+    <text name="input_FD_INTERACT"      text="Interager med gødningsdepot"/>
     <text name="input_FD_HUD_DRAG"      text="Sl Delivery HUD redigeringstilstand"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab"        text="Produkter"/>
-    <text name="fd_products_order_bag"  text="Bestil sÃ¦k"/>
+    <text name="fd_products_order_bag"  text="Bestil sæk"/>
     <text name="fd_products_order_tank" text="Bestil tank"/>
-    <text name="fd_products_label_bag"  text="SÃ¦k(ke)"/>
+    <text name="fd_products_label_bag"  text="Sæk(ke)"/>
     <text name="fd_products_label_tank" text="Tank(e)"/>
-    <text name="fd_products_none"       text="Ingen fysiske produkter tilgÃ¦ngelige."/>
-    <text name="fd_products_no_stock"   text="UtilstrÃ¦kkelig lagerbeholdning i depotet til denne ordre."/>
+    <text name="fd_products_none"       text="Ingen fysiske produkter tilgængelige."/>
+    <text name="fd_products_no_stock"   text="Utilstrækkelig lagerbeholdning i depotet til denne ordre."/>
     <text name="fd_products_no_object"  text="Intet fysisk objekt registreret for denne type."/>
     <text name="fd_products_ordered"    text="%d× %s %s bestilt, leveres til depotet."/>
     <text name="fd_depot_selected"      text="Valgt"/>
-                <text name="fd_col_amount"          text="MÃ¦ngde"/>
+                <text name="fd_col_amount"          text="Mængde"/>
                 <text name="fd_col_revenue" text="Revenue"/>
     
     <!-- Delivery system â€” Interaction prompts -->
