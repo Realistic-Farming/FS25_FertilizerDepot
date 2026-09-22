@@ -176,6 +176,13 @@ local function resultStatus(sent, ok, reason, successKey, successFallback, figur
         return tr("fd_depot_request_sent", "Request sent to the server.")
     end
     if ok == true then
+        -- A caller that renders its own success line passes no key, and cannot
+        -- reach here: onProductConfirm consumes exactly this conjunction above.
+        -- The guard exists because tr() would concatenate a nil key and crash,
+        -- so it is the other half of that change rather than a check on its own.
+        if successKey == nil then
+            return tr("fd_error_server", "Server error.")
+        end
         local text = tr(successKey, successFallback)
         if figure ~= nil and figure ~= "" then text = text .. " " .. figure end
         return text
@@ -596,11 +603,16 @@ function DepotDialog:onProductConfirm()
             and tr("fd_products_label_bag", "Bag(s)")
             or  tr("fd_products_label_tank", "Tank(s)")
         self:showStatus(string.format(
-            tr("fd_products_ordered", "%d× %s %s ordered — delivering to depot."),
+            tr("fd_products_ordered", "%d× %s %s ordered, delivering to depot."),
             self.productQuantity, ft.displayName or ft.name, label))
         return
     end
-    self:showStatus(resultStatus(sent, ok, reason, "fd_products_ordered", "Ordered.", nil))
+    -- Success on a host returned above, at the formatted line. Reaching here means
+    -- not-sent, request-sent, or the owner's refusal, so there is no success line
+    -- to pass. The key and fallback that used to sit here were dead arguments, and
+    -- a reader who saw "Ordered." here would reasonably take it for the order
+    -- success string, which is the formatted one above instead.
+    self:showStatus(resultStatus(sent, ok, reason, nil, nil, nil))
 end
 
 function DepotDialog:executeSell(rowSlot)
