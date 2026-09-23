@@ -301,7 +301,17 @@ local function fakeDialog()
     }, { __index = DepotDialog })
 end
 local function has(s, sub) return type(s) == "string" and s:find(sub, 1, true) ~= nil end
-g_i18n = { getText = function(_self, key) return key end, hasText = function() return false end }
+-- A declared test locale, not the old fiction: every key EXISTS and translates to its
+-- own name, so hasText answers true (the repaired tr() asks it first) and the rows below
+-- keep pinning WHICH key each status reaches for. The old fixture answered hasText false
+-- from a getText that returned the key, an object the engine cannot produce: I18N.lua:186
+-- returns the Missing sentence exactly when :194 answers false. Under the repaired gate
+-- every row here would have read as the English fallback, red for a reason unrelated to
+-- its subject (MAINTENANCE row 63 measured nine of them).
+g_i18n = {
+    hasText = function(_self, key) return key ~= nil end,
+    getText = function(_self, key) return key end,
+}
 
 do
     g_localPlayer = { farmId = 3 }
@@ -345,9 +355,13 @@ do
             -- hasText must agree with getText or this declares an i18n the engine
             -- cannot produce: I18N.lua:194 answers false only when texts[name] is
             -- nil, and :186 then makes getText return the Missing sentence rather
-            -- than a translation. Inert while DepotDialog's tr() never asks, but
-            -- this becomes the reference the moment it does.
-            hasText = function(_self, key) return key == "fd_products_ordered" end,
+            -- than a translation. Every key exists here, because getText answers
+            -- every key: the label key too, so the repaired tr() (which asks
+            -- hasText first) renders "fd_products_label_bag" and the row below
+            -- keeps pinning which key the label reaches for. This is the ninth
+            -- assertion MAINTENANCE row 63 measured: under the old fixture only the
+            -- template key existed, and the gate took "Bag(s)" for the label.
+            hasText = function(_self, key) return key ~= nil end,
         }
         answer.order = { true, "fd_products_ordered" }
         lastStatus = nil; fakeDialog():onProductConfirm()

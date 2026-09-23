@@ -8,29 +8,28 @@
 FdRfPdaGuest = FdRfPdaGuest or {}
 
 local MOD_DIR = (FertilizerDepotModDirectory or g_currentModDirectory)
-local MOD_NAME = (FertilizerDepotModName or g_currentModName)
 local PANEL_ID = "fertilizerDepot"
 local PANEL_ORDER = 90
 local MAX_ROWS = 8
 local _registered = false
 
+--- Localised text the SoilFertilizer #973 way: hasText is the gate (the engine's own
+--- answer to "does this key exist", I18N.lua:194), the return is opaque past it. Never a
+--- comparison against the "$l10n_" attribute prefix, which getText cannot return, nor
+--- against the "Missing '<key>' in l10n<suffix>.xml" sentence (I18N.lua:186), which is a
+--- bet on how the engine renders a failure. Inside a mod's environment g_i18n IS the
+--- mod's own i18n (mods.lua:453, chained to the global), so no environment lookup is
+--- needed: g_modEnvironments appears in no file of the decompiled engine.
 local function tr(key, fallback)
-    local modEnv = g_modEnvironments and g_modEnvironments[MOD_NAME]
-    local i18n = (modEnv and modEnv.i18n) or g_i18n
-    if i18n then
-        local ok, text = pcall(function() return i18n:getText(key) end)
-        if ok and type(text) == "string" and text ~= "" then
-            local lower = text:lower()
-            if lower ~= tostring(key):lower()
-                and text ~= ("$l10n_" .. key)
-                and not lower:find("^missing%s")
-                and not lower:find("^missing_")
-            then
-                return text
-            end
-        end
+    local i18n = g_i18n
+    if i18n == nil or type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function" then
+        return fallback or key
     end
-    return fallback or key
+    local okHas, has = pcall(i18n.hasText, i18n, key)
+    if not okHas or has ~= true then return fallback or key end
+    local ok, text = pcall(i18n.getText, i18n, key)
+    if not ok or type(text) ~= "string" or text == "" then return fallback or key end
+    return text
 end
 
 local function getHost()
