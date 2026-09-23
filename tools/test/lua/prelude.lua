@@ -7,19 +7,40 @@
 unpack = unpack or table.unpack
 
 -- ── FS25 engine globals (stubs) ────────────────────────────
--- Class(base): FS25's OO helper. Returns a metatable whose __index chains to base,
--- enough for `setmetatable({}, Class(Foo))` and method dispatch in tests.
-function Class(base)
-    local mt = {}
-    mt.__index = base or mt
+-- Class(members, baseClass): the engine's OO helper, modelled on shared/class.lua:1-40.
+-- Returns the instance metatable (__index = members), chains members to baseClass, and
+-- gives members the class(), superClass() and isa() accessors the dialogs call
+-- (DepotDialog:superClass().onGuiSetupFinished(self) and its siblings). The one-argument
+-- form `setmetatable({}, Class(Foo))` keeps working as before.
+function Class(members, baseClass)
+    members = members or {}
+    local mt = { __index = members }
+    if baseClass ~= nil then
+        setmetatable(members, { __index = baseClass })
+    end
+    function members:class() return members end
+    function members:superClass() return baseClass end
+    function members.isa(_, other)
+        local cur = members
+        while cur ~= nil do
+            if cur == other then return true end
+            cur = cur:superClass()
+        end
+        return false
+    end
     return mt
 end
 
 function getWorldTranslation(_node) return 0, 0, 0 end
 
--- MessageDialog: DepotDialog / DepotSettingsDialog derive from it at load time.
+-- MessageDialog: DepotDialog / DepotSettingsDialog derive from it at load time. The
+-- lifecycle methods are no-ops so a dialog's own onGuiSetupFinished and friends can run.
 MessageDialog = MessageDialog or {
     new = function(_target, mt) return setmetatable({}, mt) end,
+    onCreate = function() end,
+    onGuiSetupFinished = function() end,
+    onOpen = function() end,
+    onClose = function() end,
 }
 
 g_currentMission = {
@@ -30,9 +51,35 @@ g_currentMission = {
 g_server = nil
 g_client = nil
 g_localPlayer = { farmId = 1 }
--- Empty text makes the modules' local tr() fall through to its English fallback,
--- so tests can assert on readable status strings.
-g_i18n = { getText = function(_self, _key) return "" end }
+-- The engine's own language suffix global: main.lua:33 sets it to "_en" and main.lua:1187
+-- reassigns it per client language. getText's missing sentence interpolates it (I18N.lua:186),
+-- so a harness that hardcodes the suffix renders a sentence no client ever produces.
+g_languageSuffix = "_en"
+
+-- i18n, modelled on the engine rather than on a convenient shim (MAINTENANCE row 63, the
+-- analogue of SoilFertilizer's #972). I18N.lua:175 getText returns texts[name] and, when the
+-- key is absent, the sentence "Missing '<key>' in l10n<suffix>.xml" with g_languageSuffix
+-- interpolated at :186: never nil, never "" and never the "$l10n_" XML attribute prefix.
+-- I18N.lua:194 hasText answers whether the key exists at all, false for a nil name, a real
+-- boolean otherwise. The harness loads no locale file, so by default NO key exists: a gate
+-- written the engine's way takes its English fallback here, which is the honest result. A
+-- test that needs a translated string registers it with g_i18n:setText(key, text).
+-- The block keeps SoilFertilizer's indentation so mutate_prelude_i18n.py applies unchanged.
+g_i18n = {
+  texts = {},
+  setText = function(self, key, value) self.texts[key] = value end,
+  hasText = function(self, key)
+    if key == nil then return false end
+    return self.texts[key] ~= nil
+  end,
+  getText = function(self, key)
+    local ret = self.texts[key]
+    if ret == nil then
+      return string.format("Missing '%s' in l10n%s.xml", tostring(key), tostring(g_languageSuffix))
+    end
+    return ret
+  end,
+}
 g_messageCenter = { subscribe = function() end, unsubscribe = function() end, publish = function() end }
 Logging = { info = function() end, warning = function() end, error = function() end }
 
