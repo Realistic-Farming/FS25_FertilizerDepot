@@ -1,8 +1,9 @@
 # FertilizerDepot l10n gate battery (MAINTENANCE row 63): the repaired tr() helpers in
 # src/ui/DepotDialog.lua and src/ui/DepotSettingsDialog.lua, the two sites
-# l10n_gate_sites_test.lua drives through production's own methods. The other two
-# helpers (DepotManager, FdRfPdaGuest) carry the same text and are not driven (the
-# bar's header says why), so they are not mutated: a kill there would be a copy's kill.
+# l10n_gate_sites_test.lua drives through production's own methods, and the other two
+# helpers (DepotManager, FdRfPdaGuest), which no bar drives: l10n_gate_identity_test.lua
+# holds all four to one text, so a divergence in an undriven copy is killed there
+# (mutations M1 to M3, Bob's finding on #77).
 #
 # KILLED* means killed only by a Lua error: a weak kill, treated as a failure.
 #
@@ -18,6 +19,8 @@ def p(rel): return os.path.join(ROOT, rel)
 
 DIALOG = "src/ui/DepotDialog.lua"
 SETTINGS = "src/ui/DepotSettingsDialog.lua"
+MANAGER = "src/DepotManager.lua"
+GUEST = "src/gui/FdRfPdaGuest.lua"
 
 GATE_BODY = '''    local i18n = g_i18n
     if i18n == nil or type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function" then
@@ -78,6 +81,17 @@ MUTATIONS = [
   [('    if i18n == nil or type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function" then',
     '    if i18n ~= nil and (type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function") then', 1)],
   "a nil i18n reaches the pcall and errors instead of falling back"),
+
+ # ── the undriven copies, held by the text-identity row ──────────────────────
+ ("M1-guest-helper-diverges", GUEST,
+  [("    local okHas, has = pcall(i18n.hasText, i18n, key)\n    if not okHas or has ~= true then return fallback or key end\n", "", 1)],
+  "FdRfPdaGuest's copy loses its hasText question while the driven copies keep theirs"),
+ ("M2-manager-helper-diverges", MANAGER,
+  [("    if not okHas or has ~= true then return fallback or key end", "    if not okHas or not has then return fallback or key end", 1)],
+  "DepotManager's copy accepts a truthy hasText while the driven copies do not"),
+ ("M3-guest-helper-old-shape", GUEST,
+  [(GATE_BODY, SHIPPED_SETTINGS, 1)],
+  "FdRfPdaGuest's copy is the exposed shipped shape again"),
 ]
 
 
