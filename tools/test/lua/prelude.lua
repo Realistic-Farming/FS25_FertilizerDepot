@@ -8,13 +8,20 @@ unpack = unpack or table.unpack
 
 -- ── FS25 engine globals (stubs) ────────────────────────────
 -- Class(members, baseClass): the engine's OO helper, modelled on shared/class.lua:1-40.
--- Returns the instance metatable (__index = members), chains members to baseClass, and
--- gives members the class(), superClass() and isa() accessors the dialogs call
--- (DepotDialog:superClass().onGuiSetupFinished(self) and its siblings). The one-argument
+-- Returns the instance metatable (__index = members, and __metatable = members as
+-- class.lua:14 sets it, so getmetatable(instance) is the class and the metatable cannot
+-- be replaced), chains members to baseClass (:17-21), and gives members the class(),
+-- superClass() and isa() accessors the dialogs call (:22-40;
+-- DepotDialog:superClass().onGuiSetupFinished(self) and its siblings). The one-argument
 -- form `setmetatable({}, Class(Foo))` keeps working as before.
+-- ONE GAP, stated: the engine's isa() walks cur:superClass() until nil, because every
+-- engine class is a Class() and answers. A harness base written by hand (a plain table
+-- with no superClass) would make that walk error, so the walk here stops at such a base
+-- instead. The MessageDialog stub below answers superClass() with nil so the walk ends
+-- the engine's way.
 function Class(members, baseClass)
     members = members or {}
-    local mt = { __index = members }
+    local mt = { __metatable = members, __index = members }
     if baseClass ~= nil then
         setmetatable(members, { __index = baseClass })
     end
@@ -24,6 +31,7 @@ function Class(members, baseClass)
         local cur = members
         while cur ~= nil do
             if cur == other then return true end
+            if type(cur.superClass) ~= "function" then return false end
             cur = cur:superClass()
         end
         return false
@@ -37,6 +45,7 @@ function getWorldTranslation(_node) return 0, 0, 0 end
 -- lifecycle methods are no-ops so a dialog's own onGuiSetupFinished and friends can run.
 MessageDialog = MessageDialog or {
     new = function(_target, mt) return setmetatable({}, mt) end,
+    superClass = function() return nil end,
     onCreate = function() end,
     onGuiSetupFinished = function() end,
     onOpen = function() end,

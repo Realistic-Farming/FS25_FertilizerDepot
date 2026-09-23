@@ -35,6 +35,22 @@ function parseDeps(src) {
   return m[1].split(",").map((s) => s.trim()).filter(Boolean);
 }
 
+// --!text: path, path  makes each file's SOURCE available to the test as
+// _SOURCE_TEXT["path"], without executing it. For a bar about the text of a file
+// (the four tr() helpers must be one text) in a Lua that has no io library.
+function parseTexts(src) {
+  const m = src.match(/--!text:\s*(.+)/);
+  if (!m) return [];
+  return m[1].split(",").map((s) => s.trim()).filter(Boolean);
+}
+
+// A long-bracket level the content does not contain, so any file embeds verbatim.
+function luaLongString(content) {
+  let eq = "";
+  while (content.includes("]" + eq + "]")) eq += "=";
+  return "[" + eq + "[\n" + content + "]" + eq + "]";
+}
+
 // Run one Lua program string, return { rc, out, errMsg } with stdout captured.
 function runLua(program) {
   let out = "";
@@ -66,8 +82,18 @@ let totalPass = 0, totalFail = 0, hadError = false;
 for (const tf of testFiles) {
   const testSrc = readFileSync(join(LUA_DIR, tf), "utf8");
   const deps = parseDeps(testSrc);
+  const texts = parseTexts(testSrc);
 
   const parts = [prelude];
+  for (const d of texts) {
+    try {
+      parts.push(`_SOURCE_TEXT = _SOURCE_TEXT or {}\n_SOURCE_TEXT[${JSON.stringify(d)}] = ` +
+        luaLongString(readFileSync(join(REPO_ROOT, d), "utf8")));
+    } catch {
+      console.log(c.red(`x ${tf}: cannot read declared text '${d}'`));
+      hadError = true;
+    }
+  }
   for (const d of deps) {
     try {
       parts.push(`-- <<< ${d} >>>\n` + readFileSync(join(REPO_ROOT, d), "utf8"));
