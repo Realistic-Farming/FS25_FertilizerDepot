@@ -45,9 +45,13 @@ function parseTexts(src) {
 }
 
 // A long-bracket level the content does not contain, so any file embeds verbatim.
+// MAINTENANCE row 87: the level is chosen from the content WITH the closer's "]" appended,
+// so a file whose last characters meet the closing bracket (ending in "]" at level 0, or
+// "]=" at level 1) cannot close the string early. The bar is
+// MAINT-87-long_string_boundary_test.lua.
 function luaLongString(content) {
   let eq = "";
-  while (content.includes("]" + eq + "]")) eq += "=";
+  while ((content + "]").includes("]" + eq + "]")) eq += "=";
   return "[" + eq + "[\n" + content + "]" + eq + "]";
 }
 
