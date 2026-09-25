@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Nawóz UAN 32 (N)"/>
+    <text name="sf_uan28_title" text="Nawóz UAN 28 (N)"/>
+    <text name="sf_anhydrous_title" text="Amoniak bezwodny (N)"/>
+    <text name="sf_starter_title" text="Nawóz startowy 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Mocznik 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Saletra amonowa 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Siarczan amonu 21-0-0 (N)"/>
+    <text name="sf_map_title" text="Nawóz MAP 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="Nawóz DAP 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Sól potasowa 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Mocznik w płynie (N)"/>
+    <text name="sf_liquid_ams_title" text="Siarczan amonu w płynie (N)"/>
+    <text name="sf_liquid_map_title" text="MAP w płynie (P)"/>
+    <text name="sf_liquid_dap_title" text="DAP w płynie (P)"/>
+    <text name="sf_liquid_potash_title" text="Potas w płynie (K)"/>
+    <text name="sf_insecticide_title" text="Insektycyd"/>
+    <text name="sf_fungicide_title" text="Fungicyd"/>
+    <text name="sf_gypsum_title" text="Gips (pH-)"/>
+    <text name="sf_compost_title" text="Kompost (Organiczny)"/>
+    <text name="sf_biosolids_title" text="Osady (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Kurzak (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Obornik granulowany (NPK)"/>
+    <text name="sf_liquidlime_title" text="Wapno w płynie (pH+)"/>
+    <text name="fillType_ammonia" text="Amoniak"/>
+    <text name="fillType_phosphoricAcid" text="Kwas fosforowy"/>
+    <text name="fillType_potassiumChloride" text="Chlorek potasu"/>
+    <text name="fillType_urea" text="Mocznik"/>
+    <text name="fillType_sulfur" text="Siarka"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Skład nawozów - Wejście chemikaliów"/>
+    <text name="stationName_fertilizerManureChemIn" text="Skład nawozów - Magazyn nawozów"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Skład nawozów - Wyjście produkcji i magazynu"/>
+    <text name="stationName_fertilizerChemBuying" text="Skład nawozów - Zakup nawozów"/>
+    <text name="action_turnOnInformation" text="Pokaż tablice informacyjne punktów załadunku"/>
+    <text name="action_turnOffInformation" text="Ukryj tablice informacyjne punktów załadunku"/>
+    <text name="action_turnOnBillboard" text="Pokaż tablice informacyjne produkcji"/>
+    <text name="action_turnOffBillboard" text="Ukryj tablice informacyjne produkcji"/>
+    <text name="fd_depot_send_failed" text="Nie udało się wysłać żądania do serwera."/>
                                                                                                             </texts>
 </l10n>

@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Удобрение КАС 32 (Азот)"/>
+    <text name="sf_uan28_title" text="Удобрение КАС 28 (Азот)"/>
+    <text name="sf_anhydrous_title" text="Безводный аммиак (Азот)"/>
+    <text name="sf_starter_title" text="Стартовое удобрение 10-34-0 (Фосфор)"/>
+    <text name="sf_urea_title" text="Карбамид 46-0-0 (Азот)"/>
+    <text name="sf_an_title" text="Аммиачная селитра 34,5-0-0 (Азот)"/>
+    <text name="sf_ams_title" text="Сульфат аммония 21-0-0 (Азот)"/>
+    <text name="sf_map_title" text="Удобрение Аммофос (MAP) 11-52-0 (Фосфор)"/>
+    <text name="sf_dap_title" text="Удобрение Диаммофос (DAP) 18-46-0 (Фосфор)"/>
+    <text name="sf_potash_title" text="Калий хлористый 0-0-60 (Калий)"/>
+    <text name="sf_polifoska_title" text="Полифоска 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Жидкий карбамид (Азот)"/>
+    <text name="sf_liquid_ams_title" text="Жидкий сульфат аммония (Азот)"/>
+    <text name="sf_liquid_map_title" text="Жидкий Аммофос (Фосфор)"/>
+    <text name="sf_liquid_dap_title" text="Жидкий Диаммофос (Фосфор)"/>
+    <text name="sf_liquid_potash_title" text="Жидкий калий (Калий)"/>
+    <text name="sf_insecticide_title" text="Инсектицид"/>
+    <text name="sf_fungicide_title" text="Фунгицид"/>
+    <text name="sf_gypsum_title" text="Гипс (понижение pH)"/>
+    <text name="sf_compost_title" text="Компост (органика)"/>
+    <text name="sf_biosolids_title" text="Биоотходы (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Куриный помет (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Гранулированный навоз (NPK)"/>
+    <text name="sf_liquidlime_title" text="Жидкая известь (pH+)"/>
+    <text name="fillType_ammonia" text="Аммиак"/>
+    <text name="fillType_phosphoricAcid" text="Фосфорная кислота"/>
+    <text name="fillType_potassiumChloride" text="Хлорид калия"/>
+    <text name="fillType_urea" text="Мочевина"/>
+    <text name="fillType_sulfur" text="Сера"/>
+    <text name="fillType_compost" text="Компост"/>
+    <text name="stationName_fertilizerChemIn" text="Склад удобрений - Приём химикатов"/>
+    <text name="stationName_fertilizerManureChemIn" text="Склад удобрений - Хранение удобрений"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Склад удобрений - Выход производства и склада"/>
+    <text name="stationName_fertilizerChemBuying" text="Склад удобрений - Покупка удобрений"/>
+    <text name="action_turnOnInformation" text="Показать информационные табло пунктов погрузки"/>
+    <text name="action_turnOffInformation" text="Скрыть информационные табло пунктов погрузки"/>
+    <text name="action_turnOnBillboard" text="Показать информационные табло производства"/>
+    <text name="action_turnOffBillboard" text="Скрыть информационные табло производства"/>
+    <text name="fd_depot_send_failed" text="Не удалось отправить запрос на сервер."/>
                                                                                                             </texts>
 </l10n>

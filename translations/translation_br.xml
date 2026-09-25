@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Fertilizante nitrogenado (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Fertilizante nitrogenado (N)"/>
+    <text name="sf_anhydrous_title" text="Amônia anidra (N)"/>
+    <text name="sf_starter_title" text="Fertilizante inicial 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Ureia 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Nitrato de Amônio 34,5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Sulfato de amônio 21-0-0 (N)"/>
+    <text name="sf_map_title" text="Fertilizante MAP 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="Fertilizante DAP 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Potassa 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Ureia Líquida (N)"/>
+    <text name="sf_liquid_ams_title" text="Sulfato de Amônio Líquido (N)"/>
+    <text name="sf_liquid_map_title" text="MAP Líquido (P)"/>
+    <text name="sf_liquid_dap_title" text="DAP Líquido (P)"/>
+    <text name="sf_liquid_potash_title" text="Potassa Líquida (K)"/>
+    <text name="sf_insecticide_title" text="Inseticida"/>
+    <text name="sf_fungicide_title" text="Fungicida"/>
+    <text name="sf_gypsum_title" text="Gesso (pH-)"/>
+    <text name="sf_compost_title" text="Composto (Orgânico)"/>
+    <text name="sf_biosolids_title" text="Biosólidos (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Cama de frango (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Esterco peletizado (NPK)"/>
+    <text name="sf_liquidlime_title" text="Calcário Líquido (pH+)"/>
+    <text name="fillType_ammonia" text="Amônia"/>
+    <text name="fillType_phosphoricAcid" text="Ácido fosfórico"/>
+    <text name="fillType_potassiumChloride" text="Cloreto de potássio"/>
+    <text name="fillType_urea" text="Ureia"/>
+    <text name="fillType_sulfur" text="Enxofre"/>
+    <text name="fillType_compost" text="Composto"/>
+    <text name="stationName_fertilizerChemIn" text="Depósito de fertilizantes - Entrada de químicos"/>
+    <text name="stationName_fertilizerManureChemIn" text="Depósito de fertilizantes - Armazém de fertilizantes"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Depósito de fertilizantes - Saída de produção e armazenamento"/>
+    <text name="stationName_fertilizerChemBuying" text="Depósito de fertilizantes - Compra de fertilizantes"/>
+    <text name="action_turnOnInformation" text="Mostrar painéis de informação dos pontos de carregamento"/>
+    <text name="action_turnOffInformation" text="Ocultar painéis de informação dos pontos de carregamento"/>
+    <text name="action_turnOnBillboard" text="Mostrar painéis de informação da produção"/>
+    <text name="action_turnOffBillboard" text="Ocultar painéis de informação da produção"/>
+    <text name="fd_depot_send_failed" text="Não foi possível enviar a solicitação ao servidor."/>
                                                                                                             </texts>
 </l10n>

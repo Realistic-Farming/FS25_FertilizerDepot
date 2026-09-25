@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Nitrogén műtrágya (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Nitrogén műtrágya (N)"/>
+    <text name="sf_anhydrous_title" text="Vízmentes ammónia (N)"/>
+    <text name="sf_starter_title" text="Starter műtrágya 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Karbamid 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammónium-nitrát 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammónium-szulfát 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP műtrágya 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP műtrágya 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Hamuzsír 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Folyékony karbamid (N)"/>
+    <text name="sf_liquid_ams_title" text="Folyékony ammónium-szulfát (N)"/>
+    <text name="sf_liquid_map_title" text="Folyékony MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Folyékony DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Folyékony hamuzsír (K)"/>
+    <text name="sf_insecticide_title" text="Rovarölő szer"/>
+    <text name="sf_fungicide_title" text="Gombaölő szer"/>
+    <text name="sf_gypsum_title" text="Gipsz (pH-)"/>
+    <text name="sf_compost_title" text="Komposzt (szerves)"/>
+    <text name="sf_biosolids_title" text="Bioszilárd (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Csirketrágya (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pelletált trágya (NPK)"/>
+    <text name="sf_liquidlime_title" text="Folyékony mész (pH+)"/>
+    <text name="fillType_ammonia" text="Ammónia"/>
+    <text name="fillType_phosphoricAcid" text="Foszforsav"/>
+    <text name="fillType_potassiumChloride" text="Kálium-klorid"/>
+    <text name="fillType_urea" text="Karbamid"/>
+    <text name="fillType_sulfur" text="Kén"/>
+    <text name="fillType_compost" text="Komposzt"/>
+    <text name="stationName_fertilizerChemIn" text="Műtrágyaraktár - Vegyianyag-bemenet"/>
+    <text name="stationName_fertilizerManureChemIn" text="Műtrágyaraktár - Műtrágyatárolás"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Műtrágyaraktár - Gyártási és tárolási kimenet"/>
+    <text name="stationName_fertilizerChemBuying" text="Műtrágyaraktár - Műtrágyavásárlás"/>
+    <text name="action_turnOnInformation" text="Rakodóhelyek információs tábláinak megjelenítése"/>
+    <text name="action_turnOffInformation" text="Rakodóhelyek információs tábláinak elrejtése"/>
+    <text name="action_turnOnBillboard" text="Termelési információs táblák megjelenítése"/>
+    <text name="action_turnOffBillboard" text="Termelési információs táblák elrejtése"/>
+    <text name="fd_depot_send_failed" text="A kérést nem sikerült elküldeni a szervernek."/>
                                                                                                             </texts>
 </l10n>

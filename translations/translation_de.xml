@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="AHL-32"/>
+    <text name="sf_uan28_title" text="AHL-28"/>
+    <text name="sf_anhydrous_title" text="Wasserfreies Ammoniak"/>
+    <text name="sf_starter_title" text="Starterdünger"/>
+    <text name="sf_urea_title" text="Harnstoff"/>
+    <text name="sf_an_title" text="KAS"/>
+    <text name="sf_ams_title" text="Ammoniumsulfat"/>
+    <text name="sf_map_title" text="MAP"/>
+    <text name="sf_dap_title" text="DAP"/>
+    <text name="sf_potash_title" text="Kaliumchlorid"/>
+    <text name="sf_polifoska_title" text="NPK-Mehrnährstoffdünger"/>
+    <text name="sf_liquid_urea_title" text="Harnstoff"/>
+    <text name="sf_liquid_ams_title" text="Ammoniumsulfat"/>
+    <text name="sf_liquid_map_title" text="MAP"/>
+    <text name="sf_liquid_dap_title" text="DAP"/>
+    <text name="sf_liquid_potash_title" text="Kaliumchlorid"/>
+    <text name="sf_insecticide_title" text="Insektizid"/>
+    <text name="sf_fungicide_title" text="Fungizid"/>
+    <text name="sf_gypsum_title" text="Gips"/>
+    <text name="sf_compost_title" text="Kompost"/>
+    <text name="sf_biosolids_title" text="Klärschlammpellets"/>
+    <text name="sf_chicken_manure_title" text="Hühnermist"/>
+    <text name="sf_pelletized_manure_title" text="Mistpellets"/>
+    <text name="sf_liquidlime_title" text="Kalk"/>
+    <text name="fillType_ammonia" text="Ammoniak"/>
+    <text name="fillType_phosphoricAcid" text="Phosphorsäure"/>
+    <text name="fillType_potassiumChloride" text="Kaliumchlorid"/>
+    <text name="fillType_urea" text="Harnstoff"/>
+    <text name="fillType_sulfur" text="Schwefel"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Düngerdepot - Chemikalieneingang"/>
+    <text name="stationName_fertilizerManureChemIn" text="Düngerdepot - Düngerlager"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Düngerdepot - Produktions- und Lagerausgabe"/>
+    <text name="stationName_fertilizerChemBuying" text="Düngerdepot - Düngereinkauf"/>
+    <text name="action_turnOnInformation" text="Infotafeln der Ladestellen anzeigen"/>
+    <text name="action_turnOffInformation" text="Infotafeln der Ladestellen ausblenden"/>
+    <text name="action_turnOnBillboard" text="Produktions-Infotafeln anzeigen"/>
+    <text name="action_turnOffBillboard" text="Produktions-Infotafeln ausblenden"/>
+    <text name="fd_depot_send_failed" text="Die Anfrage konnte nicht an den Server gesendet werden."/>
                                                                                                             </texts>
 </l10n>

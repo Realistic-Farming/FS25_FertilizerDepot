@@ -93,5 +93,45 @@
     <!-- Delivery system â€” YesNo dialogs -->
                 
     <!-- Delivery system â€” ORDER tab status messages -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Gødning (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Gødning (N)"/>
+    <text name="sf_anhydrous_title" text="Vandfri ammoniak (N)"/>
+    <text name="sf_starter_title" text="Startgødning 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Urea 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammoniumnitrat 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammoniumsulfat 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP-gødning 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP-gødning 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Kaliumklorid 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Flydende urea (N)"/>
+    <text name="sf_liquid_ams_title" text="Flydende ammoniumsulfat (N)"/>
+    <text name="sf_liquid_map_title" text="Flydende MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Flydende DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Flydende kaliumklorid (K)"/>
+    <text name="sf_insecticide_title" text="Insekticid"/>
+    <text name="sf_fungicide_title" text="Fungicid"/>
+    <text name="sf_gypsum_title" text="Gips (pH-)"/>
+    <text name="sf_compost_title" text="Kompost (organisk)"/>
+    <text name="sf_biosolids_title" text="Biosolider (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Hønsemøg (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pelleteret gødning (NPK)"/>
+    <text name="sf_liquidlime_title" text="Flydende kalk (pH+)"/>
+    <text name="fillType_ammonia" text="Ammoniak"/>
+    <text name="fillType_phosphoricAcid" text="Fosforsyre"/>
+    <text name="fillType_potassiumChloride" text="Kaliumchlorid"/>
+    <text name="fillType_urea" text="Urea"/>
+    <text name="fillType_sulfur" text="Svovl"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Gødningsdepot - Kemikalieindgang"/>
+    <text name="stationName_fertilizerManureChemIn" text="Gødningsdepot - Gødningslager"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Gødningsdepot - Produktions- og lagerudgang"/>
+    <text name="stationName_fertilizerChemBuying" text="Gødningsdepot - Gødningskøb"/>
+    <text name="action_turnOnInformation" text="Vis infotavler for læssepladser"/>
+    <text name="action_turnOffInformation" text="Skjul infotavler for læssepladser"/>
+    <text name="action_turnOnBillboard" text="Vis produktionsinfotavler"/>
+    <text name="action_turnOffBillboard" text="Skjul produktionsinfotavler"/>
+    <text name="fd_depot_send_failed" text="Anmodningen kunne ikke sendes til serveren."/>
                                                                                 </texts>
 </l10n>
