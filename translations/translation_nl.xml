@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Meststof (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Meststof (N)"/>
+    <text name="sf_anhydrous_title" text="Watervrij Ammoniak (N)"/>
+    <text name="sf_starter_title" text="Startmeststof 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Ureum 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammoniumnitraat 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammoniumsulfaat 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP Meststof 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP Meststof 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Kali 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Vloeibare Ureum (N)"/>
+    <text name="sf_liquid_ams_title" text="Vloeibare Ammoniumsulfaat (N)"/>
+    <text name="sf_liquid_map_title" text="Vloeibare MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Vloeibare DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Vloeibare Kali (K)"/>
+    <text name="sf_insecticide_title" text="Insecticide"/>
+    <text name="sf_fungicide_title" text="Fungicide"/>
+    <text name="sf_gypsum_title" text="Gips (pH-)"/>
+    <text name="sf_compost_title" text="Compost (Organisch)"/>
+    <text name="sf_biosolids_title" text="Biogrondstoffen (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Kippenmest (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Gekorrelde mest (NPK)"/>
+    <text name="sf_liquidlime_title" text="Vloeibare kalk (pH+)"/>
+    <text name="fillType_ammonia" text="Ammoniak"/>
+    <text name="fillType_phosphoricAcid" text="Fosforzuur"/>
+    <text name="fillType_potassiumChloride" text="Kaliumchloride"/>
+    <text name="fillType_urea" text="Ureum"/>
+    <text name="fillType_sulfur" text="Zwavel"/>
+    <text name="fillType_compost" text="Compost"/>
+    <text name="stationName_fertilizerChemIn" text="Kunstmestdepot - Invoer chemicaliën"/>
+    <text name="stationName_fertilizerManureChemIn" text="Kunstmestdepot - Kunstmestopslag"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Kunstmestdepot - Productie- en opslaguitvoer"/>
+    <text name="stationName_fertilizerChemBuying" text="Kunstmestdepot - Kunstmest kopen"/>
+    <text name="action_turnOnInformation" text="Informatieborden van laadpunten tonen"/>
+    <text name="action_turnOffInformation" text="Informatieborden van laadpunten verbergen"/>
+    <text name="action_turnOnBillboard" text="Productie-informatieborden tonen"/>
+    <text name="action_turnOffBillboard" text="Productie-informatieborden verbergen"/>
+    <text name="fd_depot_send_failed" text="Het verzoek kon niet naar de server worden verzonden."/>
                                                                                                             </texts>
 </l10n>

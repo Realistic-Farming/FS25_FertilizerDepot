@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Hnojivo UAN 32 (N)"/>
+    <text name="sf_uan28_title" text="Hnojivo UAN 28 (N)"/>
+    <text name="sf_anhydrous_title" text="Bezvodý amoniak (N)"/>
+    <text name="sf_starter_title" text="Startovací hnojivo 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Močovina 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Dusičnan amonný 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Síran amonný 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP hnojivo 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP hnojivo 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Draselné hnojivo 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Tekutá močovina (N)"/>
+    <text name="sf_liquid_ams_title" text="Tekutý síran amonný (N)"/>
+    <text name="sf_liquid_map_title" text="Tekuté MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Tekuté DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Tekuté draselné hnojivo (K)"/>
+    <text name="sf_insecticide_title" text="Insekticid"/>
+    <text name="sf_fungicide_title" text="Fungicid"/>
+    <text name="sf_gypsum_title" text="Sádrovec (pH-)"/>
+    <text name="sf_compost_title" text="Kompost (Organické)"/>
+    <text name="sf_biosolids_title" text="Čistírenský kal (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Drůbeží trus (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Peletovaný hnůj (NPK)"/>
+    <text name="sf_liquidlime_title" text="Tekuté vápno (pH+)"/>
+    <text name="fillType_ammonia" text="Amoniak"/>
+    <text name="fillType_phosphoricAcid" text="Kyselina fosforečná"/>
+    <text name="fillType_potassiumChloride" text="Chlorid draselný"/>
+    <text name="fillType_urea" text="Močovina"/>
+    <text name="fillType_sulfur" text="Síra"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Sklad hnojiv - Vstup chemikálií"/>
+    <text name="stationName_fertilizerManureChemIn" text="Sklad hnojiv - Uskladnění hnojiv"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Sklad hnojiv - Výstup výroby a skladu"/>
+    <text name="stationName_fertilizerChemBuying" text="Sklad hnojiv - Nákup hnojiv"/>
+    <text name="action_turnOnInformation" text="Zobrazit informační tabule nakládacích míst"/>
+    <text name="action_turnOffInformation" text="Skrýt informační tabule nakládacích míst"/>
+    <text name="action_turnOnBillboard" text="Zobrazit informační tabule výroby"/>
+    <text name="action_turnOffBillboard" text="Skrýt informační tabule výroby"/>
+    <text name="fd_depot_send_failed" text="Požadavek nelze odeslat na server."/>
                                                                                                             </texts>
 </l10n>

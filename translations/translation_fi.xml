@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 -lannoite (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 -lannoite (N)"/>
+    <text name="sf_anhydrous_title" text="Vedetön ammoniakki (N)"/>
+    <text name="sf_starter_title" text="Startterilannoite 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Urea 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammoniumnitraatti 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammoniumsulfaatti 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP-lannoite 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP-lannoite 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Kaliumsuola 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Nestemäinen urea (N)"/>
+    <text name="sf_liquid_ams_title" text="Nestemäinen ammoniumsulfaatti (N)"/>
+    <text name="sf_liquid_map_title" text="Nestemäinen MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Nestemäinen DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Nestemäinen kalium (K)"/>
+    <text name="sf_insecticide_title" text="Hyönteismyrkky"/>
+    <text name="sf_fungicide_title" text="Sienimyrkky"/>
+    <text name="sf_gypsum_title" text="Kipsi (pH-)"/>
+    <text name="sf_compost_title" text="Komposti (orgaaninen)"/>
+    <text name="sf_biosolids_title" text="Biojäte (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Kanankakka (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pellettoitu lanta (NPK)"/>
+    <text name="sf_liquidlime_title" text="Nestekalkki (pH+)"/>
+    <text name="fillType_ammonia" text="Ammoniakki"/>
+    <text name="fillType_phosphoricAcid" text="Fosforihappo"/>
+    <text name="fillType_potassiumChloride" text="Kaliumkloridi"/>
+    <text name="fillType_urea" text="Urea"/>
+    <text name="fillType_sulfur" text="Rikki"/>
+    <text name="fillType_compost" text="Komposti"/>
+    <text name="stationName_fertilizerChemIn" text="Lannoitevarasto - Kemikaalien syöttö"/>
+    <text name="stationName_fertilizerManureChemIn" text="Lannoitevarasto - Lannoitteiden säilytys"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Lannoitevarasto - Tuotannon ja varaston ulosotto"/>
+    <text name="stationName_fertilizerChemBuying" text="Lannoitevarasto - Lannoitteiden osto"/>
+    <text name="action_turnOnInformation" text="Näytä lastauspaikkojen infotaulut"/>
+    <text name="action_turnOffInformation" text="Piilota lastauspaikkojen infotaulut"/>
+    <text name="action_turnOnBillboard" text="Näytä tuotannon infotaulut"/>
+    <text name="action_turnOffBillboard" text="Piilota tuotannon infotaulut"/>
+    <text name="fd_depot_send_failed" text="Pyyntöä ei voitu lähettää palvelimelle."/>
                                                                                                             </texts>
 </l10n>

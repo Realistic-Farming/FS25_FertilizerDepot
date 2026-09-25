@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Gödsel (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Gödsel (N)"/>
+    <text name="sf_anhydrous_title" text="Vattenfritt ammoniak (N)"/>
+    <text name="sf_starter_title" text="Startgödsel 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Urea 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammoniumnitrat 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammoniumsulfat 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP-gödsel 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP-gödsel 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Kaliumklorid 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Flytande urea (N)"/>
+    <text name="sf_liquid_ams_title" text="Flytande ammoniumsulfat (N)"/>
+    <text name="sf_liquid_map_title" text="Flytande MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Flytande DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Flytande kalium (K)"/>
+    <text name="sf_insecticide_title" text="Insektsmedel"/>
+    <text name="sf_fungicide_title" text="Svampmedel"/>
+    <text name="sf_gypsum_title" text="Gips (pH-)"/>
+    <text name="sf_compost_title" text="Kompost (Organisk)"/>
+    <text name="sf_biosolids_title" text="Rötslam (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Hönsgödsel (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pelleterat gödsel (NPK)"/>
+    <text name="sf_liquidlime_title" text="Flytande kalk (pH+)"/>
+    <text name="fillType_ammonia" text="Ammoniak"/>
+    <text name="fillType_phosphoricAcid" text="Fosforsyra"/>
+    <text name="fillType_potassiumChloride" text="Kaliumklorid"/>
+    <text name="fillType_urea" text="Urea"/>
+    <text name="fillType_sulfur" text="Svavel"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Gödseldepå - Kemikalieinlopp"/>
+    <text name="stationName_fertilizerManureChemIn" text="Gödseldepå - Gödsellager"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Gödseldepå - Produktions- och lagerutgång"/>
+    <text name="stationName_fertilizerChemBuying" text="Gödseldepå - Gödselköp"/>
+    <text name="action_turnOnInformation" text="Visa informationstavlor för lastplatser"/>
+    <text name="action_turnOffInformation" text="Dölj informationstavlor för lastplatser"/>
+    <text name="action_turnOnBillboard" text="Visa produktionstavlor"/>
+    <text name="action_turnOffBillboard" text="Dölj produktionstavlor"/>
+    <text name="fd_depot_send_failed" text="Begäran kunde inte skickas till servern."/>
                                                                                                             </texts>
 </l10n>

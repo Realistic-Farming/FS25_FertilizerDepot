@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Îngrășământ UAN 32 (N)"/>
+    <text name="sf_uan28_title" text="Îngrășământ UAN 28 (N)"/>
+    <text name="sf_anhydrous_title" text="Amoniac Anidru (N)"/>
+    <text name="sf_starter_title" text="Îngrășământ Starter 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Uree 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Azotat de Amoniu 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Sulfat de Amoniu 21-0-0 (N)"/>
+    <text name="sf_map_title" text="Îngrășământ MAP 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="Îngrășământ DAP 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Potasiu 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Uree Lichidă (N)"/>
+    <text name="sf_liquid_ams_title" text="Sulfat de Amoniu Lichid (N)"/>
+    <text name="sf_liquid_map_title" text="MAP Lichid (P)"/>
+    <text name="sf_liquid_dap_title" text="DAP Lichid (P)"/>
+    <text name="sf_liquid_potash_title" text="Potasiu Lichid (K)"/>
+    <text name="sf_insecticide_title" text="Insecticid"/>
+    <text name="sf_fungicide_title" text="Fungicid"/>
+    <text name="sf_gypsum_title" text="Ipsos/Ghips (pH-)"/>
+    <text name="sf_compost_title" text="Compost (organic)"/>
+    <text name="sf_biosolids_title" text="Biosolide (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Găinaț Pasăre (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Gunoi Peletizat (NPK)"/>
+    <text name="sf_liquidlime_title" text="Var Lichid (pH+)"/>
+    <text name="fillType_ammonia" text="Amoniac"/>
+    <text name="fillType_phosphoricAcid" text="Acid fosforic"/>
+    <text name="fillType_potassiumChloride" text="Clorură de potasiu"/>
+    <text name="fillType_urea" text="Uree"/>
+    <text name="fillType_sulfur" text="Sulf"/>
+    <text name="fillType_compost" text="Compost"/>
+    <text name="stationName_fertilizerChemIn" text="Depozit de îngrășăminte - Intrare chimicale"/>
+    <text name="stationName_fertilizerManureChemIn" text="Depozit de îngrășăminte - Depozitare îngrășăminte"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Depozit de îngrășăminte - Ieșire producție și depozitare"/>
+    <text name="stationName_fertilizerChemBuying" text="Depozit de îngrășăminte - Achiziție îngrășăminte"/>
+    <text name="action_turnOnInformation" text="Afișează panourile informative ale punctelor de încărcare"/>
+    <text name="action_turnOffInformation" text="Ascunde panourile informative ale punctelor de încărcare"/>
+    <text name="action_turnOnBillboard" text="Afișează panourile informative de producție"/>
+    <text name="action_turnOffBillboard" text="Ascunde panourile informative de producție"/>
+    <text name="fd_depot_send_failed" text="Cererea nu a putut fi trimisă către server."/>
                                                                                                             </texts>
 </l10n>

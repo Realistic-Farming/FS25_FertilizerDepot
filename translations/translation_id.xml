@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Pupuk UAN 32 (N)"/>
+    <text name="sf_uan28_title" text="Pupuk UAN 28 (N)"/>
+    <text name="sf_anhydrous_title" text="Amonia Anhidrat (N)"/>
+    <text name="sf_starter_title" text="Pupuk Starter 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Urea 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Amonium Nitrat 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Amonium Sulfat 21-0-0 (N)"/>
+    <text name="sf_map_title" text="Pupuk MAP 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="Pupuk DAP 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Kalium 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Urea Cair (N)"/>
+    <text name="sf_liquid_ams_title" text="Amonium Sulfat Cair (N)"/>
+    <text name="sf_liquid_map_title" text="MAP Cair (P)"/>
+    <text name="sf_liquid_dap_title" text="DAP Cair (P)"/>
+    <text name="sf_liquid_potash_title" text="Kalium Cair (K)"/>
+    <text name="sf_insecticide_title" text="Insektisida"/>
+    <text name="sf_fungicide_title" text="Fungisida"/>
+    <text name="sf_gypsum_title" text="Gips (pH-)"/>
+    <text name="sf_compost_title" text="Kompos (Organik)"/>
+    <text name="sf_biosolids_title" text="Biosolid (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Kotoran Ayam (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pupuk Kandang Pelet (NPK)"/>
+    <text name="sf_liquidlime_title" text="Kapur Cair (pH+)"/>
+    <text name="fillType_ammonia" text="Amonia"/>
+    <text name="fillType_phosphoricAcid" text="Asam fosfat"/>
+    <text name="fillType_potassiumChloride" text="Kalium klorida"/>
+    <text name="fillType_urea" text="Urea"/>
+    <text name="fillType_sulfur" text="Belerang"/>
+    <text name="fillType_compost" text="Kompos"/>
+    <text name="stationName_fertilizerChemIn" text="Depot pupuk - Masukan bahan kimia"/>
+    <text name="stationName_fertilizerManureChemIn" text="Depot pupuk - Penyimpanan pupuk"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Depot pupuk - Keluaran produksi dan penyimpanan"/>
+    <text name="stationName_fertilizerChemBuying" text="Depot pupuk - Pembelian pupuk"/>
+    <text name="action_turnOnInformation" text="Tampilkan papan info titik muat"/>
+    <text name="action_turnOffInformation" text="Sembunyikan papan info titik muat"/>
+    <text name="action_turnOnBillboard" text="Tampilkan papan info produksi"/>
+    <text name="action_turnOffBillboard" text="Sembunyikan papan info produksi"/>
+    <text name="fd_depot_send_failed" text="Permintaan tidak dapat dikirim ke server."/>
                                                                                                             </texts>
 </l10n>

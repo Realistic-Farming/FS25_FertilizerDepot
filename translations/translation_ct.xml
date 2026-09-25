@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 肥料 (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 肥料 (N)"/>
+    <text name="sf_anhydrous_title" text="無水氨 (N)"/>
+    <text name="sf_starter_title" text="啟動肥 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="尿素 46-0-0 (N)"/>
+    <text name="sf_an_title" text="硝酸銨 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="硫酸銨 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP 肥料 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP 肥料 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="氯化鉀 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="液態尿素 (N)"/>
+    <text name="sf_liquid_ams_title" text="液態硫酸銨 (N)"/>
+    <text name="sf_liquid_map_title" text="液態 MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="液態 DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="液態鉀肥 (K)"/>
+    <text name="sf_insecticide_title" text="殺蟲劑"/>
+    <text name="sf_fungicide_title" text="殺菌劑"/>
+    <text name="sf_gypsum_title" text="石膏 (pH-)"/>
+    <text name="sf_compost_title" text="堆肥 (有機)"/>
+    <text name="sf_biosolids_title" text="生物固形物 (N+P)"/>
+    <text name="sf_chicken_manure_title" text="雞糞 (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="造粒廄肥 (NPK)"/>
+    <text name="sf_liquidlime_title" text="液態石灰 (pH+)"/>
+    <text name="fillType_ammonia" text="氨"/>
+    <text name="fillType_phosphoricAcid" text="磷酸"/>
+    <text name="fillType_potassiumChloride" text="氯化鉀"/>
+    <text name="fillType_urea" text="尿素"/>
+    <text name="fillType_sulfur" text="硫磺"/>
+    <text name="fillType_compost" text="堆肥"/>
+    <text name="stationName_fertilizerChemIn" text="肥料倉庫 - 化學品輸入"/>
+    <text name="stationName_fertilizerManureChemIn" text="肥料倉庫 - 肥料儲存"/>
+    <text name="stationName_fertilizerCemStorageOut" text="肥料倉庫 - 生產與儲存輸出"/>
+    <text name="stationName_fertilizerChemBuying" text="肥料倉庫 - 肥料購買"/>
+    <text name="action_turnOnInformation" text="顯示裝載點資訊板"/>
+    <text name="action_turnOffInformation" text="隱藏裝載點資訊板"/>
+    <text name="action_turnOnBillboard" text="顯示生產資訊板"/>
+    <text name="action_turnOffBillboard" text="隱藏生產資訊板"/>
+    <text name="fd_depot_send_failed" text="無法將請求傳送至伺服器。"/>
                                                                                                             </texts>
 </l10n>

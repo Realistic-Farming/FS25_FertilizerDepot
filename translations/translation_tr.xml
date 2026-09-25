@@ -88,5 +88,45 @@
                 <text name="fd_col_revenue" text="Revenue"/>
             
     <!-- Delivery system, HUD overlay (shown while driving) -->
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Gübresi (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Gübresi (N)"/>
+    <text name="sf_anhydrous_title" text="Anhidre Amonyak (N)"/>
+    <text name="sf_starter_title" text="Başlangıç Gübresi 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Üre 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Amonyum Nitrat 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Amonyum Sülfat 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP Gübresi 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP Gübresi 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Potas 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Sıvı Üre (N)"/>
+    <text name="sf_liquid_ams_title" text="Sıvı Amonyum Sülfat (N)"/>
+    <text name="sf_liquid_map_title" text="Sıvı MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Sıvı DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Sıvı Potas (K)"/>
+    <text name="sf_insecticide_title" text="İnsektisit (Böcek İlacı)"/>
+    <text name="sf_fungicide_title" text="Fungisit (Mantar İlacı)"/>
+    <text name="sf_gypsum_title" text="Alçıtaşı (pH-)"/>
+    <text name="sf_compost_title" text="Kompost (Organik)"/>
+    <text name="sf_biosolids_title" text="Biyokatı (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Tavuk Gübresi (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Peletlenmiş Gübre (NPK)"/>
+    <text name="sf_liquidlime_title" text="Sıvı Kireç (pH+)"/>
+    <text name="fillType_ammonia" text="Amonyak"/>
+    <text name="fillType_phosphoricAcid" text="Fosforik asit"/>
+    <text name="fillType_potassiumChloride" text="Potasyum klorür"/>
+    <text name="fillType_urea" text="Üre"/>
+    <text name="fillType_sulfur" text="Kükürt"/>
+    <text name="fillType_compost" text="Kompost"/>
+    <text name="stationName_fertilizerChemIn" text="Gübre deposu - Kimyasal girişi"/>
+    <text name="stationName_fertilizerManureChemIn" text="Gübre deposu - Gübre depolama"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Gübre deposu - Üretim ve depo çıkışı"/>
+    <text name="stationName_fertilizerChemBuying" text="Gübre deposu - Gübre satın alma"/>
+    <text name="action_turnOnInformation" text="Yükleme noktası bilgi panolarını göster"/>
+    <text name="action_turnOffInformation" text="Yükleme noktası bilgi panolarını gizle"/>
+    <text name="action_turnOnBillboard" text="Üretim bilgi panolarını göster"/>
+    <text name="action_turnOffBillboard" text="Üretim bilgi panolarını gizle"/>
+    <text name="fd_depot_send_failed" text="İstek sunucuya gönderilemedi."/>
                                                                                                             </texts>
 </l10n>
