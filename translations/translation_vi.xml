@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Hiện bảng thông tin sản xuất"/>
     <text name="action_turnOffBillboard" text="Ẩn bảng thông tin sản xuất"/>
     <text name="fd_depot_send_failed" text="Không thể gửi yêu cầu đến máy chủ."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Kho phân bón"/>
+    <text name="fd_rf_pda_blurb" text="Tồn kho và giá mua/bán của kho đang chọn. Chỉ xem."/>
+    <text name="fd_rf_pda_col_fill" text="Sản phẩm"/>
+    <text name="fd_rf_pda_col_stock" text="Tồn kho"/>
+    <text name="fd_rf_pda_col_buy" text="Mua"/>
+    <text name="fd_rf_pda_col_sell" text="Bán"/>
+    <text name="fd_rf_pda_lbl_season" text="Mùa vụ"/>
+    <text name="fd_rf_pda_season_off" text="tắt"/>
+    <text name="fd_rf_pda_waiting" text="Trình quản lý kho chưa sẵn sàng"/>
+    <text name="fd_rf_pda_focus_depot" text="Đang chọn: kho %d · %d kho"/>
+    <text name="fd_rf_pda_no_depot" text="trang trại của bạn chưa có kho nào"/>
+    <text name="fd_rf_pda_no_hall" text="chưa có dữ liệu tồn kho - xưởng sản xuất của kho này không phản hồi"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="chưa có dữ liệu tồn kho - kho này đang trống, hãy đặt mua phân bón để lấp đầy"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="chưa có dữ liệu tồn kho - hãy đặt một kho trong trang trại để mua và cất trữ phân bón"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: chưa cài đặt (các tính năng chuyên sâu vẫn tắt)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / không có hàng tại đây"/>
+    <text name="fd_rf_pda_band_hall" text="%s: xưởng %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: xưởng này không chứa loại này"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s trên xe: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Mua %s   Bán %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Trang này chỉ để xem. Việc mua và bán diễn ra ngay tại kho."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Xưởng trống. Có %s L trên xe của bạn: hãy đổ vào kho để cất trữ."/>
                                                                                                             </texts>
 </l10n>

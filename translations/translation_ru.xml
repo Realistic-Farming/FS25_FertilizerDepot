@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Показать информационные табло производства"/>
     <text name="action_turnOffBillboard" text="Скрыть информационные табло производства"/>
     <text name="fd_depot_send_failed" text="Не удалось отправить запрос на сервер."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Склад удобрений"/>
+    <text name="fd_rf_pda_blurb" text="Запасы и цены покупки/продажи выбранного склада. Только просмотр."/>
+    <text name="fd_rf_pda_col_fill" text="Продукт"/>
+    <text name="fd_rf_pda_col_stock" text="Запас"/>
+    <text name="fd_rf_pda_col_buy" text="Покупка"/>
+    <text name="fd_rf_pda_col_sell" text="Продажа"/>
+    <text name="fd_rf_pda_lbl_season" text="Сезон"/>
+    <text name="fd_rf_pda_season_off" text="выкл."/>
+    <text name="fd_rf_pda_waiting" text="Управление складом не готово"/>
+    <text name="fd_rf_pda_focus_depot" text="Выбран: склад %d · складов: %d"/>
+    <text name="fd_rf_pda_no_depot" text="на вашей ферме пока нет склада"/>
+    <text name="fd_rf_pda_no_hall" text="данных о запасах пока нет - производственный цех этого склада не ответил"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="данных о запасах пока нет - этот склад пуст, закажите удобрения, чтобы заполнить его"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="данных о запасах пока нет - разместите склад на своей ферме, чтобы покупать и хранить удобрения"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: не установлен (специальные функции остаются выключенными)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / здесь не хранится"/>
+    <text name="fd_rf_pda_band_hall" text="%s: цех %s / %s л"/>
+    <text name="fd_rf_pda_band_absent" text="%s: этот цех это не хранит"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s в технике: %s л"/>
+    <text name="fd_rf_pda_band_prices" text="Покупка %s   Продажа %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Эта страница только для просмотра. Покупка и продажа происходят на самом складе."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Цех пуст. В вашей технике %s л: выгрузите их на складе, чтобы сохранить."/>
                                                                                                             </texts>
 </l10n>

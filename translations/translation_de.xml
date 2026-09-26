@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Produktions-Infotafeln anzeigen"/>
     <text name="action_turnOffBillboard" text="Produktions-Infotafeln ausblenden"/>
     <text name="fd_depot_send_failed" text="Die Anfrage konnte nicht an den Server gesendet werden."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Düngerdepot"/>
+    <text name="fd_rf_pda_blurb" text="Bestand und An-/Verkaufspreise deines ausgewählten Depots. Nur Anzeige."/>
+    <text name="fd_rf_pda_col_fill" text="Füllgut"/>
+    <text name="fd_rf_pda_col_stock" text="Bestand"/>
+    <text name="fd_rf_pda_col_buy" text="Kauf"/>
+    <text name="fd_rf_pda_col_sell" text="Verkauf"/>
+    <text name="fd_rf_pda_lbl_season" text="Saison"/>
+    <text name="fd_rf_pda_season_off" text="aus"/>
+    <text name="fd_rf_pda_waiting" text="Depotverwaltung nicht bereit"/>
+    <text name="fd_rf_pda_focus_depot" text="Auswahl: Depot %d · %d Depot(s)"/>
+    <text name="fd_rf_pda_no_depot" text="noch kein Depot auf deinem Hof"/>
+    <text name="fd_rf_pda_no_hall" text="noch keine Bestandsdaten - die Produktionshalle dieses Depots hat nicht geantwortet"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="noch keine Bestandsdaten - dieses Depot ist leer, bestelle Dünger, um es zu füllen"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="noch keine Bestandsdaten - platziere ein Depot auf deinem Hof, um Dünger zu kaufen und zu lagern"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: nicht installiert (Spezialfunktionen bleiben aus)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / hier nicht geführt"/>
+    <text name="fd_rf_pda_band_hall" text="%s: Halle %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: diese Halle führt es nicht"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s im Fahrzeug: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Kauf %s   Verkauf %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Diese Seite ist nur eine Anzeige. Gekauft und verkauft wird am Depot selbst."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Halle leer. %s L sind in deinem Fahrzeug: kippe sie am Depot ab, um sie einzulagern."/>
                                                                                                             </texts>
 </l10n>

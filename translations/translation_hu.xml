@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Termelési információs táblák megjelenítése"/>
     <text name="action_turnOffBillboard" text="Termelési információs táblák elrejtése"/>
     <text name="fd_depot_send_failed" text="A kérést nem sikerült elküldeni a szervernek."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Műtrágyaraktár"/>
+    <text name="fd_rf_pda_blurb" text="A kiválasztott raktár készlete és vételi/eladási árai. Csak olvasható."/>
+    <text name="fd_rf_pda_col_fill" text="Termék"/>
+    <text name="fd_rf_pda_col_stock" text="Készlet"/>
+    <text name="fd_rf_pda_col_buy" text="Vétel"/>
+    <text name="fd_rf_pda_col_sell" text="Eladás"/>
+    <text name="fd_rf_pda_lbl_season" text="Szezon"/>
+    <text name="fd_rf_pda_season_off" text="ki"/>
+    <text name="fd_rf_pda_waiting" text="A raktárkezelő nem áll készen"/>
+    <text name="fd_rf_pda_focus_depot" text="Kiválasztva: %d. raktár · %d raktár"/>
+    <text name="fd_rf_pda_no_depot" text="még nincs raktár a gazdaságodban"/>
+    <text name="fd_rf_pda_no_hall" text="még nincs készletadat - a raktár termelőcsarnoka nem válaszolt"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="még nincs készletadat - ez a raktár üres, rendelj műtrágyát a feltöltéséhez"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="még nincs készletadat - helyezz el egy raktárt a gazdaságodban a műtrágya vásárlásához és tárolásához"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: nincs telepítve (a speciális funkciók kikapcsolva maradnak)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / itt nincs készleten"/>
+    <text name="fd_rf_pda_band_hall" text="%s: csarnok %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: ez a csarnok nem tárolja"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s a járművön: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Vétel %s   Eladás %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Ez az oldal csak kijelzés. A vétel és az eladás magánál a raktárnál történik."/>
+    <text name="fd_rf_pda_band_empty_hall" text="A csarnok üres. %s L van a járművedben: ürítsd a raktárnál a tároláshoz."/>
                                                                                                             </texts>
 </l10n>

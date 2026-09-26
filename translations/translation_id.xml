@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Tampilkan papan info produksi"/>
     <text name="action_turnOffBillboard" text="Sembunyikan papan info produksi"/>
     <text name="fd_depot_send_failed" text="Permintaan tidak dapat dikirim ke server."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Depot Pupuk"/>
+    <text name="fd_rf_pda_blurb" text="Stok dan harga beli/jual depot yang kamu pilih. Hanya baca."/>
+    <text name="fd_rf_pda_col_fill" text="Produk"/>
+    <text name="fd_rf_pda_col_stock" text="Stok"/>
+    <text name="fd_rf_pda_col_buy" text="Beli"/>
+    <text name="fd_rf_pda_col_sell" text="Jual"/>
+    <text name="fd_rf_pda_lbl_season" text="Musim"/>
+    <text name="fd_rf_pda_season_off" text="mati"/>
+    <text name="fd_rf_pda_waiting" text="Pengelola depot belum siap"/>
+    <text name="fd_rf_pda_focus_depot" text="Dipilih: depot %d · %d depot"/>
+    <text name="fd_rf_pda_no_depot" text="belum ada depot di pertanianmu"/>
+    <text name="fd_rf_pda_no_hall" text="belum ada data stok - aula produksi depot ini tidak menjawab"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="belum ada data stok - depot ini kosong, pesan pupuk untuk mengisinya"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="belum ada data stok - pasang depot di pertanianmu untuk membeli dan menyimpan pupuk"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: tidak terpasang (fitur spesialis tetap nonaktif)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / tidak tersedia di sini"/>
+    <text name="fd_rf_pda_band_hall" text="%s: aula %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: aula ini tidak menyimpannya"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s di kendaraan: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Beli %s   Jual %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Halaman ini hanya tampilan. Pembelian dan penjualan dilakukan di depot itu sendiri."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Aula kosong. Ada %s L di kendaraanmu: tumpahkan di depot untuk menyimpannya."/>
                                                                                                             </texts>
 </l10n>

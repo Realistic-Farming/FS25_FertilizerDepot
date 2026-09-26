@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Visa produktionstavlor"/>
     <text name="action_turnOffBillboard" text="Dölj produktionstavlor"/>
     <text name="fd_depot_send_failed" text="Begäran kunde inte skickas till servern."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Gödseldepå"/>
+    <text name="fd_rf_pda_blurb" text="Lager och köp-/säljpriser för din valda depå. Endast visning."/>
+    <text name="fd_rf_pda_col_fill" text="Produkt"/>
+    <text name="fd_rf_pda_col_stock" text="Lager"/>
+    <text name="fd_rf_pda_col_buy" text="Köp"/>
+    <text name="fd_rf_pda_col_sell" text="Sälj"/>
+    <text name="fd_rf_pda_lbl_season" text="Säsong"/>
+    <text name="fd_rf_pda_season_off" text="av"/>
+    <text name="fd_rf_pda_waiting" text="Depåhanteraren är inte redo"/>
+    <text name="fd_rf_pda_focus_depot" text="Vald: depå %d · %d depå(er)"/>
+    <text name="fd_rf_pda_no_depot" text="ingen depå på din gård än"/>
+    <text name="fd_rf_pda_no_hall" text="inga lagerdata än - depåns produktionshall svarade inte"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="inga lagerdata än - depån är tom, beställ gödsel för att fylla den"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="inga lagerdata än - placera en depå på din gård för att köpa och lagra gödsel"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: inte installerad (specialfunktioner förblir avstängda)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / finns inte i lager här"/>
+    <text name="fd_rf_pda_band_hall" text="%s: i hallen %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: den här hallen lagerför det inte"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s på fordonet: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Köp %s   Sälj %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Den här sidan är bara en översikt. Köp och försäljning sker vid själva depån."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hallen är tom. %s L finns på ditt fordon: tippa av det vid depån för att lagra det."/>
                                                                                                             </texts>
 </l10n>

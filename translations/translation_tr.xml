@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Üretim bilgi panolarını göster"/>
     <text name="action_turnOffBillboard" text="Üretim bilgi panolarını gizle"/>
     <text name="fd_depot_send_failed" text="İstek sunucuya gönderilemedi."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Gübre Deposu"/>
+    <text name="fd_rf_pda_blurb" text="Seçili deponun stoku ve alış/satış fiyatları. Salt okunur."/>
+    <text name="fd_rf_pda_col_fill" text="Ürün"/>
+    <text name="fd_rf_pda_col_stock" text="Stok"/>
+    <text name="fd_rf_pda_col_buy" text="Alış"/>
+    <text name="fd_rf_pda_col_sell" text="Satış"/>
+    <text name="fd_rf_pda_lbl_season" text="Sezon"/>
+    <text name="fd_rf_pda_season_off" text="kapalı"/>
+    <text name="fd_rf_pda_waiting" text="Depo yöneticisi hazır değil"/>
+    <text name="fd_rf_pda_focus_depot" text="Seçili: depo %d · %d depo"/>
+    <text name="fd_rf_pda_no_depot" text="çiftliğinde henüz depo yok"/>
+    <text name="fd_rf_pda_no_hall" text="henüz stok verisi yok - bu deponun üretim salonu yanıt vermedi"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="henüz stok verisi yok - bu depo boş, doldurmak için gübre sipariş et"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="henüz stok verisi yok - gübre satın alıp depolamak için çiftliğine bir depo yerleştir"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: yüklü değil (uzman özellikleri kapalı kalır)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / burada stokta yok"/>
+    <text name="fd_rf_pda_band_hall" text="%s: salon %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: bu salon bunu stoklamıyor"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s araçta: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Alış %s   Satış %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Bu sayfa yalnızca bilgi gösterir. Alım ve satım deponun kendisinde yapılır."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Salon boş. Aracında %s L var: depolamak için depoda boşalt."/>
                                                                                                             </texts>
 </l10n>

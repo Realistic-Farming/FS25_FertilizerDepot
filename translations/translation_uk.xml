@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Показати інформаційні табло виробництва"/>
     <text name="action_turnOffBillboard" text="Приховати інформаційні табло виробництва"/>
     <text name="fd_depot_send_failed" text="Не вдалося надіслати запит на сервер."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Склад добрив"/>
+    <text name="fd_rf_pda_blurb" text="Запаси та ціни купівлі/продажу вибраного складу. Лише перегляд."/>
+    <text name="fd_rf_pda_col_fill" text="Продукт"/>
+    <text name="fd_rf_pda_col_stock" text="Запас"/>
+    <text name="fd_rf_pda_col_buy" text="Купівля"/>
+    <text name="fd_rf_pda_col_sell" text="Продаж"/>
+    <text name="fd_rf_pda_lbl_season" text="Сезон"/>
+    <text name="fd_rf_pda_season_off" text="вимк."/>
+    <text name="fd_rf_pda_waiting" text="Керування складом не готове"/>
+    <text name="fd_rf_pda_focus_depot" text="Вибрано: склад %d · складів: %d"/>
+    <text name="fd_rf_pda_no_depot" text="на вашій фермі ще немає складу"/>
+    <text name="fd_rf_pda_no_hall" text="даних про запаси ще немає - виробничий цех цього складу не відповів"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="даних про запаси ще немає - цей склад порожній, замовте добрива, щоб заповнити його"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="даних про запаси ще немає - розмістіть склад на своїй фермі, щоб купувати та зберігати добрива"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: не встановлено (спеціальні функції залишаються вимкненими)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / тут не зберігається"/>
+    <text name="fd_rf_pda_band_hall" text="%s: цех %s / %s л"/>
+    <text name="fd_rf_pda_band_absent" text="%s: цей цех цього не зберігає"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s у техніці: %s л"/>
+    <text name="fd_rf_pda_band_prices" text="Купівля %s   Продаж %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Ця сторінка лише для перегляду. Купівля та продаж відбуваються на самому складі."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Цех порожній. У вашій техніці %s л: вивантажте їх на складі, щоб зберегти."/>
                                                                                                             </texts>
 </l10n>

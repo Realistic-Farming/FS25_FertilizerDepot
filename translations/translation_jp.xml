@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="生産情報ボードを表示"/>
     <text name="action_turnOffBillboard" text="生産情報ボードを非表示"/>
     <text name="fd_depot_send_failed" text="サーバーにリクエストを送信できませんでした。"/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="肥料デポ"/>
+    <text name="fd_rf_pda_blurb" text="選択中のデポの在庫と売買価格。閲覧のみ。"/>
+    <text name="fd_rf_pda_col_fill" text="品目"/>
+    <text name="fd_rf_pda_col_stock" text="在庫"/>
+    <text name="fd_rf_pda_col_buy" text="購入"/>
+    <text name="fd_rf_pda_col_sell" text="売却"/>
+    <text name="fd_rf_pda_lbl_season" text="シーズン"/>
+    <text name="fd_rf_pda_season_off" text="オフ"/>
+    <text name="fd_rf_pda_waiting" text="デポ管理がまだ準備できていません"/>
+    <text name="fd_rf_pda_focus_depot" text="選択中：デポ %d · 全 %d デポ"/>
+    <text name="fd_rf_pda_no_depot" text="農場にまだデポがありません"/>
+    <text name="fd_rf_pda_no_hall" text="在庫データがまだありません - このデポの生産ホールが応答しませんでした"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="在庫データがまだありません - このデポは空です。肥料を注文して補充してください"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="在庫データがまだありません - 農場にデポを設置して肥料を購入・保管しましょう"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer：未インストール（専門機能はオフのまま）"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / ここでは扱っていません"/>
+    <text name="fd_rf_pda_band_hall" text="%s：ホール %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s：このホールでは扱っていません"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s 車両上：%s L"/>
+    <text name="fd_rf_pda_band_prices" text="購入 %s   売却 %s"/>
+    <text name="fd_rf_pda_band_readonly" text="このページは表示専用です。売買はデポで直接行います。"/>
+    <text name="fd_rf_pda_band_empty_hall" text="ホールは空です。車両に %s L あります：デポで荷下ろしして保管してください。"/>
                                                                                                             </texts>
 </l10n>

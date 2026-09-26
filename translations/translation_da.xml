@@ -133,5 +133,28 @@
     <text name="action_turnOnBillboard" text="Vis produktionsinfotavler"/>
     <text name="action_turnOffBillboard" text="Skjul produktionsinfotavler"/>
     <text name="fd_depot_send_failed" text="Anmodningen kunne ikke sendes til serveren."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Gødningsdepot"/>
+    <text name="fd_rf_pda_blurb" text="Lager og købs-/salgspriser for dit valgte depot. Kun visning."/>
+    <text name="fd_rf_pda_col_fill" text="Produkt"/>
+    <text name="fd_rf_pda_col_stock" text="Lager"/>
+    <text name="fd_rf_pda_col_buy" text="Køb"/>
+    <text name="fd_rf_pda_col_sell" text="Salg"/>
+    <text name="fd_rf_pda_lbl_season" text="Sæson"/>
+    <text name="fd_rf_pda_season_off" text="fra"/>
+    <text name="fd_rf_pda_waiting" text="Depotstyring ikke klar"/>
+    <text name="fd_rf_pda_focus_depot" text="Valgt: depot %d · %d depot(er)"/>
+    <text name="fd_rf_pda_no_depot" text="endnu intet depot på din gård"/>
+    <text name="fd_rf_pda_no_hall" text="endnu ingen lagerdata - dette depots produktionshal svarede ikke"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="endnu ingen lagerdata - dette depot er tomt, bestil gødning for at fylde det"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="endnu ingen lagerdata - placer et depot på din gård for at købe og opbevare gødning"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: ikke installeret (specialfunktioner forbliver slået fra)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / ikke på lager her"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hal %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: denne hal fører det ikke"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s på køretøj: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Køb %s   Salg %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Denne side er kun en visning. Køb og salg sker ved selve depotet."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hallen er tom. Der er %s L på dit køretøj: tip det af ved depotet for at lagre det."/>
                                                                                 </texts>
 </l10n>

@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Zobrazit informační tabule výroby"/>
     <text name="action_turnOffBillboard" text="Skrýt informační tabule výroby"/>
     <text name="fd_depot_send_failed" text="Požadavek nelze odeslat na server."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Sklad hnojiv"/>
+    <text name="fd_rf_pda_blurb" text="Zásoby a nákupní/prodejní ceny vybraného skladu. Jen ke čtení."/>
+    <text name="fd_rf_pda_col_fill" text="Produkt"/>
+    <text name="fd_rf_pda_col_stock" text="Zásoba"/>
+    <text name="fd_rf_pda_col_buy" text="Nákup"/>
+    <text name="fd_rf_pda_col_sell" text="Prodej"/>
+    <text name="fd_rf_pda_lbl_season" text="Sezóna"/>
+    <text name="fd_rf_pda_season_off" text="vyp."/>
+    <text name="fd_rf_pda_waiting" text="Správce skladu není připraven"/>
+    <text name="fd_rf_pda_focus_depot" text="Vybráno: sklad %d · skladů: %d"/>
+    <text name="fd_rf_pda_no_depot" text="na tvé farmě zatím není žádný sklad"/>
+    <text name="fd_rf_pda_no_hall" text="zatím žádná data o zásobách - výrobní hala tohoto skladu neodpověďela"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="zatím žádná data o zásobách - tento sklad je prázdný, objednej hnojivo a naplň ho"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="zatím žádná data o zásobách - postav sklad na své farmě, abys mohl kupovat a skladovat hnojiva"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: není nainstalován (odborné funkce zůstávají vypnuté)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / zde není skladem"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hala %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: tato hala to neskladuje"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s ve vozidle: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Nákup %s   Prodej %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Tato stránka jen zobrazuje údaje. Nákup a prodej probíhá přímo ve skladu."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hala je prázdná. Ve vozidle máš %s L: vysyp je ve skladu a uskladni je."/>
                                                                                                             </texts>
 </l10n>

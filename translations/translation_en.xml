@@ -156,5 +156,28 @@
     <!-- Delivery system â€” Status feedback -->
             
     <!-- Delivery system â€” Error keys -->
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Fertilizer Depot"/>
+    <text name="fd_rf_pda_blurb" text="Stock and buy/sell prices for your focused depot. Read-only."/>
+    <text name="fd_rf_pda_col_fill" text="Fill"/>
+    <text name="fd_rf_pda_col_stock" text="Stock"/>
+    <text name="fd_rf_pda_col_buy" text="Buy"/>
+    <text name="fd_rf_pda_col_sell" text="Sell"/>
+    <text name="fd_rf_pda_lbl_season" text="Season"/>
+    <text name="fd_rf_pda_season_off" text="off"/>
+    <text name="fd_rf_pda_waiting" text="Depot manager not ready"/>
+    <text name="fd_rf_pda_focus_depot" text="Focus: depot %d · %d depot(s)"/>
+    <text name="fd_rf_pda_no_depot" text="no depot on your farm yet"/>
+    <text name="fd_rf_pda_no_hall" text="no stock data yet - this depot's production hall did not answer"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="no stock data yet - this depot is empty, order fertilizer to fill it"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="no stock data yet - place a depot on your farm to buy and store fertilizer"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: not installed (specialist unlocks quiet)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / not stocked here"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hall %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: this hall does not stock it"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s on vehicle: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Buy %s   Sell %s"/>
+    <text name="fd_rf_pda_band_readonly" text="This page is a read-out. Buying and selling happen at the depot itself."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hall empty. %s L is on your vehicle: tip it in at the depot to store it."/>
                             </texts>
 </l10n>
