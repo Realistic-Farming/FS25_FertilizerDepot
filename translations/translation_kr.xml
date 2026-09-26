@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="생산 정보판 표시"/>
     <text name="action_turnOffBillboard" text="생산 정보판 숨기기"/>
     <text name="fd_depot_send_failed" text="서버로 요청을 보낼 수 없습니다."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="비료 창고"/>
+    <text name="fd_rf_pda_blurb" text="선택한 창고의 재고와 매입/판매 가격입니다. 읽기 전용."/>
+    <text name="fd_rf_pda_col_fill" text="품목"/>
+    <text name="fd_rf_pda_col_stock" text="재고"/>
+    <text name="fd_rf_pda_col_buy" text="매입"/>
+    <text name="fd_rf_pda_col_sell" text="판매"/>
+    <text name="fd_rf_pda_lbl_season" text="시즌"/>
+    <text name="fd_rf_pda_season_off" text="끔"/>
+    <text name="fd_rf_pda_waiting" text="창고 관리자가 준비되지 않았습니다"/>
+    <text name="fd_rf_pda_focus_depot" text="선택: 창고 %d · 창고 %d개"/>
+    <text name="fd_rf_pda_no_depot" text="아직 농장에 창고가 없습니다"/>
+    <text name="fd_rf_pda_no_hall" text="아직 재고 데이터가 없습니다 - 이 창고의 생산 홀이 응답하지 않았습니다"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="아직 재고 데이터가 없습니다 - 이 창고는 비어 있습니다. 비료를 주문해 채우세요"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="아직 재고 데이터가 없습니다 - 비료를 구매하고 보관하려면 농장에 창고를 설치하세요"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: 설치되지 않음 (전문 기능은 꺼진 상태로 유지)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / 이곳에 재고 없음"/>
+    <text name="fd_rf_pda_band_hall" text="%s: 홀 %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: 이 홀은 이 품목을 보관하지 않습니다"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s 차량: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="매입 %s   판매 %s"/>
+    <text name="fd_rf_pda_band_readonly" text="이 페이지는 조회 전용입니다. 매입과 판매는 창고에서 직접 합니다."/>
+    <text name="fd_rf_pda_band_empty_hall" text="홀이 비어 있습니다. 차량에 %s L가 있습니다: 창고에 하역해 보관하세요."/>
                                                                                                             </texts>
 </l10n>

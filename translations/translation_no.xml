@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Vis produksjonstavler"/>
     <text name="action_turnOffBillboard" text="Skjul produksjonstavler"/>
     <text name="fd_depot_send_failed" text="Forespørselen kunne ikke sendes til serveren."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Gjødseldepot"/>
+    <text name="fd_rf_pda_blurb" text="Lager og kjøps-/salgspriser for det valgte depotet ditt. Kun visning."/>
+    <text name="fd_rf_pda_col_fill" text="Produkt"/>
+    <text name="fd_rf_pda_col_stock" text="Lager"/>
+    <text name="fd_rf_pda_col_buy" text="Kjøp"/>
+    <text name="fd_rf_pda_col_sell" text="Salg"/>
+    <text name="fd_rf_pda_lbl_season" text="Sesong"/>
+    <text name="fd_rf_pda_season_off" text="av"/>
+    <text name="fd_rf_pda_waiting" text="Depotstyringen er ikke klar"/>
+    <text name="fd_rf_pda_focus_depot" text="Valgt: depot %d · %d depot(er)"/>
+    <text name="fd_rf_pda_no_depot" text="ingen depot på gården din ennå"/>
+    <text name="fd_rf_pda_no_hall" text="ingen lagerdata ennå - produksjonshallen til dette depotet svarte ikke"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="ingen lagerdata ennå - dette depotet er tomt, bestill gjødsel for å fylle det"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="ingen lagerdata ennå - plasser et depot på gården din for å kjøpe og lagre gjødsel"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: ikke installert (spesialfunksjoner forblir av)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / ikke på lager her"/>
+    <text name="fd_rf_pda_band_hall" text="%s: i hallen %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: denne hallen fører det ikke"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s på kjøretøyet: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Kjøp %s   Salg %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Denne siden er bare en visning. Kjøp og salg skjer ved selve depotet."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hallen er tom. %s L er på kjøretøyet ditt: tipp det av ved depotet for å lagre det."/>
                                                                                                             </texts>
 </l10n>

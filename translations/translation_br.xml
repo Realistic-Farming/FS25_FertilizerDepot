@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Mostrar painéis de informação da produção"/>
     <text name="action_turnOffBillboard" text="Ocultar painéis de informação da produção"/>
     <text name="fd_depot_send_failed" text="Não foi possível enviar a solicitação ao servidor."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Depósito de fertilizantes"/>
+    <text name="fd_rf_pda_blurb" text="Estoque e preços de compra/venda do depósito selecionado. Somente leitura."/>
+    <text name="fd_rf_pda_col_fill" text="Produto"/>
+    <text name="fd_rf_pda_col_stock" text="Estoque"/>
+    <text name="fd_rf_pda_col_buy" text="Compra"/>
+    <text name="fd_rf_pda_col_sell" text="Venda"/>
+    <text name="fd_rf_pda_lbl_season" text="Estação"/>
+    <text name="fd_rf_pda_season_off" text="desligado"/>
+    <text name="fd_rf_pda_waiting" text="Gerenciador do depósito não está pronto"/>
+    <text name="fd_rf_pda_focus_depot" text="Seleção: depósito %d · %d depósito(s)"/>
+    <text name="fd_rf_pda_no_depot" text="ainda não há depósito na sua fazenda"/>
+    <text name="fd_rf_pda_no_hall" text="ainda sem dados de estoque - o galpão de produção deste depósito não respondeu"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="ainda sem dados de estoque - este depósito está vazio, encomende fertilizante para enchê-lo"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="ainda sem dados de estoque - coloque um depósito na sua fazenda para comprar e armazenar fertilizante"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: não instalado (funções especializadas desligadas)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / sem estoque aqui"/>
+    <text name="fd_rf_pda_band_hall" text="%s: galpão %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: este galpão não armazena isso"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s no veículo: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Compra %s   Venda %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Esta página é só de leitura. A compra e a venda acontecem no próprio depósito."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Galpão vazio. Há %s L no seu veículo: descarregue no depósito para armazenar."/>
                                                                                                             </texts>
 </l10n>

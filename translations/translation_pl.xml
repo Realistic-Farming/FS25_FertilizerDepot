@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Pokaż tablice informacyjne produkcji"/>
     <text name="action_turnOffBillboard" text="Ukryj tablice informacyjne produkcji"/>
     <text name="fd_depot_send_failed" text="Nie udało się wysłać żądania do serwera."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Magazyn nawozów"/>
+    <text name="fd_rf_pda_blurb" text="Zapasy oraz ceny kupna/sprzedaży wybranego magazynu. Tylko do odczytu."/>
+    <text name="fd_rf_pda_col_fill" text="Produkt"/>
+    <text name="fd_rf_pda_col_stock" text="Zapas"/>
+    <text name="fd_rf_pda_col_buy" text="Kupno"/>
+    <text name="fd_rf_pda_col_sell" text="Sprzedaż"/>
+    <text name="fd_rf_pda_lbl_season" text="Sezon"/>
+    <text name="fd_rf_pda_season_off" text="wył."/>
+    <text name="fd_rf_pda_waiting" text="Menedżer magazynu nie jest gotowy"/>
+    <text name="fd_rf_pda_focus_depot" text="Wybrany: magazyn %d · magazyny: %d"/>
+    <text name="fd_rf_pda_no_depot" text="brak magazynu w Twoim gospodarstwie"/>
+    <text name="fd_rf_pda_no_hall" text="brak danych o zapasach - hala produkcyjna tego magazynu nie odpowiedziała"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="brak danych o zapasach - ten magazyn jest pusty, zamów nawóz, aby go napełnić"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="brak danych o zapasach - postaw magazyn w swoim gospodarstwie, aby kupować i przechowywać nawozy"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: nie zainstalowano (funkcje specjalistyczne pozostają wyłączone)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / brak na stanie tutaj"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hala %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: ta hala tego nie przechowuje"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s w pojeździe: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Kupno %s   Sprzedaż %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Ta strona służy tylko do podglądu. Kupno i sprzedaż odbywają się w samym magazynie."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hala pusta. W pojeździe masz %s L: wyładuj to w magazynie, aby przechować."/>
                                                                                                             </texts>
 </l10n>

@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Afișează panourile informative de producție"/>
     <text name="action_turnOffBillboard" text="Ascunde panourile informative de producție"/>
     <text name="fd_depot_send_failed" text="Cererea nu a putut fi trimisă către server."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Depozit de îngrășăminte"/>
+    <text name="fd_rf_pda_blurb" text="Stocul și prețurile de cumpărare/vânzare ale depozitului selectat. Doar citire."/>
+    <text name="fd_rf_pda_col_fill" text="Produs"/>
+    <text name="fd_rf_pda_col_stock" text="Stoc"/>
+    <text name="fd_rf_pda_col_buy" text="Cumpărare"/>
+    <text name="fd_rf_pda_col_sell" text="Vânzare"/>
+    <text name="fd_rf_pda_lbl_season" text="Sezon"/>
+    <text name="fd_rf_pda_season_off" text="oprit"/>
+    <text name="fd_rf_pda_waiting" text="Administratorul depozitului nu este pregătit"/>
+    <text name="fd_rf_pda_focus_depot" text="Selectat: depozitul %d · %d depozit(e)"/>
+    <text name="fd_rf_pda_no_depot" text="încă nu ai niciun depozit la fermă"/>
+    <text name="fd_rf_pda_no_hall" text="încă nu există date despre stoc - hala de producție a acestui depozit nu a răspuns"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="încă nu există date despre stoc - acest depozit este gol, comandă îngrășământ ca să-l umpli"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="încă nu există date despre stoc - amplasează un depozit la ferma ta ca să cumperi și să depozitezi îngrășăminte"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: neinstalat (funcțiile de specialitate rămân oprite)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / nu se ține în stoc aici"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hală %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: această hală nu îl ține în stoc"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s în vehicul: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Cumpărare %s   Vânzare %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Această pagină doar afișează date. Cumpărarea și vânzarea se fac chiar la depozit."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hala este goală. Ai %s L în vehicul: descarcă-le la depozit ca să le depozitezi."/>
                                                                                                             </texts>
 </l10n>

@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Afficher les panneaux d’information de production"/>
     <text name="action_turnOffBillboard" text="Masquer les panneaux d’information de production"/>
     <text name="fd_depot_send_failed" text="La demande n’a pas pu être envoyée au serveur."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Dépôt d’engrais"/>
+    <text name="fd_rf_pda_blurb" text="Stock et prix d’achat/de vente de votre dépôt sélectionné. Lecture seule."/>
+    <text name="fd_rf_pda_col_fill" text="Produit"/>
+    <text name="fd_rf_pda_col_stock" text="Stock"/>
+    <text name="fd_rf_pda_col_buy" text="Achat"/>
+    <text name="fd_rf_pda_col_sell" text="Vente"/>
+    <text name="fd_rf_pda_lbl_season" text="Saison"/>
+    <text name="fd_rf_pda_season_off" text="désactivé"/>
+    <text name="fd_rf_pda_waiting" text="Gestionnaire du dépôt pas prêt"/>
+    <text name="fd_rf_pda_focus_depot" text="Sélection : dépôt %d · %d dépôt(s)"/>
+    <text name="fd_rf_pda_no_depot" text="pas encore de dépôt sur votre ferme"/>
+    <text name="fd_rf_pda_no_hall" text="pas encore de données de stock - le hall de production de ce dépôt n’a pas répondu"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="pas encore de données de stock - ce dépôt est vide, commandez de l’engrais pour le remplir"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="pas encore de données de stock - placez un dépôt sur votre ferme pour acheter et stocker de l’engrais"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer : non installé (fonctions spécialisées inactives)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / pas en stock ici"/>
+    <text name="fd_rf_pda_band_hall" text="%s : hall %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s : ce hall ne le stocke pas"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s sur le véhicule : %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Achat %s   Vente %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Cette page est un affichage. L’achat et la vente se font au dépôt même."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hall vide. %s L sont sur votre véhicule : déchargez-les au dépôt pour les stocker."/>
                                                                                                             </texts>
 </l10n>

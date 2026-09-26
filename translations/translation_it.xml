@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Mostra i pannelli informativi della produzione"/>
     <text name="action_turnOffBillboard" text="Nascondi i pannelli informativi della produzione"/>
     <text name="fd_depot_send_failed" text="Impossibile inviare la richiesta al server."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Deposito fertilizzanti"/>
+    <text name="fd_rf_pda_blurb" text="Scorte e prezzi di acquisto/vendita del deposito selezionato. Sola lettura."/>
+    <text name="fd_rf_pda_col_fill" text="Prodotto"/>
+    <text name="fd_rf_pda_col_stock" text="Scorte"/>
+    <text name="fd_rf_pda_col_buy" text="Acquisto"/>
+    <text name="fd_rf_pda_col_sell" text="Vendita"/>
+    <text name="fd_rf_pda_lbl_season" text="Stagione"/>
+    <text name="fd_rf_pda_season_off" text="disattivato"/>
+    <text name="fd_rf_pda_waiting" text="Gestore del deposito non pronto"/>
+    <text name="fd_rf_pda_focus_depot" text="Selezione: deposito %d · %d depositi"/>
+    <text name="fd_rf_pda_no_depot" text="ancora nessun deposito nella tua fattoria"/>
+    <text name="fd_rf_pda_no_hall" text="ancora nessun dato sulle scorte - il capannone di produzione di questo deposito non ha risposto"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="ancora nessun dato sulle scorte - questo deposito è vuoto, ordina fertilizzante per riempirlo"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="ancora nessun dato sulle scorte - piazza un deposito nella tua fattoria per acquistare e immagazzinare fertilizzante"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: non installato (funzioni specialistiche inattive)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / non disponibile qui"/>
+    <text name="fd_rf_pda_band_hall" text="%s: capannone %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: questo capannone non lo tiene"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s sul veicolo: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Acquisto %s   Vendita %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Questa pagina è solo una visualizzazione. Acquisti e vendite si fanno al deposito stesso."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Capannone vuoto. %s L sono sul tuo veicolo: scaricali al deposito per immagazzinarli."/>
                                                                                                             </texts>
 </l10n>

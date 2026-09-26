@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Näytä tuotannon infotaulut"/>
     <text name="action_turnOffBillboard" text="Piilota tuotannon infotaulut"/>
     <text name="fd_depot_send_failed" text="Pyyntöä ei voitu lähettää palvelimelle."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Lannoitevarasto"/>
+    <text name="fd_rf_pda_blurb" text="Valitun lannoitevaraston saldot sekä osto- ja myyntihinnat. Vain luku."/>
+    <text name="fd_rf_pda_col_fill" text="Tuote"/>
+    <text name="fd_rf_pda_col_stock" text="Saldo"/>
+    <text name="fd_rf_pda_col_buy" text="Osto"/>
+    <text name="fd_rf_pda_col_sell" text="Myynti"/>
+    <text name="fd_rf_pda_lbl_season" text="Kausi"/>
+    <text name="fd_rf_pda_season_off" text="pois"/>
+    <text name="fd_rf_pda_waiting" text="Varaston hallinta ei ole valmis"/>
+    <text name="fd_rf_pda_focus_depot" text="Valittu: varasto %d · %d varasto(a)"/>
+    <text name="fd_rf_pda_no_depot" text="tilallasi ei ole vielä varastoa"/>
+    <text name="fd_rf_pda_no_hall" text="ei vielä saldotietoja - tämän varaston tuotantohalli ei vastannut"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="ei vielä saldotietoja - tämä varasto on tyhjä, tilaa lannoitetta sen täyttämiseksi"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="ei vielä saldotietoja - sijoita varasto tilallesi ostaaksesi ja varastoidaksesi lannoitetta"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: ei asennettu (erikoistoiminnot pysyvät pois päältä)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / ei varastossa täällä"/>
+    <text name="fd_rf_pda_band_hall" text="%s: halli %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: tämä halli ei varastoi sitä"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s ajoneuvossa: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Osto %s   Myynti %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Tämä sivu on vain näkymä. Osto ja myynti tehdään itse varastolla."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Halli on tyhjä. Ajoneuvossasi on %s L: kippaa se varastolle varastoidaksesi sen."/>
                                                                                                             </texts>
 </l10n>

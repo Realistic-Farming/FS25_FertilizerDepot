@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="Productie-informatieborden tonen"/>
     <text name="action_turnOffBillboard" text="Productie-informatieborden verbergen"/>
     <text name="fd_depot_send_failed" text="Het verzoek kon niet naar de server worden verzonden."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Kunstmestdepot"/>
+    <text name="fd_rf_pda_blurb" text="Voorraad en inkoop-/verkoopprijzen van je geselecteerde depot. Alleen lezen."/>
+    <text name="fd_rf_pda_col_fill" text="Product"/>
+    <text name="fd_rf_pda_col_stock" text="Voorraad"/>
+    <text name="fd_rf_pda_col_buy" text="Inkoop"/>
+    <text name="fd_rf_pda_col_sell" text="Verkoop"/>
+    <text name="fd_rf_pda_lbl_season" text="Seizoen"/>
+    <text name="fd_rf_pda_season_off" text="uit"/>
+    <text name="fd_rf_pda_waiting" text="Depotbeheer niet gereed"/>
+    <text name="fd_rf_pda_focus_depot" text="Selectie: depot %d · %d depot(s)"/>
+    <text name="fd_rf_pda_no_depot" text="nog geen depot op je boerderij"/>
+    <text name="fd_rf_pda_no_hall" text="nog geen voorraadgegevens - de productiehal van dit depot gaf geen antwoord"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="nog geen voorraadgegevens - dit depot is leeg, bestel kunstmest om het te vullen"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="nog geen voorraadgegevens - plaats een depot op je boerderij om kunstmest te kopen en op te slaan"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: niet geïnstalleerd (specialistische functies blijven uit)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / hier niet op voorraad"/>
+    <text name="fd_rf_pda_band_hall" text="%s: hal %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: deze hal heeft het niet op voorraad"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s op voertuig: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Inkoop %s   Verkoop %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Deze pagina is alleen een overzicht. Kopen en verkopen doe je bij het depot zelf."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hal leeg. Er staat %s L op je voertuig: los het bij het depot om het op te slaan."/>
                                                                                                             </texts>
 </l10n>

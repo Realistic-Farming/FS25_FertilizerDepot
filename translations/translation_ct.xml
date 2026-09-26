@@ -128,5 +128,28 @@
     <text name="action_turnOnBillboard" text="顯示生產資訊板"/>
     <text name="action_turnOffBillboard" text="隱藏生產資訊板"/>
     <text name="fd_depot_send_failed" text="無法將請求傳送至伺服器。"/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="肥料倉庫"/>
+    <text name="fd_rf_pda_blurb" text="所選倉庫的庫存與買賣價格。唯讀。"/>
+    <text name="fd_rf_pda_col_fill" text="產品"/>
+    <text name="fd_rf_pda_col_stock" text="庫存"/>
+    <text name="fd_rf_pda_col_buy" text="買入"/>
+    <text name="fd_rf_pda_col_sell" text="賣出"/>
+    <text name="fd_rf_pda_lbl_season" text="季節"/>
+    <text name="fd_rf_pda_season_off" text="關閉"/>
+    <text name="fd_rf_pda_waiting" text="倉庫管理器尚未就緒"/>
+    <text name="fd_rf_pda_focus_depot" text="已選：倉庫 %d · 共 %d 座倉庫"/>
+    <text name="fd_rf_pda_no_depot" text="你的農場還沒有倉庫"/>
+    <text name="fd_rf_pda_no_hall" text="尚無庫存資料 - 此倉庫的生產廠房沒有回應"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="尚無庫存資料 - 此倉庫是空的，請訂購肥料來填滿"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="尚無庫存資料 - 在你的農場放置倉庫以購買並儲存肥料"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer：未安裝（專業功能保持關閉）"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / 此處無庫存"/>
+    <text name="fd_rf_pda_band_hall" text="%s：廠房 %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s：此廠房不存放此項"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s 車上：%s L"/>
+    <text name="fd_rf_pda_band_prices" text="買入 %s   賣出 %s"/>
+    <text name="fd_rf_pda_band_readonly" text="此頁面僅供檢視。買賣請在倉庫現場進行。"/>
+    <text name="fd_rf_pda_band_empty_hall" text="廠房是空的。你的車上有 %s L：請在倉庫卸下以存放。"/>
                                                                                                             </texts>
 </l10n>
