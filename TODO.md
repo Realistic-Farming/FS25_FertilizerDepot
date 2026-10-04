@@ -36,3 +36,8 @@
 
 ## Blocked / waiting on
 - [~] Bedrock migrations: SettingsHub + MasterHUD DONE (commit 69fce53); StateLedger N/A by design. Only the NetworkSync transactional bridge remains (deferred - needs the NS build-brief, see Cross-mod integration).
+
+## 2026-10-04 (Fred): the shared RF Esc door (Wizard, #86)
+
+- [x] The four shared door files at the suite's STOCK page set, byte-same in all ten door mods; StockGuard's STOCK page chrome inert without StockGuard; the herd-advisory panel hidden.
+- [~] In game (owed): TESTING row 413.
