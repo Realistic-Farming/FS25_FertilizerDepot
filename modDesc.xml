@@ -5,37 +5,37 @@
 
     <title>
         <en>Fertilizer Depot</en>
-        <de>D++ngerdepot</de>
-        <fr>D+├»┬┐┬¢p+├»┬┐┬¢t d'Engrais</fr>
+        <de>Düngerdepot</de>
+        <fr>Dépôt d'Engrais</fr>
         <nl>Kunstmestdepot</nl>
         <it>Deposito Fertilizzanti</it>
-        <pl>Sk+├»┬┐┬¢ad Nawoz+├»┬┐┬¢w</pl>
-        <es>Dep+├»┬┐┬¢sito de Fertilizantes</es>
-        <ea>Dep+├»┬┐┬¢sito de Fertilizantes</ea>
-        <pt>Dep+├»┬┐┬¢sito de Fertilizantes</pt>
-        <br>Dep+├»┬┐┬¢sito de Fertilizantes</br>
-        <ru>├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢</ru>
-        <uk>├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢</uk>
+        <pl>Skład Nawozów</pl>
+        <es>Depósito de Fertilizantes</es>
+        <ea>Depósito de Fertilizantes</ea>
+        <pt>Depósito de Fertilizantes</pt>
+        <br>Depósito de Fertilizantes</br>
+        <ru>Склад удобрений</ru>
+        <uk>Склад добрив</uk>
         <cz>Sklad hnojiv</cz>
-        <hu>M+├»┬┐┬¢tr+├»┬┐┬¢gya Rakt+├»┬┐┬¢r</hu>
-        <ro>Depozit de +├»┬┐┬¢ngr-├»┬┐┬¢+├»┬┐┬¢-├»┬┐┬¢minte</ro>
-        <tr>G++bre Deposu</tr>
+        <hu>Műtrágya Raktár</hu>
+        <ro>Depozit de Îngrășăminte</ro>
+        <tr>Gübre Deposu</tr>
         <fi>Lannoitevarasto</fi>
-        <no>Gj+├»┬┐┬¢dsellager</no>
-        <sv>G+├»┬┐┬¢dself+├»┬┐┬¢rr+├»┬┐┬¢d</sv>
-        <da>G+├»┬┐┬¢dningsdepot</da>
-        <kr>├Ö┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ø┬ª├»┬┐┬¢</kr>
-        <jp>├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬ª├»┬┐┬¢</jp>
-        <ct>├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬ª├»┬┐┬¢</ct>
-        <fc>├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├ò┬ª├»┬┐┬¢</fc>
+        <no>Gjødsellager</no>
+        <sv>Gödselförråd</sv>
+        <da>Gødningsdepot</da>
+        <kr>비료 창고</kr>
+        <jp>肥料倉庫</jp>
+        <ct>肥料倉庫</ct>
+        <fc>肥料仓库</fc>
         <id>Depot Pupuk</id>
-        <vi>Kho Ph+├»┬┐┬¢n B+├»┬┐┬¢n</vi>
+        <vi>Kho Phân Bón</vi>
     </title>
 
     <description>
         <en>A placeable Fertilizer Depot where you can buy, store, and sell all fertilizer types at
 seasonally-adjusted prices. Drive up with your trailer or tank, browse the full selection of
-fertilizers, and fill up directly from depot storage. Works seamlessly with FS25_SoilFertilizer ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢
+fertilizers, and fill up directly from depot storage. Works seamlessly with FS25_SoilFertilizer -
 all 23+ custom fill types are automatically available. Falls back to vanilla fertilizer types if
 SoilFertilizer is not installed.
 
@@ -47,31 +47,31 @@ Features:
 - Full multiplayer support with server-authoritative transactions
 - FarmTablet integration via g_DepotManager global
         </en>
-        <de>Ein platzierbares D++ngerdepot zum Kauf, Lagerung und Verkauf aller D++ngertypen.</de>
-        <fr>Un d+├»┬┐┬¢p+├»┬┐┬¢t d'engrais pla+├»┬┐┬¢able pour acheter, stocker et vendre tous les types d'engrais.</fr>
+        <de>Ein platzierbares Düngerdepot zum Kauf, Lagerung und Verkauf aller Düngertypen.</de>
+        <fr>Un dépôt d'engrais plaçable pour acheter, stocker et vendre tous les types d'engrais.</fr>
         <nl>Een plaatsbaar kunstmestdepot om alle mestsoorten te kopen, opslaan en verkopen.</nl>
         <it>Un deposito fertilizzanti posizionabile per acquistare, stoccare e vendere ogni tipo.</it>
-        <pl>Sk+├»┬┐┬¢ad nawoz+├»┬┐┬¢w do kupowania, przechowywania i sprzeda++y wszystkich rodzaj+├»┬┐┬¢w nawoz+├»┬┐┬¢w.</pl>
-        <es>Un dep+├»┬┐┬¢sito de fertilizantes para comprar, almacenar y vender todos los tipos.</es>
-        <ea>Un dep+├»┬┐┬¢sito de fertilizantes para comprar, almacenar y vender todos los tipos.</ea>
-        <pt>Um dep+├»┬┐┬¢sito de fertilizantes para comprar, armazenar e vender todos os tipos.</pt>
-        <br>Um dep+├»┬┐┬¢sito de fertilizantes para comprar, armazenar e vender todos os tipos.</br>
-        <ru>├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢, ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢ ├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢.</ru>
-        <uk>├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢, ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢.</uk>
-        <cz>Sklad hnojiv pro n+├»┬┐┬¢kup, skladov+├»┬┐┬¢n+├»┬┐┬¢ a prodej v+├»┬┐┬¢ech typ+├»┬┐┬¢ hnojiv.</cz>
-        <hu>M+├»┬┐┬¢tr+├»┬┐┬¢gya rakt+├»┬┐┬¢r minden t+├»┬┐┬¢pus+├»┬┐┬¢ tr+├»┬┐┬¢gya v+├»┬┐┬¢s+├»┬┐┬¢rl+├»┬┐┬¢s+├»┬┐┬¢hoz, t+├»┬┐┬¢rol+├»┬┐┬¢s+├»┬┐┬¢hoz +├»┬┐┬¢s elad+├»┬┐┬¢s+├»┬┐┬¢hoz.</hu>
-        <ro>Un depozit de +├»┬┐┬¢ngr-├»┬┐┬¢+├»┬┐┬¢-├»┬┐┬¢minte pentru cump-├»┬┐┬¢rare, stocare +├»┬┐┬¢i v+├»┬┐┬¢nzare.</ro>
-        <tr>T++m g++bre t++rlerini sat-├»┬┐┬¢n almak, depolamak ve satmak i+├»┬┐┬¢in g++bre deposu.</tr>
+        <pl>Skład nawozów do kupowania, przechowywania i sprzedaży wszystkich rodzajów nawozów.</pl>
+        <es>Un depósito de fertilizantes para comprar, almacenar y vender todos los tipos.</es>
+        <ea>Un depósito de fertilizantes para comprar, almacenar y vender todos los tipos.</ea>
+        <pt>Um depósito de fertilizantes para comprar, armazenar e vender todos os tipos.</pt>
+        <br>Um depósito de fertilizantes para comprar, armazenar e vender todos os tipos.</br>
+        <ru>Склад удобрений для покупки, хранения и продажи всех видов удобрений.</ru>
+        <uk>Склад добрив для купівлі, зберігання та продажу всіх видів добрив.</uk>
+        <cz>Sklad hnojiv pro nákup, skladování a prodej všech typů hnojiv.</cz>
+        <hu>Műtrágya raktár minden típusú trágya vásárlásához, tárolásához és eladásához.</hu>
+        <ro>Un depozit de îngrășăminte pentru cumpărare, stocare și vânzare.</ro>
+        <tr>Tüm gübre türlerini satın almak, depolamak ve satmak için gübre deposu.</tr>
         <fi>Lannoitevarasto kaikkien lannoitetyyppien ostamiseen, varastointiin ja myymiseen.</fi>
-        <no>Et lager for gj+├»┬┐┬¢dsel for kj+├»┬┐┬¢p, lagring og salg av alle gj+├»┬┐┬¢dseltyper.</no>
-        <sv>Ett g+├»┬┐┬¢dself+├»┬┐┬¢rr+├»┬┐┬¢d f+├»┬┐┬¢r att k+├»┬┐┬¢pa, lagra och s+├»┬┐┬¢lja alla g+├»┬┐┬¢dseltyper.</sv>
-        <da>Et g+├»┬┐┬¢dningsdepot til k+├»┬┐┬¢b, oplagring og salg af alle g+├»┬┐┬¢dningstyper.</da>
-        <kr>├Ö┬¼├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├Ö┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├Ö┬║├»┬┐┬¢, ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├Ö┬ª├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├Ö┬║├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├Ö┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢ ├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ø┬ª├»┬┐┬¢.</kr>
-        <jp>├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├×┬ª+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├×┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢</jp>
-        <ct>├»┬┐┬¢├à┬╗├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬ª├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├×┬ª+├×┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬í├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢</ct>
-        <fc>├»┬┐┬¢├à┬╗├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢├ò┬ª├»┬┐┬¢+├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├×┬ª├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├ò┬í├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├æ┬Á├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢├»┬┐┬¢</fc>
+        <no>Et lager for gjødsel for kjøp, lagring og salg av alle gjødseltyper.</no>
+        <sv>Ett gödselförråd för att köpa, lagra och sälja alla gödseltyper.</sv>
+        <da>Et gødningsdepot til køb, oplagring og salg af alle gødningstyper.</da>
+        <kr>모든 비료 유형을 구매, 저장 및 판매하는 비료 창고.</kr>
+        <jp>すべての肥料タイプを購入、保管、販売できる肥料倉庫。</jp>
+        <ct>可放置的肥料倉庫，用於購買、儲存和出售各種肥料。</ct>
+        <fc>可放置的肥料仓库，用于购买、储存和出售各种肥料。</fc>
         <id>Depot pupuk yang dapat ditempatkan untuk membeli, menyimpan, dan menjual semua jenis pupuk.</id>
-        <vi>Kho ph+├»┬┐┬¢n b+├»┬┐┬¢n c+├»┬┐┬¢ th├»┬┐┬¢+├»┬┐┬¢ -├»┬┐┬¢├ƒ┬ª├»┬┐┬¢t -├»┬┐┬¢├»┬┐┬¢+├»┬┐┬¢ mua, l├»┬┐┬¢u tr├»┬┐┬¢+├»┬┐┬¢ v+├»┬┐┬¢ b+├»┬┐┬¢n t├ƒ┬ª├»┬┐┬¢t c├ƒ┬ª├»┬┐┬¢ c+├»┬┐┬¢c lo├ƒ┬ª├»┬┐┬¢i ph+├»┬┐┬¢n b+├»┬┐┬¢n.</vi>
+        <vi>Kho phân bón có thể đặt để mua, lưu trữ và bán tất cả các loại phân bón.</vi>
     </description>
 
     <iconFilename>icon.dds</iconFilename>
