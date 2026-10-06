@@ -50,3 +50,7 @@
 
 - [x] The shared Esc door file `xml/gui/RfPdaMenuPage.xml`, byte-same in all ten door mods (Wizard, #88, merged at 8b4b761c): the side info boxes (`rfSideInfoShell`, `wcSideInfoShell`, `mdSideInfoShell`, `csSideInfoShell`) take an explicit position and size, 16 px further right and 16 px narrower (384 to 368 px), so the dark box starts clear of the selected tab's lime edge and its right edge stays where it was. The side text bodies narrow by the same 16 px, to 352 px (the main side text, from 368) and 348 px (the Worker Costs and Market Dynamics side help, from 364), so the text starts 16 px further right and each line ends where it did.
 - The change's in-game check is TESTING row 446. Docs by Fred's catch-up, on Tyson's word of 2026-10-05.
+
+## 2026-10-06 (Fred): the settings dialog's Apply button and the open-settings key readable in Japanese, Korean, Russian and Ukrainian (MAINTENANCE row 220)
+
+- [x] Six translation values (`fd_settings_apply` in jp, kr and uk; `input_FD_OPEN_SETTINGS` in jp, ru and uk) had been saved through the Windows cp1252 code page since 287c7de4 (2026-07-28), so those players saw garbled text on the Apply button and the key binding. Each is restored to the exact text its key was created with (380e626 and 94303bc). The Ukrainian Apply had lost a byte in a later dash fix, so it is taken from that source, not decoded; it matches the decode of 287c7de4. Row 62's count missed these six because a strict cp1252 round trip rejects the byte cp1252 leaves undefined. No other value changes.

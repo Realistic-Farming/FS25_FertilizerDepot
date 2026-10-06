@@ -46,3 +46,8 @@
 
 - [x] The side info boxes start clear of the selected tab; text bodies 352 and 348 px wide, so line length and the right edge are unchanged; byte-same in all ten door mods.
 - [~] In game (owed): TESTING row 446.
+
+## 2026-10-06 (Fred): six translation values restored (MAINTENANCE row 220)
+
+- [x] fd_settings_apply (jp, kr, uk) and input_FD_OPEN_SETTINGS (jp, ru, uk) back to the text each key was created with.
+- [~] In game (owed): TESTING row 484.
