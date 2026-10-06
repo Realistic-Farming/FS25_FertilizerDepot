@@ -51,3 +51,8 @@
 
 - [x] fd_settings_apply (jp, kr, uk) and input_FD_OPEN_SETTINGS (jp, ru, uk) back to the text each key was created with.
 - [~] In game (owed): TESTING row 484.
+
+## 2026-10-06 (Fred): title and description restored from history (MAINTENANCE row 227)
+
+- [x] modDesc.xml lines 8 to 74: 42 lines back to f437e84's text; the English em dash written as a spaced hyphen.
+- [~] In game (owed): TESTING row 488.
