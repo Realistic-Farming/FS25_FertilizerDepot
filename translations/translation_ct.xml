@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="開啟倉庫設定"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="開啟倉庫設定"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="買入 %s   賣出 %s"/>
     <text name="fd_rf_pda_band_readonly" text="此頁面僅供檢視。買賣請在倉庫現場進行。"/>
     <text name="fd_rf_pda_band_empty_hall" text="廠房是空的。你的車上有 %s L：請在倉庫卸下以存放。"/>
+    <text name="rf_live_key_unbound" text="未綁定"/>
+    <text name="rf_live_key_keyboard_unbound" text="鍵盤未綁定"/>
+    <text name="rf_live_key_unavailable" text="無法使用"/>
                                                                                                             </texts>
 </l10n>

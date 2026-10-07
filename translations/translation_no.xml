@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Åpne lagerinnstillinger"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Åpne lagerinnstillinger"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Kjøp %s   Salg %s"/>
     <text name="fd_rf_pda_band_readonly" text="Denne siden er bare en visning. Kjøp og salg skjer ved selve depotet."/>
     <text name="fd_rf_pda_band_empty_hall" text="Hallen er tom. %s L er på kjøretøyet ditt: tipp det av ved depotet for å lagre det."/>
+    <text name="rf_live_key_unbound" text="Ikke bundet"/>
+    <text name="rf_live_key_keyboard_unbound" text="Tastatur ikke bundet"/>
+    <text name="rf_live_key_unavailable" text="utilgjengelig"/>
                                                                                                             </texts>
 </l10n>

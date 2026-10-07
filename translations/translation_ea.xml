@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Abrir ajustes del depósito"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Abrir ajustes del depósito"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Compra %s   Venta %s"/>
     <text name="fd_rf_pda_band_readonly" text="Esta página solo muestra datos. La compra y la venta se hacen en el propio depósito."/>
     <text name="fd_rf_pda_band_empty_hall" text="Nave vacía. Hay %s L en tu vehículo: descárgalos en el depósito para almacenarlos."/>
+    <text name="rf_live_key_unbound" text="Sin asignar"/>
+    <text name="rf_live_key_keyboard_unbound" text="Teclado sin asignar"/>
+    <text name="rf_live_key_unavailable" text="no disponible"/>
                                                                                                             </texts>
 </l10n>

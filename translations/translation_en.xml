@@ -121,7 +121,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Open Depot Settings"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Open Depot Settings"/>
     <text name="input_FD_INTERACT"      text="Interact with Fertilizer Depot"/>
     <text name="input_FD_HUD_DRAG"      text="Toggle Delivery HUD Edit Mode"/>
     <text name="input_FD_TOGGLE_HUD"      text="Toggle Delivery HUD"/>
@@ -179,5 +179,8 @@
     <text name="fd_rf_pda_band_prices" text="Buy %s   Sell %s"/>
     <text name="fd_rf_pda_band_readonly" text="This page is a read-out. Buying and selling happen at the depot itself."/>
     <text name="fd_rf_pda_band_empty_hall" text="Hall empty. %s L is on your vehicle: tip it in at the depot to store it."/>
+    <text name="rf_live_key_unbound" text="Unbound"/>
+    <text name="rf_live_key_keyboard_unbound" text="Keyboard unbound"/>
+    <text name="rf_live_key_unavailable" text="unavailable"/>
                             </texts>
 </l10n>
