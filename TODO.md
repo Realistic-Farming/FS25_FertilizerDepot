@@ -61,3 +61,8 @@
 
 - [x] `src/integrations/SoilFertilizerBridge.lua` `isInstalled`: the mission handle first. Bar `MAINT-252-soil_handle_entry_test.lua`, battery `tools/test/mutate_maint252.py`, 1 of 1.
 - [~] In game (owed): TESTING row 512.
+
+## 2026-10-08 (Fred): SettingsHub reader (MAINTENANCE row 258)
+
+- [x] `src/integrations/DepotSettingsHubBridge.lua`: `readValue` (the table `applyChange` writes), passed as `read` in the registration. Bar `MAINT-258-hub_reader_entry_test.lua` (main.lua's registration site, the depot's own dialog apply); battery `tools/test/mutate_maint258.py`, 2 of 2.
+- [~] In game (owed): TESTING row 519.

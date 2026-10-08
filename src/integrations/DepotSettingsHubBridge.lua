@@ -32,6 +32,15 @@ local function applyChange(key, value)
     end
 end
 
+-- [MAINTENANCE row 258] The hub asks for the live value (SettingsHub's read, row 258), so a change made in the
+-- depot's own settings dialog, which goes through FDNetworkSyncBridge's settings action and writes
+-- g_DepotManager.settings without telling the hub, shows in the Tablet. It reads the table applyChange writes.
+local function readValue(key)
+    local mgr = g_DepotManager
+    if mgr == nil or mgr.settings == nil then return nil end
+    return mgr.settings[key]
+end
+
 function DepotSettingsHubBridge.register(mgr)
     -- The reliable cross-mod handle is g_currentMission.settingsHub (the same one
     -- FarmTablet reads). The bare g_settingsHub global is only visible inside
@@ -62,6 +71,7 @@ function DepotSettingsHubBridge.register(mgr)
             -- load. Without this the hub could push a stale value over our real one every
             -- load (the trap SoilFertilizer hit that silently disabled the mod).
             selfPersisted = true,
+            read          = readValue,
         })
     end)
 
