@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="창고 설정 열기"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="창고 설정 열기"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="매입 %s   판매 %s"/>
     <text name="fd_rf_pda_band_readonly" text="이 페이지는 조회 전용입니다. 매입과 판매는 창고에서 직접 합니다."/>
     <text name="fd_rf_pda_band_empty_hall" text="홀이 비어 있습니다. 차량에 %s L가 있습니다: 창고에 하역해 보관하세요."/>
+    <text name="rf_live_key_unbound" text="미할당"/>
+    <text name="rf_live_key_keyboard_unbound" text="키보드 미할당"/>
+    <text name="rf_live_key_unavailable" text="사용 불가"/>
                                                                                                             </texts>
 </l10n>

@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Deschide setările depozitului"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Deschide setările depozitului"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Cumpărare %s   Vânzare %s"/>
     <text name="fd_rf_pda_band_readonly" text="Această pagină doar afișează date. Cumpărarea și vânzarea se fac chiar la depozit."/>
     <text name="fd_rf_pda_band_empty_hall" text="Hala este goală. Ai %s L în vehicul: descarcă-le la depozit ca să le depozitezi."/>
+    <text name="rf_live_key_unbound" text="Neatribuit"/>
+    <text name="rf_live_key_keyboard_unbound" text="Tastatura neatribuita"/>
+    <text name="rf_live_key_unavailable" text="indisponibil"/>
                                                                                                             </texts>
 </l10n>

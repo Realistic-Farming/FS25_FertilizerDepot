@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Depo ayarlarını aç"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Depo ayarlarını aç"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Alış %s   Satış %s"/>
     <text name="fd_rf_pda_band_readonly" text="Bu sayfa yalnızca bilgi gösterir. Alım ve satım deponun kendisinde yapılır."/>
     <text name="fd_rf_pda_band_empty_hall" text="Salon boş. Aracında %s L var: depolamak için depoda boşalt."/>
+    <text name="rf_live_key_unbound" text="Atanmamış"/>
+    <text name="rf_live_key_keyboard_unbound" text="Klavye atanmamis"/>
+    <text name="rf_live_key_unavailable" text="kullanılamıyor"/>
                                                                                                             </texts>
 </l10n>

@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Buka pengaturan depot"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Buka pengaturan depot"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Beli %s   Jual %s"/>
     <text name="fd_rf_pda_band_readonly" text="Halaman ini hanya tampilan. Pembelian dan penjualan dilakukan di depot itu sendiri."/>
     <text name="fd_rf_pda_band_empty_hall" text="Aula kosong. Ada %s L di kendaraanmu: tumpahkan di depot untuk menyimpannya."/>
+    <text name="rf_live_key_unbound" text="Tidak terikat"/>
+    <text name="rf_live_key_keyboard_unbound" text="Keyboard tidak terikat"/>
+    <text name="rf_live_key_unavailable" text="tidak tersedia"/>
                                                                                                             </texts>
 </l10n>
