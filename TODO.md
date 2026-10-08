@@ -56,3 +56,8 @@
 
 - [x] modDesc.xml lines 8 to 74: 42 lines back to f437e84's text; the English em dash written as a spaced hyphen.
 - [~] In game (owed): TESTING row 488.
+
+## 2026-10-08 (Fred): Soil detection handle (MAINTENANCE row 252)
+
+- [x] `src/integrations/SoilFertilizerBridge.lua` `isInstalled`: the mission handle first. Bar `MAINT-252-soil_handle_entry_test.lua`, battery `tools/test/mutate_maint252.py`, 1 of 1.
+- [~] In game (owed): TESTING row 512.

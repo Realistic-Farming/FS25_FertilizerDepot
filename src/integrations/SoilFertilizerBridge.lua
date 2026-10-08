@@ -17,8 +17,13 @@ function SoilFertilizerBridge.new()
 end
 
 -- Returns true when FS25_SoilFertilizer is present and initialized
+-- [MAINTENANCE row 252] Soil's handle from the mission (SoilFertilizer main.lua:761), as this mod's
+-- other bridges read theirs: Soil writes g_SoilFertilityManager into its own mod environment
+-- (getfenv(0), :758), so a bare read here is nil in a game and the depot logged "SF installed: false"
+-- with Soil loaded. The bare global stays as the fallback.
 function SoilFertilizerBridge:isInstalled()
-    return g_SoilFertilityManager ~= nil
+    local sfm = (g_currentMission ~= nil and g_currentMission.soilFertilityManager) or g_SoilFertilityManager
+    return sfm ~= nil
 end
 
 -- Returns ordered list of {name, fillTypeIndex, pricePerLiter, displayName} tables.
