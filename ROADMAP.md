@@ -58,3 +58,8 @@
 ## 2026-10-06 (Fred): the mod's title and description readable again in every language (MAINTENANCE row 227)
 
 - [x] 42 lines of the title and description in `modDesc.xml` (lines 8 to 74) had been damaged in one commit, 06ea086 (2026-08-08), and again by a later re-encoding: the text was read through the DOS cp850 code page and saved as cp1252, which turned some letters into '+' or '-' and others into bytes that later became U+FFFD, and the result was then double encoded. 39 of the lines showed garbled characters; three (German lines 8 and 50, Turkish line 22) had lost their letters to plain '+' signs ("D++ngerdepot"). Each line is restored from f437e84 (2026-07-28), the last commit before the damage. Replaying the two damage steps on f437e84 reproduces all 68 lines from 7 to 74 at development exactly, so the restore is exact. The English description's one em dash is written as a spaced hyphen. No other line changes, and the version line stays.
+
+## 2026-10-08 (Fred): the depot sees Soil & Fertilizer in a game (MAINTENANCE row 252)
+
+- [x] `SoilFertilizerBridge:isInstalled` read the bare global `g_SoilFertilityManager`, which Soil sets only in its own mod environment, so the depot logged "SF installed: false" with Soil loaded. It now reads `g_currentMission.soilFertilityManager` first, as the depot's other bridges read theirs. Design origin none (the line is from the first scaffold).
+- The in-game check is TESTING row 512.
