@@ -63,3 +63,8 @@
 
 - [x] `SoilFertilizerBridge:isInstalled` read the bare global `g_SoilFertilityManager`, which Soil sets only in its own mod environment, so the depot logged "SF installed: false" with Soil loaded. It now reads `g_currentMission.soilFertilityManager` first, as the depot's other bridges read theirs. Design origin none (the line is from the first scaffold).
 - The in-game check is TESTING row 512.
+
+## 2026-10-08 (Fred): the Tablet shows the depot's own settings changes (MAINTENANCE row 258)
+
+- [x] The depot registers with SettingsHub as selfPersisted, so the hub showed the values the depot registered with, and a change made in the depot's own settings dialog (which goes through the depot's NetworkSync settings action) never reached the Tablet. The registration now passes SettingsHub a reader that answers the depot's live settings, so a dialog change shows in the Tablet at once on the host and on every client within a second. Needs SettingsHub's row 258 reader support (SettingsHub #26); with an older SettingsHub the reader is ignored. Design origin none.
+- The in-game check is TESTING row 519.
