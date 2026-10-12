@@ -308,15 +308,18 @@ function DepotSystem:orderProduct(depotId, fillTypeName, fillTypeIndex, quantity
     quantity = math.max(1, math.min(DepotConstants.MAX_PRODUCT_QUANTITY, quantity or 1))
     local litresNeeded = quantity * DepotConstants.PRODUCT_LITRES_PER_UNIT
 
+    -- As the Buy tab does (buyFillType): stored litres go first and the market covers
+    -- the rest, so an empty depot still fills an order. The price is the same either
+    -- way. Tyson's ruling of 2026-10-12; before it, an order larger than the stock was
+    -- refused, so a new depot could never sell a bag or a tank.
     local stored = depot.storageLevel[fillTypeName] or 0
-    if stored < litresNeeded then return false, "fd_products_no_stock" end
 
     local cost = self._pricing:calculateBuyCost(fillTypeName, litresNeeded, farmId)
     local farm = g_farmManager and g_farmManager:getFarmById(farmId)
     if not farm then return false, "fd_error_farm" end
     if farm:getBalance() < cost then return false, "fd_depot_no_money" end
 
-    depot.storageLevel[fillTypeName] = stored - litresNeeded
+    depot.storageLevel[fillTypeName] = stored - math.min(litresNeeded, stored)
     g_currentMission:addMoney(-cost, farmId, MoneyType.PURCHASE_FERTILIZER, true, true)
 
     -- Spawn objects side by side (1.5m apart along world X)

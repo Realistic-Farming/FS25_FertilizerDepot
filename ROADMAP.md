@@ -68,3 +68,8 @@
 
 - [x] The depot registers with SettingsHub as selfPersisted, so the hub showed the values the depot registered with, and a change made in the depot's own settings dialog (which goes through the depot's NetworkSync settings action) never reached the Tablet. The registration now passes SettingsHub a reader that answers the depot's live settings, so a dialog change shows in the Tablet at once on the host and on every client within a second. Needs SettingsHub's row 258 reader support (SettingsHub #26); with an older SettingsHub the reader is ignored. Design origin none.
 - The in-game check is TESTING row 519.
+
+## 2026-10-12 (Fred (via Desk)): bags and tanks order like the Buy tab (Tyson's ruling)
+
+- [x] A Products tab order no longer needs the depot to hold the whole order. Stored litres go first and the market covers the rest, at the same price, as the Buy tab already did. A new depot can now sell a bag or a tank; before, it refused with "Insufficient depot stock for this order." until a player had sold product into it. The guide's Products page says so.
+- The in-game check is TESTING row 550.
