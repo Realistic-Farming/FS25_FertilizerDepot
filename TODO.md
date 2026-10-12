@@ -66,3 +66,8 @@
 
 - [x] `src/integrations/DepotSettingsHubBridge.lua`: `readValue` (the table `applyChange` writes), passed as `read` in the registration. Bar `MAINT-258-hub_reader_entry_test.lua` (main.lua's registration site, the depot's own dialog apply); battery `tools/test/mutate_maint258.py`, 2 of 2.
 - [~] In game (owed): TESTING row 519.
+
+## 2026-10-12 (Fred (via Desk)): Products orders like the Buy tab (Tyson's ruling)
+
+- [x] `src/DepotSystem.lua` `orderProduct`: takes min(order, stock) from storage and no longer refuses short stock. `src/ui/DepotDialog.lua` `onProductConfirm`: the client-side stock check is gone. `src/gui/FdGuideDialog.lua` PAGE4: the Products lines. Bar `products_like_bulk_test.lua` (from `onProductConfirm` through `FDNetworkSyncBridge.sendAction` into `orderProduct`), 15 of 15; control on development 9 fail; mutants 3 of 3 killed.
+- [~] In game (owed): TESTING row 550.

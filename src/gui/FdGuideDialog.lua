@@ -206,8 +206,9 @@ FdGuideDialog.PAGE4 = {
     { t="B", v="or liquid tanks of a thousand litres each," },
     { t="B", v="up to five at a time." },
     { t="S", v=" " },
-    { t="B", v="Unlike the Buy tab this comes out of depot" },
-    { t="B", v="stock, so the depot must hold enough." },
+    { t="B", v="Like the Buy tab, stored litres go first" },
+    { t="B", v="and the rest is bought in, so an empty" },
+    { t="B", v="depot still fills an order." },
 }
 
 FdGuideDialog.PAGE5 = {

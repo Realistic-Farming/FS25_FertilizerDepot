@@ -585,14 +585,8 @@ function DepotDialog:onProductConfirm()
 
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
     local ft     = self.selectedProduct
-    local system = g_DepotManager and g_DepotManager.depotSystem
-
-    local stored = system and system:getStorageLevel(self.depotId, ft.name) or 0
-    local litresNeeded = self.productQuantity * ft.litresPerUnit
-    if stored < litresNeeded then
-        self:showStatus(tr("fd_products_no_stock", "Insufficient depot stock for this order."))
-        return
-    end
+    -- No stock check here: an order takes stored litres first and buys the rest, as
+    -- the Buy tab does (DepotSystem:orderProduct). The server answers money and room.
 
     -- Positional, in handleProductOrder's read order (FDNetworkSyncBridge.lua).
     -- Slot 5 is the claimed farm and is never nil; the server binds its own.
