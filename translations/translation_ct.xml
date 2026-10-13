@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="Trailer tank is full."/>
     <text name="fd_depot_tank_empty"    text="Trailer tank is empty."/>
     <text name="fd_depot_storage_full"  text="Depot storage is full."/>
+    <text name="fd_depot_request_sent" text="請求已發送至伺服器。"/>
     <text name="fd_depot_buy_success"   text="Purchase complete."/>
     <text name="fd_depot_sell_success"  text="Sale complete."/>
 
@@ -50,10 +51,7 @@
     <text name="fd_error_farm"   text="Farm not found."/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Fertilizer Filling Silo"/>
-    <text name="fd_silo_function" text="Drive up with trailer to fill any fertilizer. Requires Fertilizer Depot."/>
-    <text name="fd_silo_desc"     text="The Fertilizer Filling Silo is the second half of the Fertilizer Depot system. Place it near your fields and drive up to fill."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Fertilizer Depot Settings"/>
     <text name="fd_settings_seasonal"   text="Seasonal Pricing"/>
@@ -61,22 +59,19 @@
     <text name="fd_settings_sell_ratio" text="Sell-Back Ratio"/>
     <text name="fd_settings_buy_mult"   text="Buy Price Multiplier"/>
     <text name="fd_settings_reset"      text="Reset Defaults"/>
-    <text name="fd_settings_apply"     text="æ‡‰ç”¨"/>
+    <text name="fd_settings_apply"     text="應用"/>
     <text name="fd_settings_debug"     text="Debug Logging"/>
-    <text name="fd_settings_admin_only" text="View only â€” admin required to change settings"/>
+    <text name="fd_settings_admin_only" text="View only, admin required to change settings"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="é–‹å•Ÿå€‰åº«è¨­å®š"/>
+    <text name="input_FD_OPEN_SETTINGS" text="開啟倉庫設定"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
     <text name="fd_depot_select_first" text="[EN] Select a fill type first."/>
-    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL â€” walk to silo to collect."/>
-    <text name="fd_silo_collect_action" text="[EN] Collect %s (%.0fL)"/>
-    <text name="fd_silo_no_order" text="[EN] No pending order. Confirm a type at the Depot first."/>
-    <text name="fd_silo_fill_confirm" text="[EN] Collect %.0fL of %s?&#10;&#10;Your vehicle will be filled."/>
-    <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
+    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL, walk to silo to collect."/>
+                <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
     <text name="fd_depot_filling" text="[EN] Filling %.0fL of %s into your vehicle..."/>
     <text name="input_FD_INTERACT" text="[EN] Interact with Fertilizer Depot"/>
     <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab" text="[EN] Products"/>
@@ -87,42 +82,74 @@
     <text name="fd_products_none" text="[EN] No physical products available."/>
     <text name="fd_products_no_stock" text="[EN] Insufficient depot stock for this order."/>
     <text name="fd_products_no_object" text="[EN] No physical object registered for this type."/>
-    <text name="fd_products_ordered" text="[EN] %dÃ— %s %s ordered â€” delivering to depot."/>
+    <text name="fd_products_ordered" text="[EN] %d× %s %s ordered, delivering to depot."/>
     <text name="fd_depot_selected" text="[EN] Selected"/>
-    <text name="fd_pickup_name" text="[EN] Fertilizer Supplier"/>
-    <text name="fd_pickup_function" text="[EN] Supplier pickup zone for delivery orders. Place near the in-game shop."/>
-    <text name="fd_col_needed" text="[EN] Needed"/>
-    <text name="fd_col_amount" text="[EN] Amount"/>
-    <text name="fd_col_revenue" text="[EN] Revenue"/>
-    <text name="fd_delivery_pickup_action" text="[EN] Collect Delivery"/>
-    <text name="fd_delivery_no_pending" text="[EN] No pending delivery."/>
-
+                <text name="fd_col_amount" text="[EN] Amount"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+            
     <!-- Delivery system, HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="[EN] Fertilizer Delivery"/>
-    <text name="fd_delivery_hud_pending" text="[EN] Drive to the pickup zone to collect your order"/>
-    <text name="fd_delivery_hud_loaded"  text="[EN] Return to your depot to complete the delivery"/>
-    <text name="fd_delivery_pickup_confirm" text="[EN] Collect delivery for %s?&#10;&#10;Goods will be stocked when you return to your depot."/>
-    <text name="fd_delivery_order_confirm" text="[EN] Place delivery order for %d fill type(s)?&#10;&#10;Total cost on pickup: %s&#10;(10%% delivery fee included)"/>
-    <text name="fd_delivery_cancel_confirm" text="[EN] Cancel delivery order?&#10;&#10;A penalty of %s (20%% of delivery cost) will be deducted."/>
-    <text name="fd_delivery_complete_confirm" text="[EN] Complete delivery and stock your depot?&#10;&#10;All ordered fill types will be added to storage."/>
-    <text name="fd_delivery_no_pickup_placed" text="[EN] Place a Fertilizer Supplier pickup zone near the in-game shop first."/>
-    <text name="fd_delivery_all_full" text="[EN] All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_cost_summary" text="[EN] Base: $%.2f  +  Fee: $%.2f  =  Total: $%.2f"/>
-    <text name="fd_delivery_status_pending" text="[EN] Delivery pending â€” drive to Pickup Zone to collect  |  Cancel penalty: %s"/>
-    <text name="fd_delivery_status_ready" text="[EN] Delivery ready â€” click to stock your depot."/>
-    <text name="fd_delivery_status_park" text="[EN] Park delivery vehicle within 25m of unload zone  (%.0fm away)"/>
-    <text name="fd_delivery_status_return" text="[EN] Return to depot and park near the unload zone."/>
-    <text name="fd_delivery_place_btn" text="[EN] Place Delivery Order"/>
-    <text name="fd_delivery_cancel_btn" text="[EN] Cancel Order"/>
-    <text name="fd_delivery_complete_btn" text="[EN] Complete Delivery"/>
-    <text name="fd_delivery_order_placed" text="[EN] Order placed â€” drive to the Pickup Zone."/>
-    <text name="fd_delivery_cancelled" text="[EN] Delivery cancelled."/>
-    <text name="fd_delivery_completing" text="[EN] Delivery complete! Stock has been added."/>
-    <text name="fd_delivery_already_active" text="[EN] A delivery is already in progress."/>
-    <text name="fd_delivery_no_pickup" text="[EN] No supplier pickup zone placed on this map."/>
-    <text name="fd_delivery_stock_full" text="[EN] All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_none" text="[EN] No active delivery."/>
-    <text name="fd_delivery_wrong_status" text="[EN] Delivery is not in the correct state for this action."/>
-    <text name="fd_delivery_wrong_farm" text="[EN] This delivery belongs to a different farm."/>
-    </texts>
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 肥料 (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 肥料 (N)"/>
+    <text name="sf_anhydrous_title" text="無水氨 (N)"/>
+    <text name="sf_starter_title" text="啟動肥 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="尿素 46-0-0 (N)"/>
+    <text name="sf_an_title" text="硝酸銨 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="硫酸銨 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP 肥料 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP 肥料 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="氯化鉀 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="液態尿素 (N)"/>
+    <text name="sf_liquid_ams_title" text="液態硫酸銨 (N)"/>
+    <text name="sf_liquid_map_title" text="液態 MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="液態 DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="液態鉀肥 (K)"/>
+    <text name="sf_insecticide_title" text="殺蟲劑"/>
+    <text name="sf_fungicide_title" text="殺菌劑"/>
+    <text name="sf_gypsum_title" text="石膏 (pH-)"/>
+    <text name="sf_compost_title" text="堆肥 (有機)"/>
+    <text name="sf_biosolids_title" text="生物固形物 (N+P)"/>
+    <text name="sf_chicken_manure_title" text="雞糞 (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="造粒廄肥 (NPK)"/>
+    <text name="sf_liquidlime_title" text="液態石灰 (pH+)"/>
+    <text name="fillType_ammonia" text="氨"/>
+    <text name="fillType_phosphoricAcid" text="磷酸"/>
+    <text name="fillType_potassiumChloride" text="氯化鉀"/>
+    <text name="fillType_urea" text="尿素"/>
+    <text name="fillType_sulfur" text="硫磺"/>
+    <text name="fillType_compost" text="堆肥"/>
+    <text name="stationName_fertilizerChemIn" text="肥料倉庫 - 化學品輸入"/>
+    <text name="stationName_fertilizerManureChemIn" text="肥料倉庫 - 肥料儲存"/>
+    <text name="stationName_fertilizerCemStorageOut" text="肥料倉庫 - 生產與儲存輸出"/>
+    <text name="stationName_fertilizerChemBuying" text="肥料倉庫 - 肥料購買"/>
+    <text name="action_turnOnInformation" text="顯示裝載點資訊板"/>
+    <text name="action_turnOffInformation" text="隱藏裝載點資訊板"/>
+    <text name="action_turnOnBillboard" text="顯示生產資訊板"/>
+    <text name="action_turnOffBillboard" text="隱藏生產資訊板"/>
+    <text name="fd_depot_send_failed" text="無法將請求傳送至伺服器。"/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="肥料倉庫"/>
+    <text name="fd_rf_pda_blurb" text="所選倉庫的庫存與買賣價格。唯讀。"/>
+    <text name="fd_rf_pda_col_fill" text="產品"/>
+    <text name="fd_rf_pda_col_stock" text="庫存"/>
+    <text name="fd_rf_pda_col_buy" text="買入"/>
+    <text name="fd_rf_pda_col_sell" text="賣出"/>
+    <text name="fd_rf_pda_lbl_season" text="季節"/>
+    <text name="fd_rf_pda_season_off" text="關閉"/>
+    <text name="fd_rf_pda_waiting" text="倉庫管理器尚未就緒"/>
+    <text name="fd_rf_pda_focus_depot" text="已選：倉庫 %d · 共 %d 座倉庫"/>
+    <text name="fd_rf_pda_no_depot" text="你的農場還沒有倉庫"/>
+    <text name="fd_rf_pda_no_hall" text="尚無庫存資料 - 此倉庫的生產廠房沒有回應"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="尚無庫存資料 - 此倉庫是空的，請訂購肥料來填滿"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="尚無庫存資料 - 在你的農場放置倉庫以購買並儲存肥料"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer：未安裝（專業功能保持關閉）"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / 此處無庫存"/>
+    <text name="fd_rf_pda_band_hall" text="%s：廠房 %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s：此廠房不存放此項"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s 車上：%s L"/>
+    <text name="fd_rf_pda_band_prices" text="買入 %s   賣出 %s"/>
+    <text name="fd_rf_pda_band_readonly" text="此頁面僅供檢視。買賣請在倉庫現場進行。"/>
+    <text name="fd_rf_pda_band_empty_hall" text="廠房是空的。你的車上有 %s L：請在倉庫卸下以存放。"/>
+                                                                                                            </texts>
 </l10n>

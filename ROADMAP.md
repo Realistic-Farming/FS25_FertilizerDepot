@@ -40,3 +40,36 @@
 
 ## Deferred / parked
 - Remove the `g_DepotManager` getfenv alias: parked for v2 (kept now for backward compat).
+
+## 2026-10-04 (Fred): the shared RF Esc door at the suite's STOCK page set (Wizard, #86)
+
+- [x] The four shared Esc door files (`xml/gui/RfPdaMenuPage.xml`, `src/gui/RfPdaMenuPage.lua`, `src/gui/RfEscModules.lua`, `xml/gui/rfEscProfiles.xml`) are at the set every door mod carries, byte-same in all ten (Wizard's STOCK page chain build, #86, merged at 038c305d): wider sheet cells, the explanation band at up to four lines, the ids and callbacks StockGuard's STOCK page uses (inert without StockGuard), the hidden ids and profiles of DairyCore's herd-advisory panel, ProStaff in the closed-module list, and Soil Fertilizer's AUTO target card kept.
+- The door's in-game check is TESTING row 413. Docs by Fred's catch-up, on Tyson's word of 2026-10-04.
+
+## 2026-10-05 (Fred): the Esc side panel's info box clear of the selected tab (Wizard, #88)
+
+- [x] The shared Esc door file `xml/gui/RfPdaMenuPage.xml`, byte-same in all ten door mods (Wizard, #88, merged at 8b4b761c): the side info boxes (`rfSideInfoShell`, `wcSideInfoShell`, `mdSideInfoShell`, `csSideInfoShell`) take an explicit position and size, 16 px further right and 16 px narrower (384 to 368 px), so the dark box starts clear of the selected tab's lime edge and its right edge stays where it was. The side text bodies narrow by the same 16 px, to 352 px (the main side text, from 368) and 348 px (the Worker Costs and Market Dynamics side help, from 364), so the text starts 16 px further right and each line ends where it did.
+- The change's in-game check is TESTING row 446. Docs by Fred's catch-up, on Tyson's word of 2026-10-05.
+
+## 2026-10-06 (Fred): the settings dialog's Apply button and the open-settings key readable in Japanese, Korean, Russian and Ukrainian (MAINTENANCE row 220)
+
+- [x] Six translation values (`fd_settings_apply` in jp, kr and uk; `input_FD_OPEN_SETTINGS` in jp, ru and uk) had been saved through the Windows cp1252 code page since 287c7de4 (2026-07-28), so those players saw garbled text on the Apply button and the key binding. Each is restored to the exact text its key was created with (380e626 and 94303bc). The Ukrainian Apply had lost a byte in a later dash fix, so it is taken from that source, not decoded; it matches the decode of 287c7de4. Row 62's count missed these six because a strict cp1252 round trip rejects the byte cp1252 leaves undefined. No other value changes.
+
+## 2026-10-06 (Fred): the mod's title and description readable again in every language (MAINTENANCE row 227)
+
+- [x] 42 lines of the title and description in `modDesc.xml` (lines 8 to 74) had been damaged in one commit, 06ea086 (2026-08-08), and again by a later re-encoding: the text was read through the DOS cp850 code page and saved as cp1252, which turned some letters into '+' or '-' and others into bytes that later became U+FFFD, and the result was then double encoded. 39 of the lines showed garbled characters; three (German lines 8 and 50, Turkish line 22) had lost their letters to plain '+' signs ("D++ngerdepot"). Each line is restored from f437e84 (2026-07-28), the last commit before the damage. Replaying the two damage steps on f437e84 reproduces all 68 lines from 7 to 74 at development exactly, so the restore is exact. The English description's one em dash is written as a spaced hyphen. No other line changes, and the version line stays.
+
+## 2026-10-08 (Fred): the depot sees Soil & Fertilizer in a game (MAINTENANCE row 252)
+
+- [x] `SoilFertilizerBridge:isInstalled` read the bare global `g_SoilFertilityManager`, which Soil sets only in its own mod environment, so the depot logged "SF installed: false" with Soil loaded. It now reads `g_currentMission.soilFertilityManager` first, as the depot's other bridges read theirs. Design origin none (the line is from the first scaffold).
+- The in-game check is TESTING row 512.
+
+## 2026-10-08 (Fred): the Tablet shows the depot's own settings changes (MAINTENANCE row 258)
+
+- [x] The depot registers with SettingsHub as selfPersisted, so the hub showed the values the depot registered with, and a change made in the depot's own settings dialog (which goes through the depot's NetworkSync settings action) never reached the Tablet. The registration now passes SettingsHub a reader that answers the depot's live settings, so a dialog change shows in the Tablet at once on the host and on every client within a second. Needs SettingsHub's row 258 reader support (SettingsHub #26); with an older SettingsHub the reader is ignored. Design origin none.
+- The in-game check is TESTING row 519.
+
+## 2026-10-12 (Fred (via Desk)): bags and tanks order like the Buy tab (Tyson's ruling)
+
+- [x] A Products tab order no longer needs the depot to hold the whole order. Stored litres go first and the market covers the rest, at the same price, as the Buy tab already did. A new depot can now sell a bag or a tank; before, it refused with "Insufficient depot stock for this order." until a player had sold product into it. The guide's Products page says so.
+- The in-game check is TESTING row 550.

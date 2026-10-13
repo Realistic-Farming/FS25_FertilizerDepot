@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="Trailer tank is full."/>
     <text name="fd_depot_tank_empty"    text="Trailer tank is empty."/>
     <text name="fd_depot_storage_full"  text="Depot storage is full."/>
+    <text name="fd_depot_request_sent" text="Kérés elküldve a szervernek."/>
     <text name="fd_depot_buy_success"   text="Purchase complete."/>
     <text name="fd_depot_sell_success"  text="Sale complete."/>
 
@@ -50,10 +51,7 @@
     <text name="fd_error_farm"   text="Farm not found."/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Fertilizer Filling Silo"/>
-    <text name="fd_silo_function" text="Drive up with trailer to fill any fertilizer. Requires Fertilizer Depot."/>
-    <text name="fd_silo_desc"     text="The Fertilizer Filling Silo is the second half of the Fertilizer Depot system. Place it near your fields and drive up to fill."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Fertilizer Depot Settings"/>
     <text name="fd_settings_seasonal"   text="Seasonal Pricing"/>
@@ -63,20 +61,17 @@
     <text name="fd_settings_reset"      text="Reset Defaults"/>
     <text name="fd_settings_apply"     text="Alkalmaz"/>
     <text name="fd_settings_debug"     text="Debug Logging"/>
-    <text name="fd_settings_admin_only" text="View only â€” admin required to change settings"/>
+    <text name="fd_settings_admin_only" text="View only, admin required to change settings"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="RaktÃ¡r beÃ¡llÃ­tÃ¡sok megnyitÃ¡sa"/>
+    <text name="input_FD_OPEN_SETTINGS" text="Raktár beállítások megnyitása"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
     <text name="fd_depot_select_first" text="[EN] Select a fill type first."/>
-    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL â€” walk to silo to collect."/>
-    <text name="fd_silo_collect_action" text="[EN] Collect %s (%.0fL)"/>
-    <text name="fd_silo_no_order" text="[EN] No pending order. Confirm a type at the Depot first."/>
-    <text name="fd_silo_fill_confirm" text="[EN] Collect %.0fL of %s?&#10;&#10;Your vehicle will be filled."/>
-    <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
+    <text name="fd_depot_order_set" text="[EN] Order set: %s %.0fL, walk to silo to collect."/>
+                <text name="fd_depot_sell_confirm" text="[EN] Sell %.0fL of %s to depot for %s?"/>
     <text name="fd_depot_filling" text="[EN] Filling %.0fL of %s into your vehicle..."/>
     <text name="input_FD_INTERACT" text="[EN] Interact with Fertilizer Depot"/>
     <text name="input_FD_HUD_DRAG" text="[EN] Toggle Delivery HUD Edit Mode"/><text name="input_FD_TOGGLE_HUD" text="[EN] Toggle Delivery HUD"/>    <text name="fd_products_tab" text="[EN] Products"/>
@@ -87,42 +82,74 @@
     <text name="fd_products_none" text="[EN] No physical products available."/>
     <text name="fd_products_no_stock" text="[EN] Insufficient depot stock for this order."/>
     <text name="fd_products_no_object" text="[EN] No physical object registered for this type."/>
-    <text name="fd_products_ordered" text="[EN] %dÃ— %s %s ordered â€” delivering to depot."/>
+    <text name="fd_products_ordered" text="[EN] %d× %s %s ordered, delivering to depot."/>
     <text name="fd_depot_selected" text="[EN] Selected"/>
-    <text name="fd_pickup_name" text="[EN] Fertilizer Supplier"/>
-    <text name="fd_pickup_function" text="[EN] Supplier pickup zone for delivery orders. Place near the in-game shop."/>
-    <text name="fd_col_needed" text="[EN] Needed"/>
-    <text name="fd_col_amount" text="[EN] Amount"/>
-    <text name="fd_col_revenue" text="[EN] Revenue"/>
-    <text name="fd_delivery_pickup_action" text="[EN] Collect Delivery"/>
-    <text name="fd_delivery_no_pending" text="[EN] No pending delivery."/>
-
+                <text name="fd_col_amount" text="[EN] Amount"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+            
     <!-- Delivery system, HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="[EN] Fertilizer Delivery"/>
-    <text name="fd_delivery_hud_pending" text="[EN] Drive to the pickup zone to collect your order"/>
-    <text name="fd_delivery_hud_loaded"  text="[EN] Return to your depot to complete the delivery"/>
-    <text name="fd_delivery_pickup_confirm" text="[EN] Collect delivery for %s?&#10;&#10;Goods will be stocked when you return to your depot."/>
-    <text name="fd_delivery_order_confirm" text="[EN] Place delivery order for %d fill type(s)?&#10;&#10;Total cost on pickup: %s&#10;(10%% delivery fee included)"/>
-    <text name="fd_delivery_cancel_confirm" text="[EN] Cancel delivery order?&#10;&#10;A penalty of %s (20%% of delivery cost) will be deducted."/>
-    <text name="fd_delivery_complete_confirm" text="[EN] Complete delivery and stock your depot?&#10;&#10;All ordered fill types will be added to storage."/>
-    <text name="fd_delivery_no_pickup_placed" text="[EN] Place a Fertilizer Supplier pickup zone near the in-game shop first."/>
-    <text name="fd_delivery_all_full" text="[EN] All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_cost_summary" text="[EN] Base: $%.2f  +  Fee: $%.2f  =  Total: $%.2f"/>
-    <text name="fd_delivery_status_pending" text="[EN] Delivery pending â€” drive to Pickup Zone to collect  |  Cancel penalty: %s"/>
-    <text name="fd_delivery_status_ready" text="[EN] Delivery ready â€” click to stock your depot."/>
-    <text name="fd_delivery_status_park" text="[EN] Park delivery vehicle within 25m of unload zone  (%.0fm away)"/>
-    <text name="fd_delivery_status_return" text="[EN] Return to depot and park near the unload zone."/>
-    <text name="fd_delivery_place_btn" text="[EN] Place Delivery Order"/>
-    <text name="fd_delivery_cancel_btn" text="[EN] Cancel Order"/>
-    <text name="fd_delivery_complete_btn" text="[EN] Complete Delivery"/>
-    <text name="fd_delivery_order_placed" text="[EN] Order placed â€” drive to the Pickup Zone."/>
-    <text name="fd_delivery_cancelled" text="[EN] Delivery cancelled."/>
-    <text name="fd_delivery_completing" text="[EN] Delivery complete! Stock has been added."/>
-    <text name="fd_delivery_already_active" text="[EN] A delivery is already in progress."/>
-    <text name="fd_delivery_no_pickup" text="[EN] No supplier pickup zone placed on this map."/>
-    <text name="fd_delivery_stock_full" text="[EN] All fill types are at capacity â€” no delivery needed."/>
-    <text name="fd_delivery_none" text="[EN] No active delivery."/>
-    <text name="fd_delivery_wrong_status" text="[EN] Delivery is not in the correct state for this action."/>
-    <text name="fd_delivery_wrong_farm" text="[EN] This delivery belongs to a different farm."/>
-    </texts>
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="UAN 32 Nitrogén műtrágya (N)"/>
+    <text name="sf_uan28_title" text="UAN 28 Nitrogén műtrágya (N)"/>
+    <text name="sf_anhydrous_title" text="Vízmentes ammónia (N)"/>
+    <text name="sf_starter_title" text="Starter műtrágya 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Karbamid 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Ammónium-nitrát 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Ammónium-szulfát 21-0-0 (N)"/>
+    <text name="sf_map_title" text="MAP műtrágya 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="DAP műtrágya 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Hamuzsír 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Folyékony karbamid (N)"/>
+    <text name="sf_liquid_ams_title" text="Folyékony ammónium-szulfát (N)"/>
+    <text name="sf_liquid_map_title" text="Folyékony MAP (P)"/>
+    <text name="sf_liquid_dap_title" text="Folyékony DAP (P)"/>
+    <text name="sf_liquid_potash_title" text="Folyékony hamuzsír (K)"/>
+    <text name="sf_insecticide_title" text="Rovarölő szer"/>
+    <text name="sf_fungicide_title" text="Gombaölő szer"/>
+    <text name="sf_gypsum_title" text="Gipsz (pH-)"/>
+    <text name="sf_compost_title" text="Komposzt (szerves)"/>
+    <text name="sf_biosolids_title" text="Bioszilárd (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Csirketrágya (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Pelletált trágya (NPK)"/>
+    <text name="sf_liquidlime_title" text="Folyékony mész (pH+)"/>
+    <text name="fillType_ammonia" text="Ammónia"/>
+    <text name="fillType_phosphoricAcid" text="Foszforsav"/>
+    <text name="fillType_potassiumChloride" text="Kálium-klorid"/>
+    <text name="fillType_urea" text="Karbamid"/>
+    <text name="fillType_sulfur" text="Kén"/>
+    <text name="fillType_compost" text="Komposzt"/>
+    <text name="stationName_fertilizerChemIn" text="Műtrágyaraktár - Vegyianyag-bemenet"/>
+    <text name="stationName_fertilizerManureChemIn" text="Műtrágyaraktár - Műtrágyatárolás"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Műtrágyaraktár - Gyártási és tárolási kimenet"/>
+    <text name="stationName_fertilizerChemBuying" text="Műtrágyaraktár - Műtrágyavásárlás"/>
+    <text name="action_turnOnInformation" text="Rakodóhelyek információs tábláinak megjelenítése"/>
+    <text name="action_turnOffInformation" text="Rakodóhelyek információs tábláinak elrejtése"/>
+    <text name="action_turnOnBillboard" text="Termelési információs táblák megjelenítése"/>
+    <text name="action_turnOffBillboard" text="Termelési információs táblák elrejtése"/>
+    <text name="fd_depot_send_failed" text="A kérést nem sikerült elküldeni a szervernek."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Műtrágyaraktár"/>
+    <text name="fd_rf_pda_blurb" text="A kiválasztott raktár készlete és vételi/eladási árai. Csak olvasható."/>
+    <text name="fd_rf_pda_col_fill" text="Termék"/>
+    <text name="fd_rf_pda_col_stock" text="Készlet"/>
+    <text name="fd_rf_pda_col_buy" text="Vétel"/>
+    <text name="fd_rf_pda_col_sell" text="Eladás"/>
+    <text name="fd_rf_pda_lbl_season" text="Szezon"/>
+    <text name="fd_rf_pda_season_off" text="ki"/>
+    <text name="fd_rf_pda_waiting" text="A raktárkezelő nem áll készen"/>
+    <text name="fd_rf_pda_focus_depot" text="Kiválasztva: %d. raktár · %d raktár"/>
+    <text name="fd_rf_pda_no_depot" text="még nincs raktár a gazdaságodban"/>
+    <text name="fd_rf_pda_no_hall" text="még nincs készletadat - a raktár termelőcsarnoka nem válaszolt"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="még nincs készletadat - ez a raktár üres, rendelj műtrágyát a feltöltéséhez"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="még nincs készletadat - helyezz el egy raktárt a gazdaságodban a műtrágya vásárlásához és tárolásához"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer: nincs telepítve (a speciális funkciók kikapcsolva maradnak)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / itt nincs készleten"/>
+    <text name="fd_rf_pda_band_hall" text="%s: csarnok %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s: ez a csarnok nem tárolja"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s a járművön: %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Vétel %s   Eladás %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Ez az oldal csak kijelzés. A vétel és az eladás magánál a raktárnál történik."/>
+    <text name="fd_rf_pda_band_empty_hall" text="A csarnok üres. %s L van a járművedben: ürítsd a raktárnál a tároláshoz."/>
+                                                                                                            </texts>
 </l10n>

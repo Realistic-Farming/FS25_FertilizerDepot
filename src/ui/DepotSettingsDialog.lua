@@ -5,19 +5,25 @@
 -- Uses MultiTextOptionElement for each setting (cycle presets).
 
 local _depotSettingsModDir  = (FertilizerDepotModDirectory or g_currentModDirectory)  -- captured at source() time
-local _depotSettingsModName = (FertilizerDepotModName or g_currentModName)
 local _depotSettingsInstance = nil                  -- local so __index chain can't shadow it
 
+--- Localised text the SoilFertilizer #973 way: hasText is the gate (the engine's own
+--- answer to "does this key exist", I18N.lua:194), the return is opaque past it. Never a
+--- comparison against the "$l10n_" attribute prefix, which getText cannot return, nor
+--- against the "Missing '<key>' in l10n<suffix>.xml" sentence (I18N.lua:186), which is a
+--- bet on how the engine renders a failure. Inside a mod's environment g_i18n IS the
+--- mod's own i18n (mods.lua:453, chained to the global), so no environment lookup is
+--- needed: g_modEnvironments appears in no file of the decompiled engine.
 local function tr(key, fallback)
-    local modEnv = g_modEnvironments and g_modEnvironments[_depotSettingsModName]
-    local i18n = (modEnv and modEnv.i18n) or g_i18n
-    if i18n then
-        local ok, text = pcall(function() return i18n:getText(key) end)
-        if ok and text and text ~= "" and text ~= ("$l10n_" .. key) then
-            return text
-        end
+    local i18n = g_i18n
+    if i18n == nil or type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function" then
+        return fallback or key
     end
-    return fallback or key
+    local okHas, has = pcall(i18n.hasText, i18n, key)
+    if not okHas or has ~= true then return fallback or key end
+    local ok, text = pcall(i18n.getText, i18n, key)
+    if not ok or type(text) ~= "string" or text == "" then return fallback or key end
+    return text
 end
 
 ---@class DepotSettingsDialog
@@ -198,41 +204,32 @@ end
 -- Apply: read current UI states and send all settings to server, then close.
 function DepotSettingsDialog:onApplySettings()
     if not (g_currentMission.isMasterUser or g_server ~= nil) then return end
+    -- Positional {key, value}, in handleSettings' read order (FDNetworkSyncBridge.lua)
+    local allSent = true
+    local function send(key, value)
+        local sent = FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, { key, value })
+        allSent = allSent and sent
+    end
     if self.optSeasonalPricing then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-            key = "seasonalPricing",
-            value = tostring(self.optSeasonalPricing:getState() == 2),
-        })
+        send("seasonalPricing", tostring(self.optSeasonalPricing:getState() == 2))
     end
     if self.optStorageCapacity then
         local v = DepotSettings.CAPACITY_OPTIONS[self.optStorageCapacity:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "storageCapacity", value = tostring(v),
-            })
-        end
+        if v then send("storageCapacity", tostring(v)) end
     end
     if self.optSellRatio then
         local v = DepotSettings.SELL_RATIO_OPTIONS[self.optSellRatio:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "sellRatio", value = tostring(v),
-            })
-        end
+        if v then send("sellRatio", tostring(v)) end
     end
     if self.optBuyMultiplier then
         local v = DepotSettings.BUY_MULT_OPTIONS[self.optBuyMultiplier:getState()]
-        if v then
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-                key = "buyMultiplier", value = tostring(v),
-            })
-        end
+        if v then send("buyMultiplier", tostring(v)) end
     end
     if self.optDebugLogging then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SETTINGS, {
-            key = "debugLogging",
-            value = tostring(self.optDebugLogging:getState() == 2),
-        })
+        send("debugLogging", tostring(self.optDebugLogging:getState() == 2))
+    end
+    if not allSent then
+        DepotLogger.warning("Depot settings not sent: no NetworkSync and not the host")
     end
     self:close()
 end

@@ -3,30 +3,32 @@
 -- =========================================================
 
 local _depotDialogModDir  = (FertilizerDepotModDirectory or g_currentModDirectory)
-local _depotDialogModName = (FertilizerDepotModName or g_currentModName)
 local _depotDialogInstance = nil
 
+--- Localised text the SoilFertilizer #973 way: hasText is the gate (the engine's own
+--- answer to "does this key exist", I18N.lua:194), the return is opaque past it. Never a
+--- comparison against the "$l10n_" attribute prefix, which getText cannot return, nor
+--- against the "Missing '<key>' in l10n<suffix>.xml" sentence (I18N.lua:186), which is a
+--- bet on how the engine renders a failure. Inside a mod's environment g_i18n IS the
+--- mod's own i18n (mods.lua:453, chained to the global), so no environment lookup is
+--- needed: g_modEnvironments appears in no file of the decompiled engine.
 local function tr(key, fallback)
-    local modEnv = g_modEnvironments and g_modEnvironments[_depotDialogModName]
-    local i18n = (modEnv and modEnv.i18n) or g_i18n
-    if i18n then
-        local ok, text = pcall(function() return i18n:getText(key) end)
-        -- FS25 returns "Missing 'key' in l10n_XX.xml" for unknown keys instead of throwing
-        if ok and text and text ~= "" and text ~= ("$l10n_" .. key)
-           and not text:find("^Missing '") then
-            return text
-        end
+    local i18n = g_i18n
+    if i18n == nil or type(i18n.hasText) ~= "function" or type(i18n.getText) ~= "function" then
+        return fallback or key
     end
-    return fallback or key
+    local okHas, has = pcall(i18n.hasText, i18n, key)
+    if not okHas or has ~= true then return fallback or key end
+    local ok, text = pcall(i18n.getText, i18n, key)
+    if not ok or type(text) ~= "string" or text == "" then return fallback or key end
+    return text
 end
 
 ---@class DepotDialog
 DepotDialog = DepotDialog or {}
-DepotDialog.ROWS        = 8
 DepotDialog.TAB_BUY      = "buy"
 DepotDialog.TAB_SELL     = "sell"
 DepotDialog.TAB_PRODUCTS = "products"
-DepotDialog.TAB_ORDER    = "order"
 DepotDialog.ORDER_STEP  = 500
 DepotDialog.ORDER_MIN   = 500
 DepotDialog.ORDER_MAX   = 50000
@@ -37,7 +39,12 @@ function DepotDialog.new(depotId)
     local self = MessageDialog.new(nil, DepotDialog_mt)
     self.depotId          = depotId
     self.tab              = DepotDialog.TAB_BUY
-    self.pageIndex        = 0
+    -- BUILD 17:21: one scrolling list, so there is no page offset any more. self.listRows is
+    -- what the list is showing right now, rebuilt by each refresh*Tab, and its index IS the index
+    -- into the backing array for that tab.
+    self.listRows         = {}
+    -- The Sell tab's armed fill type, by name so a rebuilt list cannot arm a different row.
+    self.sellArmedName    = nil
     self.fillTypes        = {}
     self.selectedFillType = nil
     self.orderAmount      = 1000
@@ -67,14 +74,6 @@ function DepotDialog.new(depotId)
     self.prodQtyDisplay       = nil
     self.prodTotalPrice       = nil
 
-    -- Order tab elements
-    self.orderPanel           = nil
-    self.orderCostText        = nil
-    self.orderActionBtn       = nil
-    self.orderActionTxt       = nil
-
-    -- [1..ROWS] = {nameEl, stockEl, priceEl, actionBtn, actionTxt}
-    self.rows = {}
     -- Cached sell list built each refresh: [{ft, liters, revenue}, ...]
     self.sellList = {}
     return self
@@ -102,8 +101,8 @@ function DepotDialog.show(depotId)
     local dlg = _depotDialogInstance
     dlg.depotId          = depotId
     dlg.tab              = DepotDialog.TAB_BUY
-    dlg.pageIndex        = 0
     dlg.selectedFillType = nil
+    dlg.sellArmedName    = nil
     dlg.orderAmount      = 1000
     dlg.selectedProduct  = nil
     dlg.productQuantity  = 1
@@ -138,21 +137,7 @@ function DepotDialog:onGuiSetupFinished()
     self.prodQtyDisplay   = self:getDescendantById("prodQtyDisplay")
     self.prodTotalPrice   = self:getDescendantById("prodTotalPrice")
 
-    self.orderPanel     = self:getDescendantById("orderPanel")
-    self.orderCostText  = self:getDescendantById("orderCostText")
-    self.orderActionBtn = self:getDescendantById("orderActionBtn")
-    self.orderActionTxt = self:getDescendantById("orderActionTxt")
-
-    for i = 0, DepotDialog.ROWS - 1 do
-        local p = "row" .. i
-        self.rows[i + 1] = {
-            nameEl    = self:getDescendantById(p .. "name"),
-            stockEl   = self:getDescendantById(p .. "stock"),
-            priceEl   = self:getDescendantById(p .. "price"),
-            actionBtn = self:getDescendantById(p .. "action"),
-            actionTxt = self:getDescendantById(p .. "actionTxt"),
-        }
-    end
+    self.depotList = self:getDescendantById("depotList")
 end
 
 function DepotDialog:onOpen()
@@ -179,6 +164,39 @@ function DepotDialog:onSyncReceived(depotId)
     if depotId == self.depotId then self:refresh() end
 end
 
+--- RSF-F230: what this machine can truthfully say after sendAction. A host has
+--- the owner's tuple; a client only knows the request left. `figure` is the
+--- owner's actual number for the host success line, already formatted.
+local function isServerHere()
+    return g_currentMission ~= nil and type(g_currentMission.getIsServer) == "function"
+        and g_currentMission:getIsServer() == true
+end
+
+local function resultStatus(sent, ok, reason, successKey, successFallback, figure)
+    if not sent then
+        return tr("fd_depot_send_failed", "Request could not be sent to the server.")
+    end
+    if not isServerHere() then
+        return tr("fd_depot_request_sent", "Request sent to the server.")
+    end
+    if ok == true then
+        -- A caller that renders its own success line passes no key, and cannot
+        -- reach here: onProductConfirm consumes exactly this conjunction above.
+        -- The guard exists because tr() would concatenate a nil key and crash,
+        -- so it is the other half of that change rather than a check on its own.
+        if successKey == nil then
+            return tr("fd_error_server", "Server error.")
+        end
+        local text = tr(successKey, successFallback)
+        if figure ~= nil and figure ~= "" then text = text .. " " .. figure end
+        return text
+    end
+    if type(reason) == "string" and reason ~= "" then
+        return tr(reason, reason)
+    end
+    return tr("fd_error_server", "Server error.")
+end
+
 function DepotDialog:showStatus(text)
     if self.statusText then self.statusText:setText(text) end
 end
@@ -187,30 +205,23 @@ end
 
 function DepotDialog:onTabBuy()
     self.tab = DepotDialog.TAB_BUY
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self:_syncTabSections()
     self:refresh()
 end
 
 function DepotDialog:onTabSell()
     self.tab = DepotDialog.TAB_SELL
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self:_syncTabSections()
     self:refresh()
 end
 
 function DepotDialog:onTabProducts()
     self.tab = DepotDialog.TAB_PRODUCTS
-    self.pageIndex = 0
+    self.sellArmedName = nil
     self.selectedProduct = nil
     self.productQuantity = 1
-    self:_syncTabSections()
-    self:refresh()
-end
-
-function DepotDialog:onTabOrder()
-    self.tab = DepotDialog.TAB_ORDER
-    self.pageIndex = 0
     self:_syncTabSections()
     self:refresh()
 end
@@ -218,11 +229,9 @@ end
 function DepotDialog:_syncTabSections()
     local isBuy      = (self.tab == DepotDialog.TAB_BUY)
     local isProducts = (self.tab == DepotDialog.TAB_PRODUCTS)
-    local isOrder    = (self.tab == DepotDialog.TAB_ORDER)
-    if self.preOrderDivider  then self.preOrderDivider:setVisible(isBuy or isProducts or isOrder) end
+    if self.preOrderDivider  then self.preOrderDivider:setVisible(isBuy or isProducts) end
     if self.preOrderRow      then self.preOrderRow:setVisible(isBuy) end
     if self.productsOrderRow then self.productsOrderRow:setVisible(isProducts) end
-    if self.orderPanel       then self.orderPanel:setVisible(isOrder) end
 end
 
 -- ─── Refresh ─────────────────────────────────────────────
@@ -239,18 +248,12 @@ function DepotDialog:refresh()
         if self.colStockHeader then self.colStockHeader:setText(tr("fd_col_amount", "Amount"))      end
         if self.colPriceHeader then self.colPriceHeader:setText(tr("fd_col_revenue","Revenue"))     end
         self:refreshSellTab()
-    elseif self.tab == DepotDialog.TAB_PRODUCTS then
+    else
         if self.colTypeHeader  then self.colTypeHeader:setText(tr("fd_col_type",   "Fill Type"))    end
         if self.colStockHeader then self.colStockHeader:setText(tr("fd_col_stock", "Depot Stock"))  end
         if self.colPriceHeader then self.colPriceHeader:setText(tr("fd_col_price", "Price / 1kL")) end
         self:refreshProductsTab()
-    else
-        if self.colTypeHeader  then self.colTypeHeader:setText(tr("fd_col_type",   "Fill Type"))    end
-        if self.colStockHeader then self.colStockHeader:setText(tr("fd_col_stock", "In Stock"))     end
-        if self.colPriceHeader then self.colPriceHeader:setText(tr("fd_col_needed","Needed"))       end
-        self:refreshOrderTab()
     end
-    self:updatePagination()
 end
 
 function DepotDialog:updateSeasonLabel()
@@ -271,39 +274,30 @@ function DepotDialog:refreshBuyTab()
     local system  = g_DepotManager and g_DepotManager.depotSystem
     local pricing = g_DepotManager and g_DepotManager.pricing
 
-    for slot = 1, DepotDialog.ROWS do
-        local ftIdx = self.pageIndex + slot
-        local row   = self.rows[slot]
-        local ft    = self.fillTypes[ftIdx]
-
-        if ft and row then
-            local stored   = system and system:getStorageLevel(self.depotId, ft.name) or 0
-            local farmId = g_localPlayer and g_localPlayer.farmId or 1
-            local buyPrice = pricing and pricing:getBuyPrice(ft.name, farmId) or 0
-            local priceStr = string.format("$%.2f/kL", buyPrice * 1000)
-            local stockStr
-            if stored >= DepotConstants.STORAGE_CAPACITY then
-                stockStr = tr("fd_depot_stock_full", "Full")
-            elseif stored <= 0 then
-                stockStr = tr("fd_depot_stock_stocking", "Stocking")
-            else
-                stockStr = string.format("%dL", math.floor(stored))
-            end
-
-            if row.nameEl  then row.nameEl:setText(ft.displayName or ft.name) end
-            if row.stockEl then row.stockEl:setText(stockStr) end
-            if row.priceEl then row.priceEl:setText(priceStr) end
-
-            -- Highlight if this row is the currently selected type
-            local isSelected = self.selectedFillType and self.selectedFillType.name == ft.name
-            if row.actionTxt then
-                row.actionTxt:setText(isSelected and "Selected" or tr("fd_depot_select_btn", "Select"))
-            end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
+    local rows = {}
+    for i, ft in ipairs(self.fillTypes) do
+        local stored   = system and system:getStorageLevel(self.depotId, ft.name) or 0
+        local farmId = g_localPlayer and g_localPlayer.farmId or 1
+        local buyPrice = pricing and pricing:getBuyPrice(ft.name, farmId) or 0
+        local priceStr = string.format("$%.2f/kL", buyPrice * 1000)
+        local stockStr
+        if stored >= DepotConstants.STORAGE_CAPACITY then
+            stockStr = tr("fd_depot_stock_full", "Full")
+        elseif stored <= 0 then
+            stockStr = tr("fd_depot_stock_stocking", "Stocking")
         else
-            self:clearRow(slot)
+            stockStr = string.format("%dL", math.floor(stored))
         end
+        local isSelected = self.selectedFillType and self.selectedFillType.name == ft.name
+        rows[i] = {
+            name = ft.displayName or ft.name,
+            stock = stockStr,
+            price = priceStr,
+            action = isSelected and tr("fd_depot_selected", "Selected") or tr("fd_depot_select_btn", "Select"),
+        }
     end
+    self.listRows = rows
+    self:syncDepotList()
 end
 
 function DepotDialog:refreshSellTab()
@@ -328,21 +322,19 @@ function DepotDialog:refreshSellTab()
     -- Cache so executeSell uses the same snapshot as what was displayed
     self.sellList = sellTypes
 
-    for slot = 1, DepotDialog.ROWS do
-        local entry = sellTypes[self.pageIndex + slot]
-        local row   = self.rows[slot]
-        if entry and row then
-            local litersStr = string.format("%.0fL", entry.liters)
-            local revStr    = string.format("$%.2f", entry.revenue)
-            if row.nameEl   then row.nameEl:setText(entry.ft.displayName or entry.ft.name) end
-            if row.stockEl  then row.stockEl:setText(litersStr) end
-            if row.priceEl  then row.priceEl:setText(revStr) end
-            if row.actionTxt then row.actionTxt:setText(tr("fd_depot_sell_btn", "Sell All")) end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
-        else
-            self:clearRow(slot)
-        end
+    local rows = {}
+    for i, entry in ipairs(sellTypes) do
+        rows[i] = {
+            name = entry.ft.displayName or entry.ft.name,
+            stock = string.format("%.0fL", entry.liters),
+            price = string.format("$%.2f", entry.revenue),
+            action = (self.sellArmedName ~= nil and self.sellArmedName == entry.ft.name)
+                and tr("fd_depot_sell_confirm", "Confirm sale")
+                or tr("fd_depot_sell_btn", "Sell All"),
+        }
     end
+    self.listRows = rows
+    self:syncDepotList()
 
     if self.statusText then
         if #sellTypes == 0 then
@@ -365,43 +357,31 @@ function DepotDialog:refreshProductsTab()
         end
     end
 
-    for slot = 1, DepotDialog.ROWS do
-        local ftIdx = self.pageIndex + slot
-        local row   = self.rows[slot]
-        local ft    = self.productFillTypes[ftIdx]
-
-        if ft and row then
-            local stored      = system and system:getStorageLevel(self.depotId, ft.name) or 0
-            local pricePerUnit = pricing and
-                (pricing:getBuyPrice(ft.name) * ft.litresPerUnit) or 0
-            local priceStr = string.format("$%.2f/unit", pricePerUnit)
-            local stockStr
-            if stored <= 0 then
-                stockStr = tr("fd_depot_stock_stocking", "Stocking")
-            else
-                local units = math.floor(stored / ft.litresPerUnit)
-                stockStr = string.format("%d units", units)
-            end
-
-            if row.nameEl  then row.nameEl:setText(ft.displayName or ft.name) end
-            if row.stockEl then row.stockEl:setText(stockStr) end
-            if row.priceEl then row.priceEl:setText(priceStr) end
-
-            local isSelected = self.selectedProduct and self.selectedProduct.name == ft.name
-            if row.actionTxt then
-                if isSelected then
-                    row.actionTxt:setText(tr("fd_depot_selected", "Selected"))
-                elseif ft.productLabel == "bag" then
-                    row.actionTxt:setText(tr("fd_products_order_bag", "Order Bag"))
-                else
-                    row.actionTxt:setText(tr("fd_products_order_tank", "Order Tank"))
-                end
-            end
-            if row.actionBtn then row.actionBtn:setVisible(true) end
+    local rows = {}
+    for i, ft in ipairs(self.productFillTypes) do
+        local stored      = system and system:getStorageLevel(self.depotId, ft.name) or 0
+        local pricePerUnit = pricing and
+            (pricing:getBuyPrice(ft.name) * ft.litresPerUnit) or 0
+        local priceStr = string.format("$%.2f/unit", pricePerUnit)
+        local stockStr
+        if stored <= 0 then
+            stockStr = tr("fd_depot_stock_stocking", "Stocking")
         else
-            self:clearRow(slot)
+            local units = math.floor(stored / ft.litresPerUnit)
+            stockStr = string.format("%d units", units)
         end
+        local action
+        if self.selectedProduct and self.selectedProduct.name == ft.name then
+            action = tr("fd_depot_selected", "Selected")
+        elseif ft.productLabel == "bag" then
+            action = tr("fd_products_order_bag", "Order Bag")
+        else
+            action = tr("fd_products_order_tank", "Order Tank")
+        end
+        rows[i] = { name = ft.displayName or ft.name, stock = stockStr, price = priceStr, action = action }
     end
+    self.listRows = rows
+    self:syncDepotList()
 
     self:_updateProductsOrderRow()
 end
@@ -427,45 +407,63 @@ function DepotDialog:_updateProductsOrderRow()
     end
 end
 
-function DepotDialog:clearRow(slot)
-    local row = self.rows[slot]
-    if not row then return end
-    if row.nameEl   then row.nameEl:setText("") end
-    if row.stockEl  then row.stockEl:setText("") end
-    if row.priceEl  then row.priceEl:setText("") end
-    if row.actionBtn then row.actionBtn:setVisible(false) end
+-- ---------------------------------------------------------
+-- BUILD 17:21: the one stock list. The dialog is its own dataSource AND delegate (the XML loader
+-- already made it the delegate; setDataSource is ours), so a row click lands on
+-- onListSelectionChanged below and there is no per-row Button to keep in step.
+-- ---------------------------------------------------------
+
+function DepotDialog:getNumberOfItemsInSection(list, section)
+    return #(self.listRows or {})
 end
 
-function DepotDialog:updatePagination()
-    local total
-    if self.tab == DepotDialog.TAB_BUY then
-        total = #self.fillTypes
-    elseif self.tab == DepotDialog.TAB_SELL then
-        total = #self.sellList
-    elseif self.tab == DepotDialog.TAB_PRODUCTS then
-        total = #self.productFillTypes
-    else
-        -- ORDER tab: count items that would be ordered
-        local ds = g_DepotManager and g_DepotManager.deliverySystem
-        local order = ds and ds:calculateOrder(self.depotId)
-        total = (order and #order.items) or 0
+function DepotDialog:populateCellForItemInSection(list, section, index, cell)
+    if cell == nil or type(cell.getDescendantByName) ~= "function" then return end
+    local row = (self.listRows or {})[index]
+    if row == nil then return end
+    local function put(name, value)
+        local el = cell:getDescendantByName(name)
+        if el ~= nil and type(el.setText) == "function" then el:setText(value or "") end
     end
+    put("cellName", row.name)
+    put("cellStock", row.stock)
+    put("cellPrice", row.price)
+    put("cellAction", row.action)
+end
 
-    local maxPage = math.max(0, math.ceil(total / DepotDialog.ROWS) - 1)
-    local curPage = math.floor(self.pageIndex / DepotDialog.ROWS)
+--- A click on a row is the row action. This is the engine's CLICK channel, not its selection-changed
+--- delegate: the delegate only fires when the index really changes (SmoothListElement hasChanged), and
+--- a SmoothList is born with selectedIndex 1, so the top row could never act on itself. notifyClick
+--- runs on every click because selectOnClick defaults to false. Index is the index into the tab's
+--- backing array, because listRows is built one-for-one from it in the same order. Do not also route
+--- onListSelectionChanged here: the engine selects before it notifies, so both would act twice.
+function DepotDialog:onDepotRowClick(list, section, index, element, wasAlreadySelected)
+    local i = tonumber(index)
+    if i == nil or i < 1 then return end
+    self:onRowAction(i)
+end
 
-    if self.pageLabel then
-        self.pageLabel:setText(string.format("%d / %d", curPage + 1, maxPage + 1))
+--- setDataSource once per element, by identity so a re-sourced chunk re-binds; reloadData only
+--- when the engine has finished loading the list. No timer ever calls this.
+function DepotDialog:syncDepotList()
+    local list = self.depotList
+    if list == nil then return end
+    if list.dataSource ~= self and type(list.setDataSource) == "function" then
+        list:setDataSource(self)
     end
-    if self.prevPageBtn then self.prevPageBtn:setVisible(self.pageIndex > 0) end
-    if self.nextPageBtn then self.nextPageBtn:setVisible(self.pageIndex + DepotDialog.ROWS < total) end
+    if type(list.setDelegate) == "function" and list.delegate ~= self then
+        list:setDelegate(self)
+    end
+    if list.isLoaded and type(list.reloadData) == "function" then
+        pcall(list.reloadData, list)
+    end
 end
 
 function DepotDialog:getSellCount()
     return #self.sellList
 end
 
--- ─── Pre-order Actions ───────────────────────────────────
+-- ─── Buy Actions ─────────────────────────────────────────
 
 function DepotDialog:onAmountMinus()
     self.orderAmount = math.max(DepotDialog.ORDER_MIN, self.orderAmount - DepotDialog.ORDER_STEP)
@@ -491,30 +489,30 @@ function DepotDialog:onConfirmOrder()
     local ft     = self.selectedFillType
     local system = g_DepotManager and g_DepotManager.depotSystem
 
-    -- If a compatible vehicle is already parked near the depot, fill it directly
-    local vehicle, unitIndex = system and system:findCompatibleVehicle(
-        self.depotId, ft.fillTypeIndex, false)
+    -- A compatible vehicle must be parked near the depot to fill it directly.
+    -- Plain assignment, not `system and system:find...`: `and` truncates the call
+    -- to its first return value, which dropped unitIndex and always reported
+    -- "no trailer".
+    local vehicle, unitIndex
+    if system then
+        vehicle, unitIndex = system:findCompatibleVehicle(self.depotId, ft.fillTypeIndex, false)
+    end
 
     if vehicle and unitIndex then
-        FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PURCHASE, {
-            depotId = self.depotId, fillTypeName = ft.name,
-            fillTypeIndex = ft.fillTypeIndex, liters = self.orderAmount, farmId = farmId,
-        })
-        self:showStatus(string.format(
-            tr("fd_depot_filling", "Filling %.0fL of %s into your vehicle..."),
-            self.orderAmount, ft.displayName or ft.name))
-    else
-        -- No vehicle nearby — set pending order for silo collection
-        if g_DepotManager then
-            g_DepotManager:setPendingOrder(
-                farmId, self.depotId,
-                ft.name, ft.fillTypeIndex,
-                self.orderAmount,
-                ft.displayName or ft.name)
+        -- Positional, in handlePurchase's read order (FDNetworkSyncBridge.lua).
+        -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+        local sent, ok, reason, actualLiters = FDNetworkSyncBridge.sendAction(
+            FDNetworkSyncBridge.ACTION_PURCHASE, {
+                self.depotId, ft.name, ft.fillTypeIndex, self.orderAmount, farmId,
+            })
+        local figure = nil
+        if ok == true then
+            figure = string.format("%.0fL %s", tonumber(actualLiters) or 0, ft.displayName or ft.name)
         end
-        self:showStatus(string.format(
-            tr("fd_depot_order_set", "Order set: %s %.0fL — walk to silo to collect."),
-            ft.displayName or ft.name, self.orderAmount))
+        self:showStatus(resultStatus(sent, ok, reason,
+            "fd_depot_buy_success", "Purchase complete.", figure))
+    else
+        self:showStatus(tr("fd_depot_no_trailer", "No compatible trailer nearby."))
     end
 end
 
@@ -522,7 +520,21 @@ end
 
 function DepotDialog:onRowAction(rowSlot)
     if self.tab == DepotDialog.TAB_SELL then
-        self:executeSell(rowSlot)
+        -- BUILD 17:21: selling a whole trailer load is the one irreversible thing on this window, and
+        -- the list acts on mouse DOWN over the full row width, with no release gate and nothing to
+        -- abort onto. So the first click arms the row and says so in its action cell; only a second
+        -- click on the SAME fill type sells. Buy and Products just move a selection, so they act at
+        -- once as before.
+        local entry = self.sellList[rowSlot]
+        if entry == nil or entry.ft == nil then return end
+        local name = entry.ft.name
+        if self.sellArmedName ~= nil and self.sellArmedName == name then
+            self.sellArmedName = nil
+            self:executeSell(rowSlot)
+        else
+            self.sellArmedName = name
+            self:refreshSellTab()
+        end
     elseif self.tab == DepotDialog.TAB_PRODUCTS then
         self:selectProductRow(rowSlot)
     else
@@ -531,8 +543,7 @@ function DepotDialog:onRowAction(rowSlot)
 end
 
 function DepotDialog:selectRow(rowSlot)
-    local ftIdx = self.pageIndex + rowSlot
-    local ft    = self.fillTypes[ftIdx]
+    local ft    = self.fillTypes[rowSlot]
     if not ft then return end
     self.selectedFillType = ft
     self.orderAmount      = 1000
@@ -548,8 +559,7 @@ function DepotDialog:selectRow(rowSlot)
 end
 
 function DepotDialog:selectProductRow(rowSlot)
-    local ftIdx = self.pageIndex + rowSlot
-    local ft    = self.productFillTypes[ftIdx]
+    local ft    = self.productFillTypes[rowSlot]
     if not ft then return end
     self.selectedProduct = ft
     self.productQuantity = 1
@@ -575,204 +585,51 @@ function DepotDialog:onProductConfirm()
 
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
     local ft     = self.selectedProduct
-    local system = g_DepotManager and g_DepotManager.depotSystem
+    -- No stock check here: an order takes stored litres first and buys the rest, as
+    -- the Buy tab does (DepotSystem:orderProduct). The server answers money and room.
 
-    local stored = system and system:getStorageLevel(self.depotId, ft.name) or 0
-    local litresNeeded = self.productQuantity * ft.litresPerUnit
-    if stored < litresNeeded then
-        self:showStatus(tr("fd_products_no_stock", "Insufficient depot stock for this order."))
+    -- Positional, in handleProductOrder's read order (FDNetworkSyncBridge.lua).
+    -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+    local sent, ok, reason = FDNetworkSyncBridge.sendAction(
+        FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
+            self.depotId, ft.name, ft.fillTypeIndex, self.productQuantity, farmId,
+        })
+    if sent and ok == true and isServerHere() then
+        -- The owner returns no quantity for an order; the dialog's own request
+        -- is the figure, as before. Nothing is padded onto the owner's tuple.
+        local label = ft.productLabel == "bag"
+            and tr("fd_products_label_bag", "Bag(s)")
+            or  tr("fd_products_label_tank", "Tank(s)")
+        self:showStatus(string.format(
+            tr("fd_products_ordered", "%d× %s %s ordered, delivering to depot."),
+            self.productQuantity, ft.displayName or ft.name, label))
         return
     end
-
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_PRODUCT_ORDER, {
-        depotId = self.depotId, fillTypeName = ft.name,
-        fillTypeIndex = ft.fillTypeIndex, quantity = self.productQuantity, farmId = farmId,
-    })
-
-    local label = ft.productLabel == "bag"
-        and tr("fd_products_label_bag", "Bag(s)")
-        or  tr("fd_products_label_tank", "Tank(s)")
-    self:showStatus(string.format(
-        tr("fd_products_ordered", "%d× %s %s ordered — delivering to depot."),
-        self.productQuantity, ft.displayName or ft.name, label))
+    -- Success on a host returned above, at the formatted line. Reaching here means
+    -- not-sent, request-sent, or the owner's refusal, so there is no success line
+    -- to pass. The key and fallback that used to sit here were dead arguments, and
+    -- a reader who saw "Ordered." here would reasonably take it for the order
+    -- success string, which is the formatted one above instead.
+    self:showStatus(resultStatus(sent, ok, reason, nil, nil, nil))
 end
 
 function DepotDialog:executeSell(rowSlot)
-    local entry = self.sellList[self.pageIndex + rowSlot]
+    local entry = self.sellList[rowSlot]
     if not entry then return end
     local farmId = g_localPlayer and g_localPlayer.farmId or 1
-    self:showStatus(string.format(
-        tr("fd_depot_filling", "Selling %.0fL %s..."),
-        entry.liters, entry.ft.displayName or entry.ft.name))
-    FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_SELL, {
-        depotId = self.depotId, fillTypeName = entry.ft.name,
-        fillTypeIndex = entry.ft.fillTypeIndex, liters = entry.liters, farmId = farmId,
-    })
-end
-
--- ─── ORDER Tab ───────────────────────────────────────────
-
-function DepotDialog:refreshOrderTab()
-    local ds       = g_DepotManager and g_DepotManager.deliverySystem
-    local delivery = ds and ds:getDelivery(self.depotId)
-
-    -- When a delivery is active, show its items with live stock readings.
-    -- Otherwise show a fresh calculation of what would be ordered.
-    local order = ds and ds:calculateOrder(self.depotId)
-    local items
-    if delivery then
-        -- Refresh stored values from live depot data so column 2 is current
-        local system = g_DepotManager and g_DepotManager.depotSystem
-        for _, item in ipairs(delivery.items) do
-            item.stored = (system and system:getStorageLevel(self.depotId, item.fillTypeName)) or 0
-        end
-        items = delivery.items
-    else
-        items = (order and order.items) or {}
+    -- Positional, in handleSell's read order (FDNetworkSyncBridge.lua).
+    -- Slot 5 is the claimed farm and is never nil; the server binds its own.
+    local sent, ok, reason, soldLiters, revenue = FDNetworkSyncBridge.sendAction(
+        FDNetworkSyncBridge.ACTION_SELL, {
+            self.depotId, entry.ft.name, entry.ft.fillTypeIndex, entry.liters, farmId,
+        })
+    local figure = nil
+    if ok == true then
+        figure = string.format("%.0fL %s, $%.0f", tonumber(soldLiters) or 0,
+            entry.ft.displayName or entry.ft.name, tonumber(revenue) or 0)
     end
-
-    for slot = 1, DepotDialog.ROWS do
-        local ftIdx = self.pageIndex + slot
-        local row   = self.rows[slot]
-        local item  = items[ftIdx]
-
-        if item and row then
-            local stockStr  = string.format("%dL", math.floor(item.stored or 0))
-            local neededStr = string.format("%dL", math.floor(item.needed or 0))
-            if row.nameEl  then row.nameEl:setText(item.displayName or item.fillTypeName) end
-            if row.stockEl then row.stockEl:setText(stockStr) end
-            if row.priceEl then row.priceEl:setText(neededStr) end
-            if row.actionBtn then row.actionBtn:setVisible(false) end
-        else
-            self:clearRow(slot)
-        end
-    end
-
-    self:_updateOrderPanel(delivery, order)
-end
-
-function DepotDialog:_updateOrderPanel(delivery, order)
-    local ds = g_DepotManager and g_DepotManager.deliverySystem
-
-    if delivery then
-        local status = delivery.status
-        if status == DeliverySystem.STATUS.PENDING then
-            local penalty    = delivery.deliveryCost * DepotConstants.DELIVERY.CANCEL_PENALTY
-            local penaltyStr = string.format("$%.2f", penalty)
-            local costStr    = string.format(
-                tr("fd_delivery_status_pending", "Delivery pending — drive to Pickup Zone to collect  |  Cancel penalty: %s"),
-                penaltyStr)
-            if self.orderCostText then self.orderCostText:setText(costStr) end
-            if self.orderActionTxt then
-                self.orderActionTxt:setText(tr("fd_delivery_cancel_btn", "Cancel Order"))
-            end
-            if self.orderActionBtn then self.orderActionBtn:setVisible(true) end
-
-        elseif status == DeliverySystem.STATUS.LOADED then
-            local canComplete = ds and ds:isDeliveryTruckNearDepot(self.depotId)
-            local dist        = ds and ds:getDeliveryTruckDistance(self.depotId)
-            local msg
-            if canComplete then
-                msg = tr("fd_delivery_status_ready", "Delivery ready — click to stock your depot.")
-            elseif dist then
-                msg = string.format(
-                    tr("fd_delivery_status_park", "Park delivery vehicle within 25m of unload zone  (%.0fm away)"),
-                    dist)
-            else
-                msg = tr("fd_delivery_status_return", "Return to depot and park near the unload zone.")
-            end
-            if self.orderCostText then self.orderCostText:setText(msg) end
-            if self.orderActionTxt then
-                self.orderActionTxt:setText(tr("fd_delivery_complete_btn", "Complete Delivery"))
-            end
-            if self.orderActionBtn then self.orderActionBtn:setVisible(true) end
-        end
-
-    else
-        -- No active delivery
-        if not ds or not next(g_DepotManager.pickupNodes or {}) then
-            if self.orderCostText then
-                self.orderCostText:setText(
-                    tr("fd_delivery_no_pickup_placed",
-                       "Place a Fertilizer Supplier pickup zone near the in-game shop first."))
-            end
-            if self.orderActionBtn then self.orderActionBtn:setVisible(false) end
-        elseif not order or #order.items == 0 then
-            if self.orderCostText then
-                self.orderCostText:setText(
-                    tr("fd_delivery_all_full", "All fill types are at capacity — no delivery needed."))
-            end
-            if self.orderActionBtn then self.orderActionBtn:setVisible(false) end
-        else
-            local costStr = string.format(
-                tr("fd_delivery_cost_summary", "Base: $%.2f  +  Fee: $%.2f  =  Total: $%.2f"),
-                order.baseCost, order.fee, order.deliveryCost)
-            if self.orderCostText then self.orderCostText:setText(costStr) end
-            if self.orderActionTxt then
-                self.orderActionTxt:setText(tr("fd_delivery_place_btn", "Place Delivery Order"))
-            end
-            if self.orderActionBtn then self.orderActionBtn:setVisible(true) end
-        end
-    end
-end
-
--- Single action button callback — dispatches based on current delivery state.
-function DepotDialog:onOrderAction()
-    local ds     = g_DepotManager and g_DepotManager.deliverySystem
-    if not ds then return end
-    local delivery = ds:getDelivery(self.depotId)
-    local farmId   = g_localPlayer and g_localPlayer.farmId or 1
-
-    if not delivery then
-        -- Place new delivery order
-        local errKey = ds:canPlaceOrder(self.depotId, farmId)
-        if errKey then
-            self:showStatus(tr(errKey, errKey))
-            return
-        end
-        local order     = ds:calculateOrder(self.depotId)
-        local costStr   = string.format("$%.2f", order.deliveryCost)
-        local itemCount = #order.items
-        local text = string.format(
-            tr("fd_delivery_order_confirm",
-               "Place delivery order for %d fill type(s)?\n\nTotal cost on pickup: %s\n(10%% delivery fee included)"),
-            itemCount, costStr)
-        YesNoDialog.show(function(yes)
-            if not yes then return end
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_ORDER, {
-                depotId = self.depotId, farmId = farmId,
-            })
-            self:showStatus(tr("fd_delivery_order_placed", "Order placed — drive to the Pickup Zone."))
-        end, nil, text)
-
-    elseif delivery.status == DeliverySystem.STATUS.PENDING then
-        -- Cancel with penalty warning
-        local penalty  = delivery.deliveryCost * DepotConstants.DELIVERY.CANCEL_PENALTY
-        local penaltyStr = string.format("$%.2f", penalty)
-        local text = string.format(
-            tr("fd_delivery_cancel_confirm",
-               "Cancel delivery order?\n\nA penalty of %s (20%% of delivery cost) will be deducted."),
-            penaltyStr)
-        YesNoDialog.show(function(yes)
-            if not yes then return end
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_CANCEL, {
-                depotId = self.depotId, farmId = farmId,
-            })
-            self:showStatus(tr("fd_delivery_cancelled", "Delivery cancelled."))
-        end, nil, text)
-
-    elseif delivery.status == DeliverySystem.STATUS.LOADED then
-        -- Complete delivery
-        local text = tr("fd_delivery_complete_confirm",
-            "Complete delivery and stock your depot?\n\nAll ordered fill types will be added to storage.")
-        YesNoDialog.show(function(yes)
-            if not yes then return end
-            FDNetworkSyncBridge.sendAction(FDNetworkSyncBridge.ACTION_DELIVERY_COMPLETE, {
-                depotId = self.depotId, farmId = farmId,
-            })
-            self:showStatus(tr("fd_delivery_completing", "Delivery complete! Stock has been added."))
-        end, nil, text)
-    end
+    self:showStatus(resultStatus(sent, ok, reason,
+        "fd_depot_sell_success", "Sale complete.", figure))
 end
 
 -- ─── Close ───────────────────────────────────────────────
@@ -781,37 +638,3 @@ function DepotDialog:onClickClose()
     self:close()
 end
 
--- ─── Pagination ──────────────────────────────────────────
-
-function DepotDialog:onPrevPage()
-    self.pageIndex = math.max(0, self.pageIndex - DepotDialog.ROWS)
-    self:refresh()
-end
-
-function DepotDialog:onNextPage()
-    local total
-    if self.tab == DepotDialog.TAB_BUY then
-        total = #self.fillTypes
-    elseif self.tab == DepotDialog.TAB_SELL then
-        total = #self.sellList
-    elseif self.tab == DepotDialog.TAB_PRODUCTS then
-        total = #self.productFillTypes
-    else
-        local ds = g_DepotManager and g_DepotManager.deliverySystem
-        local order = ds and ds:calculateOrder(self.depotId)
-        total = (order and #order.items) or 0
-    end
-    self.pageIndex = math.min(self.pageIndex + DepotDialog.ROWS, math.max(0, total - 1))
-    self:refresh()
-end
-
--- ─── Generated Row Callbacks ─────────────────────────────
-
-function DepotDialog:onAction0() self:onRowAction(1) end
-function DepotDialog:onAction1() self:onRowAction(2) end
-function DepotDialog:onAction2() self:onRowAction(3) end
-function DepotDialog:onAction3() self:onRowAction(4) end
-function DepotDialog:onAction4() self:onRowAction(5) end
-function DepotDialog:onAction5() self:onRowAction(6) end
-function DepotDialog:onAction6() self:onRowAction(7) end
-function DepotDialog:onAction7() self:onRowAction(8) end

@@ -41,6 +41,7 @@
     <text name="fd_depot_tank_full"     text="La citerne de la remorque est pleine."/>
     <text name="fd_depot_tank_empty"    text="La citerne de la remorque est vide."/>
     <text name="fd_depot_storage_full"  text="Le stockage du dépôt est plein."/>
+    <text name="fd_depot_request_sent" text="Demande envoyée au serveur."/>
     <text name="fd_depot_buy_success"   text="Achat effectué."/>
     <text name="fd_depot_sell_success"  text="Vente effectuée."/>
 
@@ -50,10 +51,7 @@
     <text name="fd_error_farm"   text="Ferme introuvable."/>
 
     <!-- Filling Silo (second building) -->
-    <text name="fd_silo_name"     text="Silo de remplissage d’engrais"/>
-    <text name="fd_silo_function" text="Rendez-vous avec une remorque pour remplir tout type d’engrais. Nécessite le dépôt d’engrais."/>
-    <text name="fd_silo_desc"     text="Le silo de remplissage d’engrais est la seconde partie du système de dépôt d’engrais. Placez-le près de vos champs et approchez-vous pour remplir."/>
-
+            
     <!-- Settings dialog (Shift+D) -->
     <text name="fd_settings_title"      text="Paramètres du dépôt d’engrais"/>
     <text name="fd_settings_seasonal"   text="Prix saisonniers"/>
@@ -63,7 +61,7 @@
     <text name="fd_settings_reset"      text="Réinitialiser"/>
     <text name="fd_settings_apply"     text="Appliquer"/>
     <text name="fd_settings_debug"     text="Journal de débogage"/>
-    <text name="fd_settings_admin_only" text="Lecture seule — administrateur requis pour modifier les paramètres"/>
+    <text name="fd_settings_admin_only" text="Lecture seule, administrateur requis pour modifier les paramètres"/>
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
@@ -72,11 +70,8 @@
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="Sélectionner"/>
     <text name="fd_depot_select_first" text="Sélectionnez d’abord un type de remplissage."/>
-    <text name="fd_depot_order_set" text="Commande définie : %s %.0fL — rendez-vous au silo pour récupérer."/>
-    <text name="fd_silo_collect_action" text="Récupérer %s (%.0fL)"/>
-    <text name="fd_silo_no_order" text="Aucune commande en attente. Confirmez d’abord un type au dépôt."/>
-    <text name="fd_silo_fill_confirm" text="Récupérer %.0fL de %s ?&#10;&#10;Votre véhicule sera rempli."/>
-    <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
+    <text name="fd_depot_order_set" text="Commande définie : %s %.0fL, rendez-vous au silo pour récupérer."/>
+                <text name="fd_depot_sell_confirm" text="Vendre %.0fL de %s au dépôt pour %s ?"/>
     <text name="fd_depot_filling" text="Remplissage de %.0fL de %s dans votre véhicule..."/>
     <text name="input_FD_INTERACT" text="Interagir avec le dépôt d’engrais"/>
     <text name="input_FD_HUD_DRAG" text="Basculer le mode d’édition du HUD de livraison"/><text name="input_FD_TOGGLE_HUD" text="Afficher/Masquer le HUD de livraison"/>    <text name="fd_products_tab" text="Produits"/>
@@ -87,42 +82,74 @@
     <text name="fd_products_none" text="Aucun produit physique disponible."/>
     <text name="fd_products_no_stock" text="Stock insuffisant au dépôt pour cette commande."/>
     <text name="fd_products_no_object" text="Aucun objet physique enregistré pour ce type."/>
-    <text name="fd_products_ordered" text="%d× %s %s commandé(s) — livraison au dépôt."/>
+    <text name="fd_products_ordered" text="%d× %s %s commandé(s), livraison au dépôt."/>
     <text name="fd_depot_selected" text="Sélectionné"/>
-    <text name="fd_pickup_name" text="Fournisseur d’engrais"/>
-    <text name="fd_pickup_function" text="Zone de récupération des livraisons fournisseur. À placer près du magasin du jeu."/>
-    <text name="fd_col_needed" text="Nécessaire"/>
-    <text name="fd_col_amount" text="Quantité"/>
-    <text name="fd_col_revenue" text="Revenu"/>
-    <text name="fd_delivery_pickup_action" text="Récupérer la livraison"/>
-    <text name="fd_delivery_no_pending" text="Aucune livraison en attente."/>
-
+                <text name="fd_col_amount" text="Quantité"/>
+                <text name="fd_col_revenue" text="Revenue"/>
+            
     <!-- Delivery system, HUD overlay (shown while driving) -->
-    <text name="fd_delivery_hud_header"  text="Livraison d’engrais"/>
-    <text name="fd_delivery_hud_pending" text="Rendez-vous dans la zone de récupération pour collecter votre commande"/>
-    <text name="fd_delivery_hud_loaded"  text="Retournez à votre dépôt pour finaliser la livraison"/>
-    <text name="fd_delivery_pickup_confirm" text="Récupérer la livraison pour %s ?&#10;&#10;Les marchandises seront stockées lorsque vous retournerez à votre dépôt."/>
-    <text name="fd_delivery_order_confirm" text="Passer une commande de livraison pour %d type(s) de remplissage ?&#10;&#10;Coût total au retrait : %s&#10;(10%% de frais de livraison inclus)"/>
-    <text name="fd_delivery_cancel_confirm" text="Annuler la commande de livraison ?&#10;&#10;Une pénalité de %s (20%% du coût de livraison) sera déduite."/>
-    <text name="fd_delivery_complete_confirm" text="Finaliser la livraison et approvisionner votre dépôt ?&#10;&#10;Tous les types de remplissage commandés seront ajoutés au stockage."/>
-    <text name="fd_delivery_no_pickup_placed" text="Placez d’abord une zone de récupération fournisseur près du magasin du jeu."/>
-    <text name="fd_delivery_all_full" text="Tous les types de remplissage sont au maximum — aucune livraison nécessaire."/>
-    <text name="fd_delivery_cost_summary" text="Base : $%.2f  +  Frais : $%.2f  =  Total : $%.2f"/>
-    <text name="fd_delivery_status_pending" text="Livraison en attente — rendez-vous dans la zone de récupération pour collecter  |  Pénalité d’annulation : %s"/>
-    <text name="fd_delivery_status_ready" text="Livraison prête — cliquez pour approvisionner votre dépôt."/>
-    <text name="fd_delivery_status_park" text="Garez le véhicule de livraison à moins de 25 m de la zone de déchargement (%.0fm restants)"/>
-    <text name="fd_delivery_status_return" text="Retournez au dépôt et garez-vous près de la zone de déchargement."/>
-    <text name="fd_delivery_place_btn" text="Passer une commande"/>
-    <text name="fd_delivery_cancel_btn" text="Annuler la commande"/>
-    <text name="fd_delivery_complete_btn" text="Finaliser la livraison"/>
-    <text name="fd_delivery_order_placed" text="Commande passée — rendez-vous dans la zone de récupération."/>
-    <text name="fd_delivery_cancelled" text="Livraison annulée."/>
-    <text name="fd_delivery_completing" text="Livraison terminée ! Le stock a été ajouté."/>
-    <text name="fd_delivery_already_active" text="Une livraison est déjà en cours."/>
-    <text name="fd_delivery_no_pickup" text="Aucune zone de récupération fournisseur placée sur cette carte."/>
-    <text name="fd_delivery_stock_full" text="Tous les types de remplissage sont au maximum — aucune livraison nécessaire."/>
-    <text name="fd_delivery_none" text="Aucune livraison active."/>
-    <text name="fd_delivery_wrong_status" text="La livraison n’est pas dans l’état correct pour cette action."/>
-    <text name="fd_delivery_wrong_farm" text="Cette livraison appartient à une autre ferme."/>
-    </texts>
+    <!-- MAINTENANCE row 114: fill types, stations, the info-board actions and the send failure, by hand -->
+    <text name="sf_uan32_title" text="Solution azotée 32 (N)"/>
+    <text name="sf_uan28_title" text="Solution azotée 28 (N)"/>
+    <text name="sf_anhydrous_title" text="Ammoniac anhydre (N)"/>
+    <text name="sf_starter_title" text="Engrais starter 10-34-0 (P)"/>
+    <text name="sf_urea_title" text="Urée 46-0-0 (N)"/>
+    <text name="sf_an_title" text="Nitrate d'ammonium 34.5-0-0 (N)"/>
+    <text name="sf_ams_title" text="Sulfate d'ammonium 21-0-0 (N)"/>
+    <text name="sf_map_title" text="Engrais MAP 11-52-0 (P)"/>
+    <text name="sf_dap_title" text="Engrais DAP 18-46-0 (P)"/>
+    <text name="sf_potash_title" text="Potasse 0-0-60 (K)"/>
+    <text name="sf_polifoska_title" text="Polifoska 6-20-30 (NPK)"/>
+    <text name="sf_liquid_urea_title" text="Urée liquide (N)"/>
+    <text name="sf_liquid_ams_title" text="Sulfate d'ammonium liquide (N)"/>
+    <text name="sf_liquid_map_title" text="MAP liquide (P)"/>
+    <text name="sf_liquid_dap_title" text="DAP liquide (P)"/>
+    <text name="sf_liquid_potash_title" text="Potasse liquide (K)"/>
+    <text name="sf_insecticide_title" text="Insecticide"/>
+    <text name="sf_fungicide_title" text="Fongicide"/>
+    <text name="sf_gypsum_title" text="Gypse (pH-)"/>
+    <text name="sf_compost_title" text="Compost (organique)"/>
+    <text name="sf_biosolids_title" text="Biosolides (N+P)"/>
+    <text name="sf_chicken_manure_title" text="Fumier de poulet (N+P)"/>
+    <text name="sf_pelletized_manure_title" text="Fumier granulé (NPK)"/>
+    <text name="sf_liquidlime_title" text="Chaux liquide (pH+)"/>
+    <text name="fillType_ammonia" text="Ammoniac"/>
+    <text name="fillType_phosphoricAcid" text="Acide phosphorique"/>
+    <text name="fillType_potassiumChloride" text="Chlorure de potassium"/>
+    <text name="fillType_urea" text="Urée"/>
+    <text name="fillType_sulfur" text="Soufre"/>
+    <text name="fillType_compost" text="Compost"/>
+    <text name="stationName_fertilizerChemIn" text="Dépôt d’engrais - Entrée des produits chimiques"/>
+    <text name="stationName_fertilizerManureChemIn" text="Dépôt d’engrais - Stockage d’engrais"/>
+    <text name="stationName_fertilizerCemStorageOut" text="Dépôt d’engrais - Sortie de production et de stockage"/>
+    <text name="stationName_fertilizerChemBuying" text="Dépôt d’engrais - Achat d’engrais"/>
+    <text name="action_turnOnInformation" text="Afficher les panneaux d’information des points de chargement"/>
+    <text name="action_turnOffInformation" text="Masquer les panneaux d’information des points de chargement"/>
+    <text name="action_turnOnBillboard" text="Afficher les panneaux d’information de production"/>
+    <text name="action_turnOffBillboard" text="Masquer les panneaux d’information de production"/>
+    <text name="fd_depot_send_failed" text="La demande n’a pas pu être envoyée au serveur."/>
+    <!-- RF Esc door guest page (MAINTENANCE row 83) -->
+    <text name="fd_rf_pda_module_title" text="Dépôt d’engrais"/>
+    <text name="fd_rf_pda_blurb" text="Stock et prix d’achat/de vente de votre dépôt sélectionné. Lecture seule."/>
+    <text name="fd_rf_pda_col_fill" text="Produit"/>
+    <text name="fd_rf_pda_col_stock" text="Stock"/>
+    <text name="fd_rf_pda_col_buy" text="Achat"/>
+    <text name="fd_rf_pda_col_sell" text="Vente"/>
+    <text name="fd_rf_pda_lbl_season" text="Saison"/>
+    <text name="fd_rf_pda_season_off" text="désactivé"/>
+    <text name="fd_rf_pda_waiting" text="Gestionnaire du dépôt pas prêt"/>
+    <text name="fd_rf_pda_focus_depot" text="Sélection : dépôt %d · %d dépôt(s)"/>
+    <text name="fd_rf_pda_no_depot" text="pas encore de dépôt sur votre ferme"/>
+    <text name="fd_rf_pda_no_hall" text="pas encore de données de stock - le hall de production de ce dépôt n’a pas répondu"/>
+    <text name="fd_rf_pda_no_stock_guidance" text="pas encore de données de stock - ce dépôt est vide, commandez de l’engrais pour le remplir"/>
+    <text name="fd_rf_pda_no_depot_guidance" text="pas encore de données de stock - placez un dépôt sur votre ferme pour acheter et stocker de l’engrais"/>
+    <text name="fd_rf_pda_sf_absent" text="Soil Fertilizer : non installé (fonctions spécialisées inactives)"/>
+    <text name="fd_rf_pda_stock_absent" text="0 / pas en stock ici"/>
+    <text name="fd_rf_pda_band_hall" text="%s : hall %s / %s L"/>
+    <text name="fd_rf_pda_band_absent" text="%s : ce hall ne le stocke pas"/>
+    <text name="fd_rf_pda_band_onveh" text="  %s sur le véhicule : %s L"/>
+    <text name="fd_rf_pda_band_prices" text="Achat %s   Vente %s"/>
+    <text name="fd_rf_pda_band_readonly" text="Cette page est un affichage. L’achat et la vente se font au dépôt même."/>
+    <text name="fd_rf_pda_band_empty_hall" text="Hall vide. %s L sont sur votre véhicule : déchargez-les au dépôt pour les stocker."/>
+                                                                                                            </texts>
 </l10n>

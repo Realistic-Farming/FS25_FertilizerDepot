@@ -36,3 +36,38 @@
 
 ## Blocked / waiting on
 - [~] Bedrock migrations: SettingsHub + MasterHUD DONE (commit 69fce53); StateLedger N/A by design. Only the NetworkSync transactional bridge remains (deferred - needs the NS build-brief, see Cross-mod integration).
+
+## 2026-10-04 (Fred): the shared RF Esc door (Wizard, #86)
+
+- [x] The four shared door files at the suite's STOCK page set, byte-same in all ten door mods; StockGuard's STOCK page chrome inert without StockGuard; the herd-advisory panel hidden.
+- [~] In game (owed): TESTING row 413.
+
+## 2026-10-05 (Fred): the Esc side panel's info box (Wizard, #88)
+
+- [x] The side info boxes start clear of the selected tab; text bodies 352 and 348 px wide, so line length and the right edge are unchanged; byte-same in all ten door mods.
+- [~] In game (owed): TESTING row 446.
+
+## 2026-10-06 (Fred): six translation values restored (MAINTENANCE row 220)
+
+- [x] fd_settings_apply (jp, kr, uk) and input_FD_OPEN_SETTINGS (jp, ru, uk) back to the text each key was created with.
+- [~] In game (owed): TESTING row 484.
+
+## 2026-10-06 (Fred): title and description restored from history (MAINTENANCE row 227)
+
+- [x] modDesc.xml lines 8 to 74: 42 lines back to f437e84's text; the English em dash written as a spaced hyphen.
+- [~] In game (owed): TESTING row 488.
+
+## 2026-10-08 (Fred): Soil detection handle (MAINTENANCE row 252)
+
+- [x] `src/integrations/SoilFertilizerBridge.lua` `isInstalled`: the mission handle first. Bar `MAINT-252-soil_handle_entry_test.lua`, battery `tools/test/mutate_maint252.py`, 1 of 1.
+- [~] In game (owed): TESTING row 512.
+
+## 2026-10-08 (Fred): SettingsHub reader (MAINTENANCE row 258)
+
+- [x] `src/integrations/DepotSettingsHubBridge.lua`: `readValue` (the table `applyChange` writes), passed as `read` in the registration. Bar `MAINT-258-hub_reader_entry_test.lua` (main.lua's registration site, the depot's own dialog apply); battery `tools/test/mutate_maint258.py`, 2 of 2.
+- [~] In game (owed): TESTING row 519.
+
+## 2026-10-12 (Fred (via Desk)): Products orders like the Buy tab (Tyson's ruling)
+
+- [x] `src/DepotSystem.lua` `orderProduct`: takes min(order, stock) from storage and no longer refuses short stock. `src/ui/DepotDialog.lua` `onProductConfirm`: the client-side stock check is gone. `src/gui/FdGuideDialog.lua` PAGE4: the Products lines. Bar `products_like_bulk_test.lua` (from `onProductConfirm` through `FDNetworkSyncBridge.sendAction` into `orderProduct`), 15 of 15; control on development 9 fail; mutants 3 of 3 killed.
+- [~] In game (owed): TESTING row 550.

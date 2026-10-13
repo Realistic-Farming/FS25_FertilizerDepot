@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<map xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="$dataS/shared/xml/schema/fillTypes.xsd">
+    <fillTypes>
+        <!-- Chemical input fill types for the production hall. These are NOT provided
+             by the base game or SoilFertilizer, so the depot defines them itself
+             (copied from the source production pack's newfilltypes.xml, in SF style).
+             UREA is intentionally absent: SoilFertilizer already defines it as its own
+             bulk granular type, and redefining it here would collide. -->
+        <fillType name="AMMONIA" title="$l10n_fillType_ammonia" showOnPriceTable="true" isBulkType="false" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="0.645" maxPhysicalSurfaceAngle="38"/>
+            <economy pricePerLiter="0.25"/>
+            <image hud="hud/hud_fill_ammonia.dds"/>
+        </fillType>
+
+        <fillType name="PHOSPHORIC_ACID" title="$l10n_fillType_phosphoricAcid" showOnPriceTable="true" isBulkType="false" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.73" maxPhysicalSurfaceAngle="38"/>
+            <economy pricePerLiter="0.55"/>
+            <image hud="hud/hud_fill_phosphoricAcid.dds"/>
+        </fillType>
+
+        <fillType name="POTASSIUM_CHLORIDE" title="$l10n_fillType_potassiumChloride" showOnPriceTable="true" isBulkType="false" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.98" maxPhysicalSurfaceAngle="38"/>
+            <economy pricePerLiter="0.4"/>
+            <image hud="hud/hud_fill_potassiumChloride.dds"/>
+        </fillType>
+    </fillTypes>
+
+    <fillTypeCategories>
+        <fillTypeCategory name="LIQUID">AMMONIA PHOSPHORIC_ACID</fillTypeCategory>
+        <fillTypeCategory name="PRODUCT">POTASSIUM_CHLORIDE</fillTypeCategory>
+    </fillTypeCategories>
+</map>
