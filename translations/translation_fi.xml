@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Avaa varaston asetukset"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Avaa varaston asetukset"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Osto %s   Myynti %s"/>
     <text name="fd_rf_pda_band_readonly" text="Tämä sivu on vain näkymä. Osto ja myynti tehdään itse varastolla."/>
     <text name="fd_rf_pda_band_empty_hall" text="Halli on tyhjä. Ajoneuvossasi on %s L: kippaa se varastolle varastoidaksesi sen."/>
+    <text name="rf_live_key_unbound" text="Ei sidottu"/>
+    <text name="rf_live_key_keyboard_unbound" text="Nappaimisto ei sidottu"/>
+    <text name="rf_live_key_unavailable" text="ei saatavilla"/>
                                                                                                             </texts>
 </l10n>

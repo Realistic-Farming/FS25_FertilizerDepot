@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Mở cài đặt kho"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Mở cài đặt kho"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Mua %s   Bán %s"/>
     <text name="fd_rf_pda_band_readonly" text="Trang này chỉ để xem. Việc mua và bán diễn ra ngay tại kho."/>
     <text name="fd_rf_pda_band_empty_hall" text="Xưởng trống. Có %s L trên xe của bạn: hãy đổ vào kho để cất trữ."/>
+    <text name="rf_live_key_unbound" text="Chưa gán"/>
+    <text name="rf_live_key_keyboard_unbound" text="Ban phim chua gan"/>
+    <text name="rf_live_key_unavailable" text="không khả dụng"/>
                                                                                                             </texts>
 </l10n>

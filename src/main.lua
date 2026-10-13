@@ -14,7 +14,6 @@ FertilizerDepotModName = FertilizerDepotModName or g_currentModName or "FS25_Fer
 local modDir = FertilizerDepotModDirectory
 local modName = FertilizerDepotModName
 
--- Phase 1: Config
 source(modDir .. "src/config/Constants.lua")
 source(modDir .. "src/integrations/OptionScalingResolver.lua")
 source(modDir .. "src/config/DepotSettings.lua")
@@ -113,21 +112,21 @@ local function onMissionLoadFinished(mission, ...)
             if g_DepotManager and g_DepotManager._settingsEventId then return end
             if not g_DepotManager then return end
 
-            if not InputAction.FD_OPEN_SETTINGS then
-                DepotLogger.warning("InputAction.FD_OPEN_SETTINGS is nil — check modDesc <actions>")
+            if not InputAction.FDEP_OPEN_SETTINGS then
+                DepotLogger.warning("InputAction.FDEP_OPEN_SETTINGS is nil — check modDesc <actions>")
                 return
             end
 
             g_inputBinding:beginActionEventsModification(PlayerInputComponent.INPUT_CONTEXT_NAME)
             local ok, id = g_inputBinding:registerActionEvent(
-                InputAction.FD_OPEN_SETTINGS, g_DepotManager,
+                InputAction.FDEP_OPEN_SETTINGS, g_DepotManager,
                 g_DepotManager.openSettingsDialog, false, true, false, true)
             if ok and id then
                 g_DepotManager._settingsEventId = id
                 g_inputBinding:setActionEventTextVisibility(id, false)
-                DepotLogger.info("Shift+D (FD_OPEN_SETTINGS) registered in PLAYER context")
+                DepotLogger.info("FDEP_OPEN_SETTINGS registered in PLAYER context")
             else
-                DepotLogger.warning("Shift+D registration failed — registerActionEvent returned false")
+                DepotLogger.warning("FDEP_OPEN_SETTINGS registration failed: registerActionEvent returned false")
             end
 
             g_inputBinding:endActionEventsModification()
@@ -195,7 +194,7 @@ local function registerControlCenterActions()
     if registry == nil then return end
 
     registry.registerAction({
-        action     = "FD_OPEN_SETTINGS",
+        action     = "FDEP_OPEN_SETTINGS",
         button     = "Open",
         -- Opens a dialog of its own, which cannot sit behind this one.
         closeFirst = true,

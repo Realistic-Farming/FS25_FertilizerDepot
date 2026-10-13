@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Öppna förrådinställningar"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Öppna förrådinställningar"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Köp %s   Sälj %s"/>
     <text name="fd_rf_pda_band_readonly" text="Den här sidan är bara en översikt. Köp och försäljning sker vid själva depån."/>
     <text name="fd_rf_pda_band_empty_hall" text="Hallen är tom. %s L finns på ditt fordon: tippa av det vid depån för att lagra det."/>
+    <text name="rf_live_key_unbound" text="Obunden"/>
+    <text name="rf_live_key_keyboard_unbound" text="Tangentbord obundet"/>
+    <text name="rf_live_key_unavailable" text="otillgänglig"/>
                                                                                                             </texts>
 </l10n>

@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Apri impostazioni deposito"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Apri impostazioni deposito"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Acquisto %s   Vendita %s"/>
     <text name="fd_rf_pda_band_readonly" text="Questa pagina è solo una visualizzazione. Acquisti e vendite si fanno al deposito stesso."/>
     <text name="fd_rf_pda_band_empty_hall" text="Capannone vuoto. %s L sono sul tuo veicolo: scaricali al deposito per immagazzinarli."/>
+    <text name="rf_live_key_unbound" text="Non assegnato"/>
+    <text name="rf_live_key_keyboard_unbound" text="Tastiera non assegnata"/>
+    <text name="rf_live_key_unavailable" text="non disponibile"/>
                                                                                                             </texts>
 </l10n>

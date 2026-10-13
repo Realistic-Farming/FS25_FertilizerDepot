@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Відкрити налаштування депо"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Відкрити налаштування депо"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Купівля %s   Продаж %s"/>
     <text name="fd_rf_pda_band_readonly" text="Ця сторінка лише для перегляду. Купівля та продаж відбуваються на самому складі."/>
     <text name="fd_rf_pda_band_empty_hall" text="Цех порожній. У вашій техніці %s л: вивантажте їх на складі, щоб зберегти."/>
+    <text name="rf_live_key_unbound" text="Не призначено"/>
+    <text name="rf_live_key_keyboard_unbound" text="Клавіатура не призначена"/>
+    <text name="rf_live_key_unavailable" text="недоступно"/>
                                                                                                             </texts>
 </l10n>

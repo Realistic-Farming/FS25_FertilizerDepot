@@ -65,7 +65,7 @@
     <text name="fd_settings_on"         text="ON"/>
     <text name="fd_settings_off"        text="OFF"/>
         <!-- Input action display name -->
-    <text name="input_FD_OPEN_SETTINGS" text="Depot-instellingen openen"/>
+    <text name="input_FDEP_OPEN_SETTINGS" text="Depot-instellingen openen"/>
 
     <!-- [EN] Not yet translated -->
     <text name="fd_depot_select_btn" text="[EN] Select"/>
@@ -151,5 +151,8 @@
     <text name="fd_rf_pda_band_prices" text="Inkoop %s   Verkoop %s"/>
     <text name="fd_rf_pda_band_readonly" text="Deze pagina is alleen een overzicht. Kopen en verkopen doe je bij het depot zelf."/>
     <text name="fd_rf_pda_band_empty_hall" text="Hal leeg. Er staat %s L op je voertuig: los het bij het depot om het op te slaan."/>
+    <text name="rf_live_key_unbound" text="Niet toegewezen"/>
+    <text name="rf_live_key_keyboard_unbound" text="Toetsenbord niet toegewezen"/>
+    <text name="rf_live_key_unavailable" text="niet beschikbaar"/>
                                                                                                             </texts>
 </l10n>
