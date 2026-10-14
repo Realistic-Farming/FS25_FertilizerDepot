@@ -71,3 +71,8 @@
 
 - [x] `src/DepotSystem.lua` `orderProduct`: takes min(order, stock) from storage and no longer refuses short stock. `src/ui/DepotDialog.lua` `onProductConfirm`: the client-side stock check is gone. `src/gui/FdGuideDialog.lua` PAGE4: the Products lines. Bar `products_like_bulk_test.lua` (from `onProductConfirm` through `FDNetworkSyncBridge.sendAction` into `orderProduct`), 15 of 15; control on development 9 fail; mutants 3 of 3 killed.
 - [~] In game (owed): TESTING row 550.
+
+## 2026-10-14 (Fred (via Desk)): keyboard defaults (Wizard, #92)
+
+- [x] `modDesc.xml`: FDEP_OPEN_SETTINGS (renamed from FD_OPEN_SETTINGS) on Right Ctrl + Q, FD_INTERACT on Right Ctrl + E; `src/main.lua` registers the renamed action; the 26 translation files carry the renamed key.
+- [~] In game (owed): TESTING row 533.
