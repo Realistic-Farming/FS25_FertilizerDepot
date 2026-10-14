@@ -76,3 +76,9 @@
 
 - [x] `modDesc.xml`: FDEP_OPEN_SETTINGS (renamed from FD_OPEN_SETTINGS) on Right Ctrl + Q, FD_INTERACT on Right Ctrl + E; `src/main.lua` registers the renamed action; the 26 translation files carry the renamed key.
 - [~] In game (owed): TESTING row 533.
+
+## 2026-10-14 (Fred (via Desk)): build packaging (MAINTENANCE row 309)
+
+- [x] `build.py`: keeps the `.git` file out of the zip. In a git worktree `.git` is a file, not a directory, so EXCLUDE_DIRS alone let it into the zip.
+- [x] Built from a worktree before and after this change: development's zip had 97 entries, one of them the worktree `.git` file; this branch's has 96, with exactly that file removed, every other entry byte-identical (CRC), nothing added.
+- Build tooling only, no in-game check (TESTING row 571).

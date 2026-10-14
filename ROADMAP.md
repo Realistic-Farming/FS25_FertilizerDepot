@@ -78,3 +78,8 @@
 
 - [x] The depot settings action is renamed from FD_OPEN_SETTINGS to FDEP_OPEN_SETTINGS, because Farm Dashboard declares the same action name and the game could not tell the two apart, and it is bound to Right Ctrl + Q. The depot interact action FD_INTERACT is bound to Right Ctrl + E. Both were unbound. In the 26 translation files only the key name changes; three rf_live_key_* strings are added with no reader in this mod. (Wizard's #92, merged at f197c366 on 2026-10-13, one PR of his keyboard-defaults wave.)
 - The in-game check is TESTING row 533. Docs by Fred's catch-up (R-51), on Tyson's word of 2026-10-14.
+
+## 2026-10-14 (Fred (via Desk)): the build script packs only the mod (MAINTENANCE row 309)
+
+- [x] `build.py` keeps the `.git` file out of the zip. In a git worktree `.git` is a file, not a directory, so EXCLUDE_DIRS alone let it into the zip.
+- Build tooling only, no in-game check (TESTING row 571). Found by a fleet sweep that built every mod once from development in a throwaway worktree, on Tyson's word of 2026-10-14.
