@@ -73,3 +73,8 @@
 
 - [x] A Products tab order no longer needs the depot to hold the whole order. Stored litres go first and the market covers the rest, at the same price, as the Buy tab already did. A new depot can now sell a bag or a tank; before, it refused with "Insufficient depot stock for this order." until a player had sold product into it. The guide's Products page says so.
 - The in-game check is TESTING row 550.
+
+## 2026-10-14 (Fred (via Desk)): keyboard defaults (Wizard, #92)
+
+- [x] The depot settings action is renamed from FD_OPEN_SETTINGS to FDEP_OPEN_SETTINGS, because Farm Dashboard declares the same action name and the game could not tell the two apart, and it is bound to Right Ctrl + Q. The depot interact action FD_INTERACT is bound to Right Ctrl + E. Both were unbound. In the 26 translation files only the key name changes; three rf_live_key_* strings are added with no reader in this mod. (Wizard's #92, merged at f197c366 on 2026-10-13, one PR of his keyboard-defaults wave.)
+- The in-game check is TESTING row 533. Docs by Fred's catch-up (R-51), on Tyson's word of 2026-10-14.
